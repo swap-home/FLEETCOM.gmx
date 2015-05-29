@@ -219,7 +219,10 @@ click_down = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (click_down)
+            <string>var oldColor = draw_get_color();
+var oldAlpha = draw_get_alpha();
+
+if (click_down) 
 {
     draw_set_alpha(0.25);
     draw_set_color(c_green);
@@ -229,6 +232,9 @@ click_down = true;
     draw_set_color(c_lime);
     draw_rectangle(click_x, click_y, mouse_x, mouse_y, true);
 }
+
+draw_set_color(oldColor);
+draw_set_alpha(oldAlpha);
 </string>
           </argument>
         </arguments>

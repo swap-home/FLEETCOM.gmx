@@ -54,6 +54,9 @@ sight_range = 1500;
 
 findtarget_delay = 30;
 
+destination_x = x;
+destination_y = y;
+
 </string>
           </argument>
         </arguments>
