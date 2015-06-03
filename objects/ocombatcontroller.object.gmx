@@ -25,16 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>with (oCovecapitalships)
-{direction = 180 + irandom_range(-15,15);side=1;}
-with (oCovesingleships)
-{direction = 180 + irandom_range(-15,15);side=1;}
-with (oUNSCcapitalships)
-{direction = 0 + irandom_range(-15,15);side=0;}
-with (oUNSCsingleships)
-{direction = 0 + irandom_range(-15,15);side=0;}
-
-//sound_loop(sound0);
+            <string>//sound_loop(sound0);
 
 global.damageRatio[0,0] = 0.75;    //kinetic -&gt; titaniumA
 global.damageRatio[0,1] = 0.75;    //kinetic -&gt; shield
@@ -62,7 +53,41 @@ global.destructableProjectiles[1] = ds_list_create();
 global.hits = 0;
 global.shots = 0;
 
+alarm[1] = 1;
 alarm[0] = irandom(10*30)+ 10*30;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var leftside = 0.05*room_width;
+var rightside = 0.95*room_width;
+
+with (oCovecapitalships)
+{moveTo(id, leftside, irandom(room_height));}
+with (oCovesingleships)
+{moveTo(id, leftside, irandom(room_height));}
+with (oUNSCcapitalships)
+{moveTo(id, rightside, irandom(room_height));}
+with (oUNSCsingleships)
+{moveTo(id, rightside, irandom(room_height));}
 </string>
           </argument>
         </arguments>
@@ -102,7 +127,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_corvette_SDVH);
         with (createId)
         {
-            direction = 180 + irandom_range(-15,15);
+            moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
     }
@@ -112,7 +137,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_destroyer_CPV);
         with (createId)
         {
-            direction = 180 + irandom_range(-15,15);
+            moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
     }
@@ -122,7 +147,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_cruiser_CRS);
         with (createId)
         {
-            direction = 180 + irandom_range(-15,15);
+            moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
     }
@@ -132,19 +157,9 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_battlecruiser_CCS);
         with (createId)
         {
-            direction = 180 + irandom_range(-15,15);
+            moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
-    }
-}
-
-if (irandom(1) == 0) 
-{
-    createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_charonL);
-    with (createId)
-    {
-        direction = irandom_range(-15,15);
-        side = 0;
     }
 }
 
@@ -152,10 +167,20 @@ if (coveShipCount*3 &gt; unscShipCount)
 {
     if (irandom(1) == 0) 
     {
+        createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_charonL);
+        with (createId)
+        {
+            moveTo(id, rightside, irandom(room_height));
+            side = 0;
+        }
+    }
+
+    if (irandom(1) == 0) 
+    {
         createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_parisH);
         with (createId)
         {
-            direction = irandom_range(-15,15);
+            moveTo(id, rightside, irandom(room_height));
             side = 0;
         }
     }
@@ -165,7 +190,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_destroyer);
         with (createId)
         {
-            direction = irandom_range(-15,15);
+            moveTo(id, rightside, irandom(room_height));
             side = 0;
         }
     }
@@ -175,7 +200,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_cruiser_marathonH);
         with (createId)
         {
-            direction = irandom_range(-15,15);
+            moveTo(id, rightside, irandom(room_height));
             side = 0;
         }
     }

@@ -41,7 +41,9 @@ targetid = noone;
 parentid = noone;
 move_x = 0;
 move_y = 0;
-commanded = false;
+assignedTargetid = noone;
+assignedMove_x = 0;
+assignedMove_y = 0;
 </string>
           </argument>
         </arguments>

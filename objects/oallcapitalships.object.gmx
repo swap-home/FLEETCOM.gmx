@@ -51,11 +51,11 @@ singleship_speed = 1;
 singleship_range = 1;
 
 sight_range = 1500;
-
+strategy = "closest";
 findtarget_delay = 30;
 
-destination_x = x;
-destination_y = y;
+move_x = x;
+move_y = y;
 
 </string>
           </argument>
@@ -79,34 +79,47 @@ destination_y = y;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var selfid_l;
-selfid_l = id;
-var selfside_l;
-selfside_l = side;
-var closest_l, closest_id_l;
-closest_id_l = noone;
+            <string>var selfid;
+selfid = id;
+var selfside;
+selfside = side;
+var metric_value, metric_target_id;
+metric_target_id = noone;
 
-//range to engage enemy units
-closest_l = sight_range;
+//metric to evaluate units with
+metric_value = 9999;
 
-if (!instance_exists(targetid)) //acquire new target if no target
+if (!instance_exists(assignedTargetid)) //acquire new target if no target assigned
 {
+    assignedTargetid = noone;
     with (oallcapitalships)
     {
-        //if (strategy = targetclosest)
-        if (side != selfside_l)
+        //ignore units outside sight range or on the same team
+        if (distance_to_object(selfid) &gt; sight_range || side == selfside)
         {
-            if (distance_to_object(selfid_l) &lt; closest_l)
+            continue;
+        }
+        
+        if (strategy == "closest")
+        {
+            if (distance_to_object(selfid) &lt; metric_value)
             {
-                closest_l = distance_to_object(selfid_l);
-                closest_id_l = id;
+                metric_value = distance_to_object(selfid);
+                metric_target_id = id;
             }
         }
-        //else if (strategy = targetlowest) w/wo overkill
+        else if (strategy == "lowest")
+        {
+            if (hull+shield &lt; metric_value)
+            {
+                metric_value = hull+shield;
+                metric_target_id = id;
+            } 
+        }
         //else if (strategy = targetclustered)
     }
     
-    targetid = closest_id_l;
+    targetid = metric_target_id;
 }
 </string>
           </argument>
@@ -133,6 +146,57 @@ if (!instance_exists(targetid)) //acquire new target if no target
           <argument>
             <kind>4</kind>
             <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>event_inherited();
+
+var dist_tolerance = 0.1;
+var angle_tolerance = 0.5;
+var turn_heuristic = 2; //give this many times the amount of time to turn
+
+if (abs(move_x - x) &lt;= dist_tolerance &amp;&amp; abs(move_y - y) &lt;= dist_tolerance)
+{
+    x = move_x;
+    y = move_y;
+    movespeed = 0;
+}
+else
+{
+    var distance = distance_to_point(move_x, move_y);
+    var angle = point_direction(x, y, move_x, move_y);
+    
+    var estimated_time = angle / maxturnrate;
+    
+    if (!withinDegrees(direction, angle, angle_tolerance))
+    {
+        turnTowards(angle);
+        movespeed = min(distance / estimated_time, maxspeed);
+    }
+    else
+    {
+        movespeed = maxspeed;
+    }
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -188,7 +252,7 @@ draw_life_bar(x-sprite_width/2,y-(sprite_height/2)-7,sprite_width,3,hull,hull_ma
 
 
 //draw a shield bar
-if shield_max &lt;&gt; 0
+if (shield_max &gt; 0)
 {draw_shield_bar(x-sprite_width/2,y-(sprite_height/2)-12,sprite_width,5,shield,shield_max); }
 
 event_inherited();

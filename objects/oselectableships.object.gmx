@@ -267,10 +267,10 @@ else
     draw_ellipse(-width/2,-height/2,width/2,height/2,1);
     d3d_transform_set_identity();
 }
-if (global.debug)
+if (selected || global.debug)
 {
     draw_set_color(c_green);
-    draw_line(x,y,destination_x,destination_y);
+    draw_line(x,y,move_x,move_y);
     
     if (instance_exists(targetid))
     {

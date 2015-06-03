@@ -96,7 +96,6 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\draw_shield_bar.gml</script>
-    <script>scripts\Homing.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
     <script>scripts\Sight.gml</script>
@@ -120,8 +119,10 @@
       <script>scripts\controlGroupKey.gml</script>
     </scripts>
     <scripts name="movement">
+      <script>scripts\Homing.gml</script>
       <script>scripts\attackTarget.gml</script>
       <script>scripts\moveTo.gml</script>
+      <script>scripts\turnTowards.gml</script>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
