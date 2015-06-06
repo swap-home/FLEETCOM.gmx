@@ -79,15 +79,33 @@ alarm[0] = irandom(10*30)+ 10*30;
             <kind>1</kind>
             <string>var leftside = 0.05*room_width;
 var rightside = 0.95*room_width;
+var leftdir = 180;
+var rightdir = 0;
 
 with (oCovecapitalships)
-{moveTo(id, leftside, irandom(room_height));}
+{
+    side = 1;
+    direction = leftdir;
+    moveTo(id, leftside, irandom(room_height));
+}
 with (oCovesingleships)
-{moveTo(id, leftside, irandom(room_height));}
+{
+    side = 1;
+    direction = leftdir;
+    moveTo(id, leftside, irandom(room_height));
+}
 with (oUNSCcapitalships)
-{moveTo(id, rightside, irandom(room_height));}
+{
+    side = 0;
+    direction = rightdir;
+    moveTo(id, rightside, irandom(room_height));
+}
 with (oUNSCsingleships)
-{moveTo(id, rightside, irandom(room_height));}
+{
+    side = 0;
+    direction = rightdir;
+    moveTo(id, rightside, irandom(room_height));
+}
 </string>
           </argument>
         </arguments>
@@ -113,6 +131,7 @@ with (oUNSCsingleships)
             <string>var createId;
 var leftside = 0.05*room_width;
 var rightside = 0.95*room_width;
+var leftdir = 180;
 
 var unscShipCount = 0;
 var coveShipCount = 0;
@@ -127,6 +146,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_corvette_SDVH);
         with (createId)
         {
+            direction = leftdir;
             moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
@@ -137,6 +157,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_destroyer_CPV);
         with (createId)
         {
+            direction = leftdir;
             moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
@@ -147,6 +168,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_cruiser_CRS);
         with (createId)
         {
+            direction = leftdir;
             moveTo(id, leftside, irandom(room_height));
             side = 1;
         }
@@ -157,6 +179,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_battlecruiser_CCS);
         with (createId)
         {
+            direction = leftdir;
             moveTo(id, leftside, irandom(room_height));
             side = 1;
         }

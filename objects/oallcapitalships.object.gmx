@@ -56,6 +56,7 @@ findtarget_delay = 30;
 
 move_x = x;
 move_y = y;
+turning = false;
 
 </string>
           </argument>
@@ -169,7 +170,7 @@ if (!instance_exists(assignedTargetid)) //acquire new target if no target assign
             <kind>1</kind>
             <string>event_inherited();
 
-var dist_tolerance = 0.1;
+var dist_tolerance = maxspeed;
 var angle_tolerance = 0.5;
 var turn_heuristic = 2; //give this many times the amount of time to turn
 
@@ -181,14 +182,17 @@ if (abs(move_x - x) &lt;= dist_tolerance &amp;&amp; abs(move_y - y) &lt;= dist_t
 }
 else
 {
-    var distance = distance_to_point(move_x, move_y);
+    var distance = point_distance(x, y, move_x, move_y) * turn_heuristic;
     var angle = point_direction(x, y, move_x, move_y);
     
     var estimated_time = angle / maxturnrate;
     
     if (!withinDegrees(direction, angle, angle_tolerance))
     {
-        turnTowards(angle);
+        if (!turning)
+        {
+            turnTowards(angle);
+        }
         movespeed = min(distance / estimated_time, maxspeed);
     }
     else
@@ -243,17 +247,16 @@ y -= lengthdir_y(0.10, degree);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//redraw the object's sprite
-draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
-
-
-//draw a health bar
-draw_life_bar(x-sprite_width/2,y-(sprite_height/2)-7,sprite_width,3,hull,hull_max); 
+            <string>//draw a health bar
+draw_life_bar(x-sprite_width/2,y-(sprite_height/2)-6,sprite_width,3,hull,hull_max);
 
 
 //draw a shield bar
 if (shield_max &gt; 0)
-{draw_shield_bar(x-sprite_width/2,y-(sprite_height/2)-12,sprite_width,5,shield,shield_max); }
+{draw_shield_bar(x-sprite_width/2,y-(sprite_height/2)-12,sprite_width,5,shield,shield_max);}
+
+//redraw the object's sprite
+draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
 
 event_inherited();
 </string>

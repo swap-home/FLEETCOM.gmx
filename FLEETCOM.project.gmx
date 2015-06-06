@@ -96,6 +96,8 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\draw_shield_bar.gml</script>
+    <script>scripts\draw_life_bar.gml</script>
+    <script>scripts\draw_charge_bar.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
     <script>scripts\Sight.gml</script>
@@ -103,7 +105,6 @@
     <script>scripts\TargetNearest_single.gml</script>
     <script>scripts\firepointdefenseturret.gml</script>
     <script>scripts\firepulselaserturret.gml</script>
-    <script>scripts\draw_life_bar.gml</script>
     <script>scripts\Damage_Unit.gml</script>
     <script>scripts\script22.gml</script>
     <scripts name="enums">
@@ -215,6 +216,7 @@
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
     <room>rooms\RandomBattle</room>
+    <room>rooms\room4</room>
     <room>rooms\FixedBattle</room>
     <room>rooms\Anti_Fighter_test</room>
   </rooms>

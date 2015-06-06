@@ -38,13 +38,13 @@ side = 0;
 //INITIALIZATION of UNSC ship vars
 mac = 0;
 mac_cooldown = 0;
-mac_cooldown_max = 450;
-mac_range = 900;
+mac_cooldown_max = 600;
+mac_range = 1300;
 
 archerpod = 0;
 archerpod_cooldown = 0;
-archerpod_cooldown_max = 60;
-archerpod_range = 500;
+archerpod_cooldown_max = 90;
+archerpod_range = 900;
 
 pdt = 0;
 pdt_cooldown = 0;
@@ -153,27 +153,30 @@ longsword_deploy_cd -= 1;
             <string>if (instance_exists(targetid))
 {
     if (mac_cooldown &lt;= 0)
-    {
-        Homing();
+    {    
         var targetdir;
         targetdir = point_direction(x,y,targetid.x,targetid.y);
-
-        if (withinDegrees(direction, targetdir, 2) &amp;&amp; point_distance(x,y,targetid.x,targetid.y) &lt;= mac_range)
+        
+        if (point_distance(x,y,targetid.x,targetid.y) &lt;= mac_range)
         {
-            var selfid = id;
-            
-            mac_cooldown = mac_cooldown_max;
-            var i;
-            for (i = 0; i &lt; mac; i+=1)
+            Homing();
+            if (withinDegrees(direction, targetdir, 2))
             {
-                with (instance_create(x,y,oUNSC_MAC))
+                var selfid = id;
+                
+                mac_cooldown = mac_cooldown_max;
+                var i;
+                for (i = 0; i &lt; mac; i+=1)
                 {
-                    target = selfid.targetid;
-                    x = selfid.x;
-                    y = selfid.y;
-                    dir = targetdir;
-                    side = selfid.side;
-                    parentid = selfid;
+                    with (instance_create(x,y,oUNSC_MAC))
+                    {
+                        target = selfid.targetid;
+                        x = selfid.x;
+                        y = selfid.y;
+                        dir = targetdir;
+                        side = selfid.side;
+                        parentid = selfid;
+                    }
                 }
             }
         }
@@ -293,6 +296,31 @@ pdt_cooldown -= 1;
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_charge_bar(x-sprite_width/2,y-(sprite_height/2)-3,sprite_width,1,mac_cooldown_max-mac_cooldown,mac_cooldown_max);
+
+event_inherited();
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>

@@ -28,7 +28,6 @@
             <string>event_inherited();
 
 race = "cove";
-side = 1;
 
 banshee = 0;
 banshee_max = 0;
@@ -50,13 +49,13 @@ phantom_deploy_cd_max = 90;
 
 energyprojector = 0;
 energyprojector_cooldown = 0;
-energyprojector_cooldown_max = 450;
-energyprojector_range = 800;
+energyprojector_cooldown_max = 600;
+energyprojector_range = 1400;
 
 plasmaturret = 0;
 plasmaturret_cooldown = 0;
-plasmaturret_cooldown_max = 75;
-plasmaturret_range = 600;
+plasmaturret_cooldown_max = 135;
+plasmaturret_range = 1000;
 
 plt = 0;
 plt_cooldown = 0;
@@ -382,6 +381,30 @@ plt_cooldown -= 1;
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_charge_bar(x-sprite_width/2,y-(sprite_height/2)-2,sprite_width,1,energyprojector_cooldown_max-energyprojector_cooldown,energyprojector_cooldown_max);
+event_inherited();
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>
