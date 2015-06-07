@@ -89,6 +89,7 @@
     </sprites>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
     <sprite>sprites\sTracer</sprite>
+    <sprite>sprites\sprite68</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -106,7 +107,7 @@
     <script>scripts\firepointdefenseturret.gml</script>
     <script>scripts\firepulselaserturret.gml</script>
     <script>scripts\Damage_Unit.gml</script>
-    <script>scripts\script22.gml</script>
+    <script>scripts\zoom.gml</script>
     <scripts name="enums">
       <script>scripts\enumDamageTypes.gml</script>
     </scripts>
