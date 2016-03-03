@@ -75,10 +75,6 @@
     <instance objName="oUNSC_longsword_GATL1" x="688" y="1024" name="inst_230C1556" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUNSC_longsword_GATL1" x="736" y="864" name="inst_8DDDC67B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUNSC_longsword_GATL1" x="816" y="1072" name="inst_2AA1F645" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="object41" x="1568" y="384" name="inst_463EED92" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="object41" x="1568" y="592" name="inst_298E6CD8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="object41" x="1568" y="800" name="inst_5B9B91AE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="object41" x="1568" y="1056" name="inst_5F16D0CA" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

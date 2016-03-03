@@ -32,11 +32,18 @@ singleship_rate = 1;
 singleship_speed = 1;
 singleship_range = 1;
 
+singleship_trail_color = c_white;
+
 sight_range = 600;
 refuel_range = 9001;
 
 findtarget_delay = 30;
 alarm[0] = findtarget_delay;
+
+trail = instance_create(x,y,oribbontrail);
+trail.parent = id;
+trail.depth = depth;
+trail.trail_color = singleship_trail_color;
 
 parentid = 0;
 </string>

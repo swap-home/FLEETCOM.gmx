@@ -58,6 +58,7 @@ move_x = x;
 move_y = y;
 turning = false;
 
+instance_create(x,y,oshockring);
 </string>
           </argument>
         </arguments>
@@ -186,6 +187,7 @@ else
     var angle = point_direction(x, y, move_x, move_y);
     
     var estimated_time = angle / maxturnrate;
+    if (estimated_time == 0) {exit;}
     
     if (!withinDegrees(direction, angle, angle_tolerance))
     {

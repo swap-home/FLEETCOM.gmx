@@ -91,24 +91,6 @@ focus = false;
           <argument>
             <kind>1</kind>
             <string>focus = false;
-if (global.selection_manager.click_x != mouse_x &amp;&amp; global.selection_manager.click_y != mouse_y) //dragging a box
-{
-    if(!keyboard_check_direct(vk_lshift))
-    {
-        clearSelection();
-    }
-    
-    with(oselectableships)
-    {
-        if (collision_rectangle(global.selection_manager.click_x, global.selection_manager.click_y, mouse_x, mouse_y, id, false, false))
-        {
-            if (global.playerside == side)
-            {
-                addSelection(id);
-            }
-        }
-    }
-}
 </string>
           </argument>
         </arguments>
@@ -142,6 +124,10 @@ var shiftdown, ctrldown;
 shiftdown = keyboard_check_direct(vk_lshift);
 ctrldown = keyboard_check_direct(vk_lcontrol);
 
+if (global.playerside == side)
+{
+    reportSound();
+}
 
 if (shiftdown &amp;&amp; ctrldown)  //add all units of same type on screen to group
 {

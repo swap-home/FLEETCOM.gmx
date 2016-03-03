@@ -26,8 +26,8 @@ if (targetid.shield > 0)  //damage shields
 else                                                    //damage hull (titianiumA or battleplating
 {
     var tmpdmg, tmpratio;
-    if (race == "unsc"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),0];}
-    else if (race == "cove"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),2];}
+    if (targetid.race == "unsc"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),0];}
+    else if (targetid.race == "cove"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),2];}
     tmpdmg = basedmg * tmpratio;
     
     targetid.hull -= tmpdmg;

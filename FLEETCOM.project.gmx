@@ -6,8 +6,50 @@
   <NewExtensions/>
   <sounds name="sound">
     <sound>sound\sound0</sound>
-    <sound>sound\sound1</sound>
     <sound>sound\Remembrance</sound>
+    <sounds name="Effects">
+      <sound>sound\energyProjectorFire</sound>
+      <sound>sound\macFire</sound>
+      <sound>sound\fuelRodFire</sound>
+      <sound>sound\plasmaCannonFire</sound>
+    </sounds>
+    <sounds name="Units">
+      <sounds name="ack">
+        <sound>sound\ack1</sound>
+        <sound>sound\ack2</sound>
+        <sound>sound\ack3</sound>
+        <sound>sound\ack4</sound>
+        <sound>sound\ack5</sound>
+        <sound>sound\ack6</sound>
+        <sound>sound\ack7</sound>
+        <sound>sound\ack8</sound>
+        <sound>sound\ack9</sound>
+        <sound>sound\ack10</sound>
+        <sound>sound\ack11</sound>
+        <sound>sound\ack12</sound>
+        <sound>sound\ack13</sound>
+        <sound>sound\ack14</sound>
+        <sound>sound\ack15</sound>
+        <sound>sound\ack16</sound>
+      </sounds>
+      <sounds name="report">
+        <sound>sound\report1</sound>
+        <sound>sound\report2</sound>
+        <sound>sound\report3</sound>
+        <sound>sound\report4</sound>
+        <sound>sound\report5</sound>
+        <sound>sound\report6</sound>
+        <sound>sound\report7</sound>
+        <sound>sound\report8</sound>
+        <sound>sound\report9</sound>
+        <sound>sound\report10</sound>
+        <sound>sound\report11</sound>
+        <sound>sound\report12</sound>
+        <sound>sound\report13</sound>
+        <sound>sound\report14</sound>
+        <sound>sound\report15</sound>
+      </sounds>
+    </sounds>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\sCove_corvette_SDVH</sprite>
@@ -20,7 +62,7 @@
     <sprite>sprites\sCove_banshee</sprite>
     <sprite>sprites\sUNSC_frigate_charonL</sprite>
     <sprite>sprites\sUNSC_frigate_parisH</sprite>
-    <sprite>sprites\sUNSC_destroyer</sprite>
+    <sprite>sprites\sUNSC_destroyer_halberd</sprite>
     <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
     <sprite>sprites\sUNSC_pheonix</sprite>
     <sprite>sprites\sUNSC_longsword</sprite>
@@ -124,11 +166,19 @@
       <script>scripts\attackTarget.gml</script>
       <script>scripts\moveTo.gml</script>
       <script>scripts\turnTowards.gml</script>
+      <script>scripts\stop.gml</script>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
     <script>scripts\projectileInitialize.gml</script>
     <script>scripts\beamCollision.gml</script>
+    <scripts name="sound">
+      <script>scripts\ackSound.gml</script>
+      <script>scripts\reportSound.gml</script>
+    </scripts>
+    <script>scripts\checkLoS.gml</script>
+    <script>scripts\firingSolution.gml</script>
+    <script>scripts\quadratic_smallest_nonnegative.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\Halo</font>
@@ -152,7 +202,7 @@
           <object>objects\oUNSC_frigate_parisH</object>
         </objects>
         <objects name="Destroyer">
-          <object>objects\oUNSC_destroyer</object>
+          <object>objects\oUNSC_destroyer_halberd</object>
         </objects>
         <objects name="Cruiser">
           <object>objects\oUNSC_cruiser_marathonH</object>
@@ -168,7 +218,6 @@
         </objects>
         <objects name="Corvette">
           <object>objects\oCove_corvette_SDVH</object>
-          <object>objects\object41</object>
         </objects>
         <objects name="Destroyer">
           <object>objects\oCove_destroyer_CPV</object>
@@ -184,6 +233,7 @@
     </objects>
     <objects name="Structures">
       <object>objects\oallstructures</object>
+      <object>objects\object43</object>
     </objects>
     <objects name="Weaponry">
       <object>objects\obeamweaponry</object>
@@ -212,13 +262,17 @@
       <object>objects\oSelectionManager</object>
       <object>objects\oUIcontroller</object>
     </objects>
+    <objects name="Effects">
+      <object>objects\oshockring</object>
+      <object>objects\oribbontrail</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
     <room>rooms\RandomBattle</room>
-    <room>rooms\room4</room>
     <room>rooms\FixedBattle</room>
     <room>rooms\Anti_Fighter_test</room>
+    <room>rooms\room4</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

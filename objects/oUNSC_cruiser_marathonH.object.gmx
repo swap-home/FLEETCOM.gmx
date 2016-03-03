@@ -115,7 +115,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>12</string>
+            <string>30</string>
           </argument>
         </arguments>
       </action>
@@ -163,6 +163,44 @@ pointdefenseturret_R[10] = 20.59;
 pointdefenseturret_A[10] = -29.1;
 pointdefenseturret_R[11] = 32.57;
 pointdefenseturret_A[11] = -17.7;
+
+//pasted
+pointdefenseturret_R[12] = 10.77;
+pointdefenseturret_A[12] = 68.2;
+pointdefenseturret_R[13] = 20.59;
+pointdefenseturret_A[13] = 29.1;
+pointdefenseturret_R[14] = 32.57;
+pointdefenseturret_A[14] = 17.7;
+pointdefenseturret_R[15] = 10.77;
+pointdefenseturret_A[15] = -68.2;
+pointdefenseturret_R[16] = 20.59;
+pointdefenseturret_A[16] = -29.1;
+pointdefenseturret_R[17] = 32.57;
+pointdefenseturret_A[17] = -17.7;
+pointdefenseturret_R[18] = 10.77;
+pointdefenseturret_A[18] = 68.2;
+pointdefenseturret_R[19] = 20.59;
+pointdefenseturret_A[19] = 29.1;
+pointdefenseturret_R[20] = 32.57;
+pointdefenseturret_A[20] = 17.7;
+pointdefenseturret_R[21] = 10.77;
+pointdefenseturret_A[21] = -68.2;
+pointdefenseturret_R[22] = 20.59;
+pointdefenseturret_A[22] = -29.1;
+pointdefenseturret_R[23] = 32.57;
+pointdefenseturret_A[23] = -17.7;
+pointdefenseturret_R[24] = 10.77;
+pointdefenseturret_A[24] = 68.2;
+pointdefenseturret_R[25] = 20.59;
+pointdefenseturret_A[25] = 29.1;
+pointdefenseturret_R[26] = 32.57;
+pointdefenseturret_A[26] = 17.7;
+pointdefenseturret_R[27] = 10.77;
+pointdefenseturret_A[27] = -68.2;
+pointdefenseturret_R[28] = 20.59;
+pointdefenseturret_A[28] = -29.1;
+pointdefenseturret_R[29] = 32.57;
+pointdefenseturret_A[29] = -17.7;
 </string>
           </argument>
         </arguments>
@@ -211,7 +249,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>140*2</string>
+            <string>60*2</string>
           </argument>
         </arguments>
       </action>
@@ -235,7 +273,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>48</string>
+            <string>24</string>
           </argument>
         </arguments>
       </action>

@@ -43,6 +43,9 @@ heavyplasmacannon = 0;
 heavyplasmacannon_cooldown = 0;
 heavyplasmacannon_cooldown_max = 150;
 heavyplasmacannon_range = 350;
+
+singleship_trail_color = c_purple;
+trail.trail_color = singleship_trail_color;
 </string>
           </argument>
         </arguments>
@@ -80,6 +83,7 @@ heavyplasmacannon_range = 350;
             var i;
             for (i = 0; i &lt; plasmacannon; i+=1)
             {
+                //sound_play(plasmaCannonFire);
                 var ID;
                 ID = instance_create(x,y,oCove_EnergyGun_class2);
                 ID.direction = targetdir_l;
@@ -90,6 +94,7 @@ heavyplasmacannon_range = 350;
 
         if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; fuelrodcannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
         {
+            //sound_play(fuelRodFire);
             fuelrodcannon_cooldown = fuelrodcannon_cooldown_max;
             var i;
             for (i = 0; i &lt; fuelrodcannon; i+=1)

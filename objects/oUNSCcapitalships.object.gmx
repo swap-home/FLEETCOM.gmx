@@ -48,12 +48,12 @@ archerpod_range = 900;
 
 pdt = 0;
 pdt_cooldown = 0;
-pdt_cooldown_max = 5;
+pdt_cooldown_max = 15;
 pdt_range = 250;
 
-//archerpod_cooldown_max *= 3;
-//mac_cooldown_max *= 3;
-//pdt_cooldown_max *= 3;
+archerpod_cooldown_max *= 3;
+mac_cooldown_max *= 3;
+pdt_cooldown_max *= 3;
 </string>
           </argument>
         </arguments>
@@ -165,6 +165,7 @@ longsword_deploy_cd -= 1;
                 var selfid = id;
                 
                 mac_cooldown = mac_cooldown_max;
+                sound_play(macFire);
                 var i;
                 for (i = 0; i &lt; mac; i+=1)
                 {
@@ -270,7 +271,7 @@ archerpod_cooldown -= 1;
 
     if (target_count_l &gt; 0)
     {
-        pdt_cooldown = 15;
+        pdt_cooldown = pdt_cooldown_max;
         var i;
         for (i = 0; i &lt; pdt; i+=1)
         {

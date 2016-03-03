@@ -39,6 +39,9 @@ archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 60;
 archerpod_range = 350;
+
+singleship_trail_color = c_yellow;
+trail.trail_color = singleship_trail_color;
 </string>
           </argument>
         </arguments>

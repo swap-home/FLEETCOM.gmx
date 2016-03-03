@@ -59,8 +59,8 @@ plasmaturret_range = 1000;
 
 plt = 0;
 plt_cooldown = 0;
-plt_cooldown_max = 15;
-plt_range = 150;
+plt_cooldown_max = 30;
+plt_range = 450;
 pulselaser_draw = 0;
 
 epdraworigin_x[0] = 0;
@@ -73,9 +73,9 @@ pldraworigin_y[0] = 0;
 pldrawtarget_x[0] = 0;
 pldrawtarget_y[0] = 0;
 
-//energyprojector_cooldown_max *= 3;
-//plasmaturret_cooldown_max *= 3;
-//plt_cooldown_max *= 3;
+energyprojector_cooldown_max *= 3;
+plasmaturret_cooldown_max *= 3;
+plt_cooldown_max *= 3;
 </string>
           </argument>
         </arguments>
@@ -253,6 +253,7 @@ phantom_deploy_cd -= 1;
         var selfid = id;
         var targetdir = point_direction(x, y, targetid.x, targetid.y);
         
+        sound_play(energyProjectorFire);
         energyprojector_cooldown = energyprojector_cooldown_max;
         var i;
         for (i = 0; i &lt; energyprojector; i+=1)
@@ -300,7 +301,7 @@ energyprojector_cooldown -= 1;
         {
             ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oCove_PlasmaTorpedo);
             ID.side = side;
-            ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-30,30);
+            ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-15,15);
             ID.targetid = targetid;
         }
     }

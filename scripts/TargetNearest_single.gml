@@ -18,16 +18,3 @@ with(oallsingleships)
 }
 
 targetid = nearestid;
-/*
-if (targetid != -4 && targetid != 0)
-{
-    traveltime = ceil(point_distance(x,y,targetid.x,targetid.y)/movespeed);
-    direction = point_direction(x,y,targetid.x+(targetid.image_xscale*targetid.movespeed*traveltime),targetid.y);
-    
-}
-else
-{
-    if (side = 0){direction = 330;}
-    else {direction = 210;}
-}
-*/

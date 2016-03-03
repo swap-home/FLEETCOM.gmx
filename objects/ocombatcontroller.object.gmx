@@ -53,8 +53,60 @@ global.destructableProjectiles[1] = ds_list_create();
 global.hits = 0;
 global.shots = 0;
 
-alarm[1] = 1;
-alarm[0] = irandom(10*30)+ 10*30;
+if (room == RandomBattle)
+{
+    alarm[1] = 1;
+    alarm[0] = irandom(10*30)+ 10*30;
+}
+else if (room == FixedBattle)
+{
+    alarm[2] = 1;
+}
+
+leftside = 0.05*room_width;
+leftmid = 0.35*room_width;
+rightside = 0.95*room_width;
+rightmid = 0.65*room_width;
+leftdir = 180;
+rightdir = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var ctrl = id;
+with (oallships)
+{
+    if (x &lt;= room_width/2) 
+    {
+        side = 0;
+        direction = ctrl.rightdir;
+        moveTo(id, ctrl.leftmid, y);
+    }
+    else
+    {
+        side = 1;
+        direction = ctrl.leftdir;
+        moveTo(id, ctrl.rightmid, y);
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -77,34 +129,30 @@ alarm[0] = irandom(10*30)+ 10*30;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var leftside = 0.05*room_width;
-var rightside = 0.95*room_width;
-var leftdir = 180;
-var rightdir = 0;
-
+            <string>var ctrl = id;
 with (oCovecapitalships)
 {
     side = 1;
-    direction = leftdir;
-    moveTo(id, leftside, irandom(room_height));
+    direction = ctrl.leftdir;
+    moveTo(id, ctrl.rightmid, y);
 }
 with (oCovesingleships)
 {
     side = 1;
-    direction = leftdir;
-    moveTo(id, leftside, irandom(room_height));
+    direction = ctrl.leftdir;
+    moveTo(id, ctrl.rightmid, y);
 }
 with (oUNSCcapitalships)
 {
     side = 0;
-    direction = rightdir;
-    moveTo(id, rightside, irandom(room_height));
+    direction = ctrl.rightdir;
+    moveTo(id, ctrl.leftmid, y);
 }
 with (oUNSCsingleships)
 {
     side = 0;
-    direction = rightdir;
-    moveTo(id, rightside, irandom(room_height));
+    direction = ctrl.rightdir;
+    moveTo(id, ctrl.leftmid, y);
 }
 </string>
           </argument>
@@ -129,10 +177,8 @@ with (oUNSCsingleships)
           <argument>
             <kind>1</kind>
             <string>var createId;
-var leftside = 0.05*room_width;
-var rightside = 0.95*room_width;
-var leftdir = 180;
 
+var ctrl = id;
 var unscShipCount = 0;
 var coveShipCount = 0;
 
@@ -143,44 +189,44 @@ if (coveShipCount*2 &lt; unscShipCount)
 {
     if (irandom(1) == 0) 
     {
-        createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_corvette_SDVH);
+        createId = instance_create(ctrl.rightside,random_range(0.2*room_height, 0.8*room_height), oCove_corvette_SDVH);
         with (createId)
         {
-            direction = leftdir;
-            moveTo(id, leftside, irandom(room_height));
+            direction = ctrl.leftdir;
+            moveTo(id, ctrl.leftmid, y);
             side = 1;
         }
     }
     
     if (irandom(2) == 0) 
     {
-        createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_destroyer_CPV);
+        createId = instance_create(ctrl.rightside,random_range(0.2*room_height, 0.8*room_height), oCove_destroyer_CPV);
         with (createId)
         {
-            direction = leftdir;
-            moveTo(id, leftside, irandom(room_height));
+            direction = ctrl.leftdir;
+            moveTo(id, ctrl.leftmid, y);
             side = 1;
         }
     }
     
     if (irandom(7) == 0) 
     {
-        createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_cruiser_CRS);
+        createId = instance_create(ctrl.rightside,random_range(0.2*room_height, 0.8*room_height), oCove_cruiser_CRS);
         with (createId)
         {
-            direction = leftdir;
-            moveTo(id, leftside, irandom(room_height));
+            direction = ctrl.leftdir;
+            moveTo(id, ctrl.leftmid, y);
             side = 1;
         }
     }
     
     if (irandom(9) == 0) 
     {
-        createId = instance_create(rightside,random_range(0.2*room_height, 0.8*room_height), oCove_battlecruiser_CCS);
+        createId = instance_create(ctrl.rightside,random_range(0.2*room_height, 0.8*room_height), oCove_battlecruiser_CCS);
         with (createId)
         {
-            direction = leftdir;
-            moveTo(id, leftside, irandom(room_height));
+            direction = ctrl.leftdir;
+            moveTo(id, ctrl.leftmid, y);
             side = 1;
         }
     }
@@ -190,40 +236,40 @@ if (coveShipCount*3 &gt; unscShipCount)
 {
     if (irandom(1) == 0) 
     {
-        createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_charonL);
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_charonL);
         with (createId)
         {
-            moveTo(id, rightside, irandom(room_height));
+            moveTo(id, ctrl.rightmid, y);
             side = 0;
         }
     }
 
     if (irandom(1) == 0) 
     {
-        createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_parisH);
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_parisH);
         with (createId)
         {
-            moveTo(id, rightside, irandom(room_height));
+            moveTo(id, ctrl.rightmid, y);
             side = 0;
         }
     }
     
     if (irandom(1) == 0) 
     {
-        createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_destroyer);
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_destroyer_halberd);
         with (createId)
         {
-            moveTo(id, rightside, irandom(room_height));
+            moveTo(id, ctrl.rightmid, y);
             side = 0;
         }
     }
     
     if (irandom(4) == 0) 
     {
-        createId = instance_create(leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_cruiser_marathonH);
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_cruiser_marathonH);
         with (createId)
         {
-            moveTo(id, rightside, irandom(room_height));
+            moveTo(id, ctrl.rightmid, y);
             side = 0;
         }
     }
