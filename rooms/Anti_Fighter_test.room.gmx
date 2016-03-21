@@ -53,28 +53,13 @@
   <instances>
     <instance objName="ocombatcontroller" x="0" y="0" name="inst_FC880DB8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oSelectionManager" x="32" y="0" name="inst_4BC21672" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="320" y="448" name="inst_2F70F5A4" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="336" y="560" name="inst_53126942" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="464" y="496" name="inst_74337D7F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="496" y="608" name="inst_C89047F7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="416" y="720" name="inst_68BD2E3C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="320" y="768" name="inst_6B1244F3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="160" y="624" name="inst_B839BE03" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="176" y="480" name="inst_113F930B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="208" y="848" name="inst_8939186D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="144" y="1056" name="inst_6223608E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="272" y="1168" name="inst_15990AFC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="464" y="1104" name="inst_D5DFBCF8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="416" y="928" name="inst_A6FC7D4B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="560" y="720" name="inst_C7478B6E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="768" y="544" name="inst_DC029AE6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="1008" y="592" name="inst_691689D3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="896" y="816" name="inst_A3C145DA" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="704" y="688" name="inst_97FDCC98" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="624" y="976" name="inst_25FC8838" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="688" y="1024" name="inst_230C1556" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="736" y="864" name="inst_8DDDC67B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="oUNSC_longsword_GATL1" x="816" y="1072" name="inst_2AA1F645" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUIcontroller" x="64" y="0" name="inst_BB83659A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="176" y="304" name="inst_8B83741D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="176" y="544" name="inst_0146CD62" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="192" y="416" name="inst_26C4A8E9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="1680" y="416" name="inst_203390E7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="1680" y="608" name="inst_FB788A0F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oUNSC_frigate_charonL" x="1664" y="896" name="inst_23A96D7D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

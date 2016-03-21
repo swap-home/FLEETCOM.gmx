@@ -58,7 +58,22 @@ move_x = x;
 move_y = y;
 turning = false;
 
-instance_create(x,y,oshockring);
+scramble_fighters = true;
+fighter_targetid = id;
+fighter_target_x = 0;
+fighter_target_y = 0;
+
+scramble_transports = false;
+transport_targetid = noone;
+transport_target_x = 0;
+transport_target_y = 0;
+
+fire_primary = false;
+fire_secondary = true;
+fire_pointdef = true;
+
+
+//instance_create(x,y,oshockring);
 </string>
           </argument>
         </arguments>
@@ -91,7 +106,9 @@ metric_target_id = noone;
 //metric to evaluate units with
 metric_value = 9999;
 
-if (!instance_exists(assignedTargetid)) //acquire new target if no target assigned
+//select capital ship's target
+// do not override targets assigned by player
+if (!instance_exists(assignedTargetid)) 
 {
     assignedTargetid = noone;
     with (oallcapitalships)
@@ -123,31 +140,20 @@ if (!instance_exists(assignedTargetid)) //acquire new target if no target assign
     
     targetid = metric_target_id;
 }
+
+//select fighter target if AI
+if (ai) {
+    if (instance_exists(targetid)) {
+        // Intercept singleships near enemy ship
+        commandFighters(id, targetid.x, targetid.y, noone);
+    } else {
+        // Escort self if no targets
+        commandFighters(id, 0, 0, id);
+    }
+}
+
+alarm[0] = findtarget_delay;
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>301</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_alarm</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>findtarget_delay</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
           </argument>
         </arguments>
       </action>
@@ -249,18 +255,22 @@ y -= lengthdir_y(0.10, degree);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//draw a health bar
-draw_life_bar(x-sprite_width/2,y-(sprite_height/2)-6,sprite_width,3,hull,hull_max);
+            <string>event_inherited();
 
+//redraw the object's sprite
+draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
+
+var oldAlpha = draw_get_alpha();
+draw_set_alpha(GUI_ALPHA);
+
+//draw a health bar
+draw_bar(x-sprite_width/2,y-(sprite_height/2)-6,sprite_width,3,hull,hull_max,c_red,c_green);
 
 //draw a shield bar
 if (shield_max &gt; 0)
 {draw_shield_bar(x-sprite_width/2,y-(sprite_height/2)-12,sprite_width,5,shield,shield_max);}
 
-//redraw the object's sprite
-draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
-
-event_inherited();
+draw_set_alpha(oldAlpha);
 </string>
           </argument>
         </arguments>

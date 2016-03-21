@@ -91,7 +91,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1</string>
+            <string>0.50</string>
           </argument>
         </arguments>
       </action>
@@ -211,7 +211,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>40</string>
+            <string>52</string>
           </argument>
         </arguments>
       </action>
@@ -283,7 +283,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>45</string>
+            <string>60</string>
           </argument>
         </arguments>
       </action>

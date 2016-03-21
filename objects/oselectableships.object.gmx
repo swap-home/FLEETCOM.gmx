@@ -26,8 +26,15 @@
           <argument>
             <kind>1</kind>
             <string>event_inherited();
+
 selected = false;
 focus = false;
+
+move_x = 0;
+move_y = 0;
+assignedTargetid = noone;
+assignedMove_x = 0;
+assignedMove_y = 0;
 </string>
           </argument>
         </arguments>

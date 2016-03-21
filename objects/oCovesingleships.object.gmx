@@ -44,8 +44,11 @@ heavyplasmacannon_cooldown = 0;
 heavyplasmacannon_cooldown_max = 150;
 heavyplasmacannon_range = 350;
 
+var ID = id;
 singleship_trail_color = c_purple;
-trail.trail_color = singleship_trail_color;
+with(trail) {
+    trail_color = ID.singleship_trail_color;
+}
 </string>
           </argument>
         </arguments>
@@ -68,70 +71,62 @@ trail.trail_color = singleship_trail_color;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid))
+            <string>event_inherited();
+
+if (instance_exists(targetid))
 {
-    Homing();
-    
     if (targetid.side != side)
     {
-        var targetdir_l;
-        targetdir_l = point_direction(x,y,targetid.x,targetid.y);
+        var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; plasmacannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= plasmacannon_range)
+        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; plasmacannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= plasmacannon_range)
         {
             plasmacannon_cooldown = plasmacannon_cooldown_max;
+            
             var i;
             for (i = 0; i &lt; plasmacannon; i+=1)
             {
                 //sound_play(plasmaCannonFire);
-                var ID;
-                ID = instance_create(x,y,oCove_EnergyGun_class2);
-                ID.direction = targetdir_l;
-                ID.side = side;
-                ID.parentid = id;
+                createChild(x,y,oCove_EnergyGun_class2, targetdir_l);
             }
         }
 
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; fuelrodcannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
+        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; fuelrodcannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
         {
             //sound_play(fuelRodFire);
             fuelrodcannon_cooldown = fuelrodcannon_cooldown_max;
+            
             var i;
             for (i = 0; i &lt; fuelrodcannon; i+=1)
             {
-                var ID;
-                ID = instance_create(x,y,oCove_ProjectileCannon_class2);
-                ID.direction = targetdir_l;
-                ID.side = side;
-                ID.parentid = id;
+                createChild(x,y,oCove_ProjectileCannon_class2, targetdir_l);
             }
         }
 
-        if (heavyplasmacannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= heavyplasmacannon_range)
+        if (heavyplasmacannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= heavyplasmacannon_range)
         {
             heavyplasmacannon_cooldown = heavyplasmacannon_cooldown_max;
+            
             var i;
             for (i = 0; i &lt; heavyplasmacannon; i+=1)
             {
-                var ID;
-                ID = instance_create(x,y,oCove_EnergyGun_class2_Heavy);
-                ID.direction = targetdir_l;
-                ID.side = side;
-                ID.parentid = id;
+                createChild(x,y,oCove_EnergyGun_class2_Heavy, targetdir_l);
             }
         }
     }
-    
-    //side != targetid.side
-    else
-    {
-    
-    }
 }
 
-plasmacannon_cooldown -= 1;
-fuelrodcannon_cooldown -= 1;
-heavyplasmacannon_cooldown -= 1;
+if (plasmacannon_cooldown &gt; 0) {
+    plasmacannon_cooldown -= 1;
+}
+
+if (fuelrodcannon_cooldown &gt; 0) {
+    fuelrodcannon_cooldown -= 1;
+}
+
+if (heavyplasmacannon_cooldown &gt; 0) {
+    heavyplasmacannon_cooldown -= 1;
+}
 </string>
           </argument>
         </arguments>
@@ -168,7 +163,7 @@ heavyplasmacannon_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.side == side &amp;&amp; targetid == other.id)
+            <string>if (other.side == side &amp;&amp; targetid == other.id &amp;&amp; state == REFUEL)
 {
     //show_message(object_get_name(object_index));
     if (object_get_name(object_index) == "oCove_banshee_T27XMF"){other.banshee += 1;}

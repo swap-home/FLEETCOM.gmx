@@ -65,8 +65,10 @@
     <sprite>sprites\sUNSC_destroyer_halberd</sprite>
     <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
     <sprite>sprites\sUNSC_pheonix</sprite>
+    <sprite>sprites\sUNSC_pelican</sprite>
     <sprite>sprites\sUNSC_longsword</sprite>
     <sprite>sprites\sUNSC_odp</sprite>
+    <sprite>sprites\sUNSC_station</sprite>
     <sprite>sprites\sprite64</sprite>
     <sprite>sprites\sUNSC_Explosion</sprite>
     <sprite>sprites\sUNSC_ArcherMissile</sprite>
@@ -120,7 +122,6 @@
         <sprite>sprites\sPlanet_Volcanic</sprite>
       </sprites>
     </sprites>
-    <sprite>sprites\sprite44</sprite>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprites name="Icons">
       <sprite>sprites\sShipyard</sprite>
@@ -138,8 +139,7 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\draw_shield_bar.gml</script>
-    <script>scripts\draw_life_bar.gml</script>
-    <script>scripts\draw_charge_bar.gml</script>
+    <script>scripts\draw_bar.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
     <script>scripts\Sight.gml</script>
@@ -148,7 +148,7 @@
     <script>scripts\firepointdefenseturret.gml</script>
     <script>scripts\firepulselaserturret.gml</script>
     <script>scripts\Damage_Unit.gml</script>
-    <script>scripts\script22.gml</script>
+    <script>scripts\zoom.gml</script>
     <scripts name="enums">
       <script>scripts\enumDamageTypes.gml</script>
     </scripts>
@@ -161,12 +161,19 @@
       <script>scripts\saveCtrlGroup.gml</script>
       <script>scripts\controlGroupKey.gml</script>
     </scripts>
-    <scripts name="movement">
-      <script>scripts\Homing.gml</script>
+    <scripts name="commands">
+      <script>scripts\homing_obj.gml</script>
+      <script>scripts\homing_point.gml</script>
+      <script>scripts\turnTowards.gml</script>
       <script>scripts\attackTarget.gml</script>
       <script>scripts\moveTo.gml</script>
-      <script>scripts\turnTowards.gml</script>
       <script>scripts\stop.gml</script>
+      <script>scripts\commandFighters.gml</script>
+      <scripts name="fighters">
+        <script>scripts\escort.gml</script>
+        <script>scripts\intercept.gml</script>
+        <script>scripts\attack.gml</script>
+      </scripts>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
@@ -179,6 +186,7 @@
     <script>scripts\checkLoS.gml</script>
     <script>scripts\firingSolution.gml</script>
     <script>scripts\quadratic_smallest_nonnegative.gml</script>
+    <script>scripts\createChild.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\Halo</font>
@@ -196,6 +204,7 @@
         <objects name="Single Craft">
           <object>objects\oUNSCsingleships</object>
           <object>objects\oUNSC_longsword_GATL1</object>
+          <object>objects\oUNSC_pelican</object>
         </objects>
         <objects name="Frigate">
           <object>objects\oUNSC_frigate_charonL</object>
@@ -271,9 +280,20 @@
     <room>rooms\StartMenu</room>
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
-    <room>rooms\Anti_Fighter_test</room>
+    <room>rooms\room5</room>
     <room>rooms\room4</room>
   </rooms>
+  <constants number="9">
+    <constant name="MOVING">0</constant>
+    <constant name="INTERCEPT">1</constant>
+    <constant name="ATTACK">2</constant>
+    <constant name="ESCORT">3</constant>
+    <constant name="REFUEL">4</constant>
+    <constant name="NO_COMMAND">0</constant>
+    <constant name="LAUNCH_FIGHTERS">1</constant>
+    <constant name="LAUNCH_TRANSPORTS">2</constant>
+    <constant name="GUI_ALPHA">0.75</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>

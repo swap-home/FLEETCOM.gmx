@@ -34,18 +34,31 @@ singleship_range = 1;
 
 singleship_trail_color = c_white;
 
-sight_range = 600;
+sight_range = 600; //range to detect targets
+leash_range = 400; //range to return to initial point
 refuel_range = 9001;
 
-findtarget_delay = 30;
-alarm[0] = findtarget_delay;
+findtarget_delay = 15;
+
+damage_dealt = 0;
+
+var ID = id;
 
 trail = instance_create(x,y,oribbontrail);
-trail.parent = id;
-trail.depth = depth;
-trail.trail_color = singleship_trail_color;
+with(trail) {
+    parent = ID;
+    depth = ID.depth;
+    trail_color = ID.singleship_trail_color;
+}
 
 parentid = 0;
+
+state = MOVING;
+
+targetid = 0;
+escortid = noone;
+target_x = 0;
+target_y = 0;
 </string>
           </argument>
         </arguments>
@@ -71,43 +84,50 @@ parentid = 0;
             <string>var selfid_l;
 selfid_l = id;
 
-var closest_l;
-var closestid_l;
-
-//range to engage enemy units
-closest_l = sight_range;
-closestid_l = noone;
-
-//Find nearest singleship within range
-with (oallsingleships)
-{
-    if (side != selfid_l.side)
-    {
-        if (distance_to_object(selfid_l) &lt; closest_l)
+switch(state) {
+    case MOVING:
+    case ATTACK:
+        //no need to change targets in these states
+        break;
+    case ESCORT:
+    case INTERCEPT:
+        //range to engage enemy units
+        var closest_l = sight_range;
+        var closestid_l = noone;
+        
+        //Find nearest singleship within range
+        with (oallsingleships)
         {
-            closest_l = distance_to_object(selfid_l);
-            closestid_l = id;
-        }
-    }
-}
-
-
-//Find nearest capital ships if no target already
-if (!instance_exists(closestid_l))
-{
-    with (oallcapitalships)
-    {
-        if (side != selfid_l.side)
-        {
-            if (distance_to_object(selfid_l) &lt; closest_l)
+            if (side != selfid_l.side)
             {
-                closest_l = distance_to_object(selfid_l);
-                closestid_l = id;
+                if (distance_to_object(selfid_l) &lt; closest_l)
+                {
+                    closest_l = distance_to_object(selfid_l);
+                    closestid_l = id;
+                }
             }
         }
-    }
+        
+        
+        //Find nearest capital ships if no target already
+        if (!instance_exists(closestid_l))
+        {
+            with (oallcapitalships)
+            {
+                if (side != selfid_l.side)
+                {
+                    if (distance_to_object(selfid_l) &lt; closest_l)
+                    {
+                        closest_l = distance_to_object(selfid_l);
+                        closestid_l = id;
+                    }
+                }
+            }
+        }
+        targetid = closestid_l;
+        break;
 }
-
+/*
 //Find nearest allied capital ship if no target
 if (!instance_exists(closestid_l))
 {
@@ -128,33 +148,116 @@ if (!instance_exists(closestid_l))
         }
     }
 }
+*/
 
-targetid = closestid_l;
+alarm[0] = findtarget_delay;
 </string>
           </argument>
         </arguments>
       </action>
+    </event>
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
-        <id>301</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_alarm</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>findtarget_delay</string>
+            <kind>1</kind>
+            <string>event_inherited();
+
+switch(state) {
+    case MOVING:
+        if (!instance_exists(targetid)) {
+            if (instance_exists(parentid)) {
+                escort(parentid);
+            } else {
+                intercept(x,y);
+            }
+        }
+        else if (distance_to_object(targetid) &lt;= sight_range) {
+            if (targetid.side == side) {
+                state = ESCORT;
+            } else {
+                state = ATTACK;
+            }
+        }
+        homing_obj(targetid);
+        break;
+        
+    case ATTACK:
+        if (!instance_exists(targetid)) {
+            if (instance_exists(parentid)) {
+                escort(parentid);
+            } else {
+                intercept(x,y);
+            }
+        } else {
+            homing_obj(targetid);
+        }
+        break;
+
+    case INTERCEPT:
+        if (!instance_exists(targetid)) {
+            //if (distance_to_point(target_x, target_y) &gt; leash_range) {
+                homing_point(target_x, target_y);
+            //}
+        } else {
+            homing_obj(targetid);
+        }
+        break;
+        
+    case ESCORT:
+        if (distance_to_object(escortid) &gt; leash_range) {
+            escort(escortid);
+        } else if (!instance_exists(targetid)) {
+            if (instance_exists(escortid)) {
+                homing_obj(escortid);
+            } else {
+                if (instance_exists(parentid)) {
+                    escort(parentid);
+                } else {
+                    intercept(x,y);
+                }
+            }
+        } else {
+            homing_obj(targetid);
+        }
+        break;
+}
+</string>
           </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="6" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
           <argument>
-            <kind>4</kind>
-            <string>0</string>
+            <kind>1</kind>
+            <string>show_message("state:" + string(state) + ", targetid: " + string(targetid) + ", escortid: " + string(escortid));
+</string>
           </argument>
         </arguments>
       </action>

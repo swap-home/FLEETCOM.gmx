@@ -54,6 +54,7 @@
     <instance objName="ocombatcontroller" x="0" y="0" name="inst_99DC0151" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oSelectionManager" x="32" y="0" name="inst_C4CA56E5" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUIcontroller" x="64" y="0" name="inst_D088AF78" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="oFX_control" x="96" y="0" name="inst_88B3C174" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUNSC_cruiser_marathonH" x="144" y="512" name="inst_B0458578" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUNSC_destroyer_halberd" x="96" y="400" name="inst_0BBFA8CB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oUNSC_destroyer_halberd" x="96" y="608" name="inst_2C508CF2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>

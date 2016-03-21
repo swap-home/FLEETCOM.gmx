@@ -32,16 +32,29 @@ race = "unsc";
 pdt = 0;
 //pdt_volley = 0; 
 pdt_cooldown = 0;
-pdt_cooldown_max = 5;
-pdt_range = 300;
+pdt_cooldown_max = 15;
+pdt_range = 250;
+
+/*
+pdt_burst_delay = 0;
+pdt_burst_delay_max = 10;
+pdt_burst_count = 0;
+pdt_burst_count_max = 8;
+pdt_cooldown = 0;
+pdt_cooldown_max = 90;
+pdt_range = 250;
+*/
 
 archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 60;
 archerpod_range = 350;
 
+var ID = id;
 singleship_trail_color = c_yellow;
-trail.trail_color = singleship_trail_color;
+with(trail) {
+    trail_color = ID.singleship_trail_color;
+}
 </string>
           </argument>
         </arguments>
@@ -64,69 +77,49 @@ trail.trail_color = singleship_trail_color;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid))
+            <string>event_inherited();
+
+if (instance_exists(targetid))
 {
-    Homing();
-    
     if (targetid.side != side)
     {
-        var targetdir_l;
-        targetdir_l = point_direction(x,y,targetid.x,targetid.y);
+        var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         
-        if (withinDegrees(direction, targetdir_l, 45) &amp;&amp; pdt_cooldown &lt;= 0 &amp;&amp; point_distance(x,y,targetid.x,targetid.y) &lt;= pdt_range)
+        if (withinDegrees(direction, targetdir_l, 45) &amp;&amp; pdt_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= pdt_range)
         {
             pdt_cooldown = pdt_cooldown_max;
             
             var i;
             for (i = 0; i &lt; pdt; i+=1)
             {
-                ID = instance_create(x,y,oUNSC_50mm);
-                ID.direction = targetdir_l;
-                ID.side = side;
-                ID.parentid = id;
+                createChild(x,y,oUNSC_50mm, targetdir_l);
             }
         }
 
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; archerpod_cooldown &lt;= 0 &amp;&amp; point_distance(x,y,targetid.x,targetid.y) &lt;= archerpod_range)
+        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; archerpod_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= archerpod_range)
         {
             archerpod_cooldown = archerpod_cooldown_max;
         
             var i;
             for (i = 0; i &lt; archerpod; i+=1)
             {
-                ID = instance_create(x,y,oUNSC_ArcherMissile);
-                ID.direction = targetdir_l;
-                ID.side = side;
-                ID.targetid = targetid;
+                var missile = createChild(x,y,oUNSC_ArcherMissile, targetdir_l);
+                missile.targetid = targetid;
             }
         }
     }
-    //side != targetid.side
-    else
-    {
-    
-    }
 }
 
-pdt_cooldown -= 1;
-archerpod_cooldown -= 1;
+if (pdt_cooldown &gt; 0) {
+    pdt_cooldown -= 1;
+}
+
+if (archerpod_cooldown &gt; 0) {
+    archerpod_cooldown -= 1;
+}
 </string>
           </argument>
         </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>604</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_inherited</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
     <event eventtype="4" ename="oUNSCcapitalships">
@@ -146,7 +139,7 @@ archerpod_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.side == side &amp;&amp; targetid = other.id)
+            <string>if (other.side == side &amp;&amp; targetid = other.id &amp;&amp; state == REFUEL)
 {
     //show_message(object_get_name(object_index));
     if (object_get_name(object_index) == "oUNSC_longsword_GATL1"){other.longsword += 1;}

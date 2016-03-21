@@ -139,7 +139,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0.25</string>
+            <string>0.05</string>
           </argument>
         </arguments>
       </action>

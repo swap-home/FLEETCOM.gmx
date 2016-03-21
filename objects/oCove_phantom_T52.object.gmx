@@ -3,7 +3,7 @@
   <spriteName>sCove_phantom</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-6</depth>
+  <depth>-7</depth>
   <persistent>0</persistent>
   <parentName>oCovesingleships</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -163,7 +163,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1</string>
+            <string>35</string>
           </argument>
         </arguments>
       </action>
@@ -187,7 +187,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>4</string>
+            <string>2</string>
           </argument>
         </arguments>
       </action>

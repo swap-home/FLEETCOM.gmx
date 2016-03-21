@@ -74,13 +74,16 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if !surface_exists(surf)
+            <string>if (!surface_exists(surf))
 {
-    surf = surface_create(room_width, room_height);
+    surf = surface_create(view_wview[1], view_hview[1]);
+    //surf = surface_create(room_width, room_height);
     surface_set_target(surf);
     draw_clear_alpha(c_black, 0);
     surface_reset_target();
-    view_surface_id[0] = surf;
+    view_surface_id[1] = surf;
+}
+else {
 }
 </string>
           </argument>

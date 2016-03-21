@@ -103,7 +103,9 @@ selfid_l = id;
 var deployed_l;
 deployed_l = 0;
 
-with (oCove_banshee_T27XMF)
+var singleship_type = oCove_banshee_T27XMF;
+
+with (singleship_type)
 {
     if (parentid == selfid_l)
     {
@@ -111,22 +113,30 @@ with (oCove_banshee_T27XMF)
     }
 }
 
-if (banshee_deploy_cd &lt;= 0 &amp;&amp; banshee &gt; 0 &amp;&amp; deployed_l &lt; banshee_deploy_max &amp;&amp; instance_exists(targetid))
+if (scramble_fighters &amp;&amp; banshee_deploy_cd == 0 &amp;&amp; banshee &gt; 0 &amp;&amp; deployed_l &lt; banshee_deploy_max)
 {
-    if (targetid.side!=side)
-    {
-        banshee_deploy_cd = banshee_deploy_cd_max;
-        banshee -= 1;
-        var ID;
-        ID = instance_create(x,y,oCove_banshee_T27XMF);
-        ID.direction = irandom_range(0,359);
-        ID.targetid = targetid;
-        ID.side = side;
-        ID.parentid = selfid_l;
+    banshee_deploy_cd = banshee_deploy_cd_max;
+    banshee -= 1;
+    
+    var fighter = createChild(x,y,singleship_type, irandom_range(0,359));
+    if (!instance_exists(fighter_targetid)) {
+        with(fighter) {
+            intercept(selfid_l.fighter_target_x, selfid_l.fighter_target_y);
+        }
+    } else if (fighter_targetid.side == side) {
+        with (fighter) {
+            escort(selfid_l.fighter_targetid)
+        }
+    } else if (fighter_targetid.side != side) {
+        with (fighter) {
+            attack(selfid_l.fighter_targetid)
+        }
     }
 }
 
-banshee_deploy_cd -= 1;
+if (banshee_deploy_cd &gt; 0) {
+    banshee_deploy_cd -= 1;
+}
 
 </string>
           </argument>
@@ -153,7 +163,9 @@ selfid_l = id;
 var deployed_l;
 deployed_l = 0;
 
-with (oCove_seraph_T31XMF)
+var singleship_type = oCove_seraph_T31XMF;
+
+with (singleship_type)
 {
     if (parentid == selfid_l)
     {
@@ -161,22 +173,30 @@ with (oCove_seraph_T31XMF)
     }
 }
 
-if (seraph_deploy_cd &lt;= 0 &amp;&amp; seraph &gt; 0 &amp;&amp; deployed_l &lt; seraph_deploy_max &amp;&amp; instance_exists(targetid)) 
+if (scramble_fighters &amp;&amp; seraph_deploy_cd == 0 &amp;&amp; seraph &gt; 0 &amp;&amp; deployed_l &lt; seraph_deploy_max) 
 {
-    if (targetid.side!=side)
-    {
-        seraph_deploy_cd = seraph_deploy_cd_max;
-        seraph -= 1;
-        var ID;
-        ID = instance_create(x,y,oCove_seraph_T31XMF);
-        ID.direction = irandom_range(0,359);
-        ID.targetid = targetid;
-        ID.side = side;
-        ID.parentid = selfid_l;
+    seraph_deploy_cd = seraph_deploy_cd_max;
+    seraph -= 1;
+    
+    var fighter = createChild(x,y,singleship_type, irandom_range(0,359));
+    if (!instance_exists(fighter_targetid)) {
+        with(fighter) {
+            intercept(selfid_l.fighter_target_x, selfid_l.fighter_target_y);
+        }
+    } else if (fighter_targetid.side == side) {
+        with (fighter) {
+            escort(selfid_l.fighter_targetid)
+        }
+    } else if (fighter_targetid.side != side) {
+        with (fighter) {
+            attack(selfid_l.fighter_targetid)
+        }
     }
 }
 
-seraph_deploy_cd -= 1;
+if (seraph_deploy_cd &gt; 0) {
+    seraph_deploy_cd -= 1;
+}
 </string>
           </argument>
         </arguments>
@@ -197,7 +217,8 @@ seraph_deploy_cd -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var selfid_l;
+            <string>/*
+var selfid_l;
 selfid_l = id;
 var deployed_l;
 deployed_l = 0;
@@ -210,7 +231,7 @@ with (oCove_phantom_T52)
     }
 }
 
-if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; deployed_l &lt; phantom_deploy_max &amp;&amp; instance_exists(targetid))
+if (scramble_fighters &amp;&amp; phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; deployed_l &lt; phantom_deploy_max)
 {
     if (targetid.side!=side)
     {
@@ -226,6 +247,7 @@ if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; deployed_l &l
 }
 
 phantom_deploy_cd -= 1;
+*/
 </string>
           </argument>
         </arguments>
@@ -246,7 +268,7 @@ phantom_deploy_cd -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid) &amp;&amp; energyprojector_cooldown &lt;= 0)
+            <string>if (fire_primary &amp;&amp; instance_exists(targetid) &amp;&amp; energyprojector_cooldown &lt;= 0)
 {
     if (point_distance(x,y,targetid.x,targetid.y) &lt;= energyprojector_range)
     {
@@ -292,7 +314,7 @@ energyprojector_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
 {
     if (point_distance(x,y,targetid.x,targetid.y) &lt;= plasmaturret_range)
     {
@@ -328,7 +350,7 @@ plasmaturret_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (plt_cooldown &lt;= 0)
+            <string>if (fire_pointdef &amp;&amp; plt_cooldown &lt;= 0)
 {
     var selfid_l;
     selfid_l = id;
@@ -401,8 +423,21 @@ plt_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_charge_bar(x-sprite_width/2,y-(sprite_height/2)-2,sprite_width,1,energyprojector_cooldown_max-energyprojector_cooldown,energyprojector_cooldown_max);
-event_inherited();
+            <string>event_inherited();
+
+var oldAlpha = draw_get_alpha();
+draw_set_alpha(GUI_ALPHA);
+
+draw_bar(x-sprite_width/2,
+    y-(sprite_height/2)-3,
+    sprite_width,
+    1,
+    energyprojector_cooldown_max-energyprojector_cooldown,
+    energyprojector_cooldown_max,
+    c_yellow,
+    c_white);
+
+draw_set_alpha(oldAlpha);
 </string>
           </argument>
         </arguments>

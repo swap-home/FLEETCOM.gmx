@@ -27,10 +27,17 @@
             <kind>1</kind>
             <string>event_inherited();
 
+hanger = 1;
+
 longsword_max = 0;
 longsword_deploy_max = 0;
 longsword_deploy_cd = 0;
 longsword_deploy_cd_max = 0;
+
+pelican_max = 0;
+pelican_deploy_max = 0;
+pelican_deploy_cd = 0;
+pelican_deploy_cd_max = 0;
 
 race = "unsc";
 side = 0;
@@ -43,17 +50,20 @@ mac_range = 1300;
 
 archerpod = 0;
 archerpod_cooldown = 0;
-archerpod_cooldown_max = 90;
+archerpod_cooldown_max = 270;
 archerpod_range = 900;
 
+//Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
+pdt_burst_delay = 0;
+pdt_burst_delay_max = 10;
+pdt_burst_count = 0;
+pdt_burst_count_max = 8;
 pdt_cooldown = 0;
-pdt_cooldown_max = 15;
+pdt_cooldown_max = 90;
 pdt_range = 250;
 
-archerpod_cooldown_max *= 3;
 mac_cooldown_max *= 3;
-pdt_cooldown_max *= 3;
 </string>
           </argument>
         </arguments>
@@ -78,7 +88,7 @@ pdt_cooldown_max *= 3;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0.25</string>
+            <string>0.15</string>
           </argument>
         </arguments>
       </action>
@@ -105,7 +115,9 @@ selfid_l = id;
 var deployed_l;
 deployed_l = 0;
 
-with (oUNSC_longsword_GATL1)
+var singleship_type = oUNSC_longsword_GATL1;
+
+with (singleship_type)
 {
     if (parentid == selfid_l)
     {
@@ -113,22 +125,30 @@ with (oUNSC_longsword_GATL1)
     }
 }
 
-if (longsword_deploy_cd &lt;= 0 &amp;&amp; longsword &gt; 0 &amp;&amp; deployed_l &lt; longsword_deploy_max &amp;&amp; instance_exists(targetid))
+if (scramble_fighters &amp;&amp; longsword_deploy_cd == 0 &amp;&amp; longsword &gt; 0 &amp;&amp; deployed_l &lt; longsword_deploy_max)
 {
-    if (targetid.side!=side)
-    {
-        longsword_deploy_cd = longsword_deploy_cd_max;
-        longsword -= 1;
-        var ID;
-        ID = instance_create(x,y,oUNSC_longsword_GATL1);
-        ID.direction = irandom_range(0,359);
-        ID.targetid = targetid;
-        ID.side = side;
-        ID.parentid = selfid_l;
+    longsword_deploy_cd = longsword_deploy_cd_max;
+    longsword -= 1;
+    
+    var fighter = createChild(x,y,singleship_type, irandom_range(0,359));
+    if (!instance_exists(fighter_targetid)) {
+        with(fighter) {
+            intercept(selfid_l.fighter_target_x, selfid_l.fighter_target_y);
+        }
+    } else if (fighter_targetid.side == side) {
+        with (fighter) {
+            escort(selfid_l.fighter_targetid)
+        }
+    } else if (fighter_targetid.side != side) {
+        with (fighter) {
+            attack(selfid_l.fighter_targetid)
+        }
     }
 }
 
-longsword_deploy_cd -= 1;
+if (longsword_deploy_cd &gt; 0) {
+    longsword_deploy_cd -= 1;
+}
 
 </string>
           </argument>
@@ -150,7 +170,7 @@ longsword_deploy_cd -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid))
+            <string>if (fire_primary &amp;&amp; instance_exists(targetid))
 {
     if (mac_cooldown &lt;= 0)
     {    
@@ -159,7 +179,7 @@ longsword_deploy_cd -= 1;
         
         if (point_distance(x,y,targetid.x,targetid.y) &lt;= mac_range)
         {
-            Homing();
+            homing_obj(targetid);
             if (withinDegrees(direction, targetdir, 2))
             {
                 var selfid = id;
@@ -205,7 +225,7 @@ mac_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(targetid) &amp;&amp; archerpod_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; archerpod_cooldown &lt;= 0)
 {
     if (point_distance(x, y, targetid.x, targetid.y) &lt;= archerpod_range)
     {
@@ -244,7 +264,7 @@ archerpod_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (pdt_cooldown &lt;= 0)
+            <string>if (fire_pointdef &amp;&amp; pdt_burst_delay == 0 &amp;&amp; pdt_burst_count &gt; 0)
 {
     var selfid_l;
     selfid_l = id;
@@ -271,7 +291,8 @@ archerpod_cooldown -= 1;
 
     if (target_count_l &gt; 0)
     {
-        pdt_cooldown = pdt_cooldown_max;
+        pdt_burst_delay = pdt_burst_delay_max;
+        pdt_burst_count -= 1;
         var i;
         for (i = 0; i &lt; pdt; i+=1)
         {
@@ -279,7 +300,17 @@ archerpod_cooldown -= 1;
         }
     }
 }
-pdt_cooldown -= 1;
+
+if (pdt_burst_count == 0) {
+    if (pdt_cooldown == 0) {
+        pdt_burst_count = pdt_burst_count_max;
+        pdt_cooldown = pdt_cooldown_max;
+    } else if (pdt_cooldown &gt; 0) {
+        pdt_cooldown -= 1;
+    }
+} else if (pdt_burst_delay &gt; 0) {
+    pdt_burst_delay -= 1;
+}
 </string>
           </argument>
         </arguments>
@@ -316,9 +347,21 @@ pdt_cooldown -= 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_charge_bar(x-sprite_width/2,y-(sprite_height/2)-3,sprite_width,1,mac_cooldown_max-mac_cooldown,mac_cooldown_max);
+            <string>event_inherited();
 
-event_inherited();
+var oldAlpha = draw_get_alpha();
+draw_set_alpha(GUI_ALPHA);
+
+draw_bar(x-sprite_width/2,
+    y-(sprite_height/2)-3,
+    sprite_width,
+    1,
+    mac_cooldown_max-mac_cooldown,
+    mac_cooldown_max,
+    c_yellow,
+    c_white);
+
+draw_set_alpha(oldAlpha);
 </string>
           </argument>
         </arguments>

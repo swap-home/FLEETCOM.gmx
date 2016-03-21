@@ -39,11 +39,8 @@ maxturnrate = 0;
 maxspeed = 0;
 targetid = noone;
 parentid = noone;
-move_x = 0;
-move_y = 0;
-assignedTargetid = noone;
-assignedMove_x = 0;
-assignedMove_y = 0;
+
+ai = true;
 </string>
           </argument>
         </arguments>

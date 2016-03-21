@@ -1,3 +1,4 @@
+// requires obj vars direction, maxturnrate
 var targetdir = argument0;
 
 turning = true;

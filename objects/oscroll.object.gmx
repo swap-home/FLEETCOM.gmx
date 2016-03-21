@@ -355,9 +355,7 @@ global.viewdrag_visible = false
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
-
-if (global.viewdrag_visible)
+            <string>if (global.viewdrag_visible)
 {
     global.difference_x = window_mouse_get_x() - global.view_mx
     global.difference_y = window_mouse_get_y() - global.view_my
