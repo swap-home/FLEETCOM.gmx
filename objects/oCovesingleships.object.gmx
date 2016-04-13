@@ -31,7 +31,7 @@ race = "cove";
 
 plasmacannon = 0;
 plasmacannon_cooldown = 0;
-plasmacannon_cooldown_max = 5;
+plasmacannon_cooldown_max = 15;
 plasmacannon_range = 350;
 
 fuelrodcannon = 0;
@@ -130,20 +130,6 @@ if (heavyplasmacannon_cooldown &gt; 0) {
 </string>
           </argument>
         </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>604</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_inherited</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
     <event eventtype="4" ename="oCovecapitalships">

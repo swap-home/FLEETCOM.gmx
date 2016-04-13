@@ -50,6 +50,9 @@
         <sound>sound\report15</sound>
       </sounds>
     </sounds>
+    <sounds name="bgm">
+      <sound>sound\FarthestOutpost</sound>
+    </sounds>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\sCove_corvette_SDVH</sprite>
@@ -78,58 +81,12 @@
     <sprite>sprites\sCove_FuelRod</sprite>
     <sprite>sprites\sCove_HeavyPlasma</sprite>
     <sprite>sprites\sCove_PlasmaTorpedo</sprite>
-    <sprites name="Stock">
-      <sprite>sprites\sStridentHeavyFrigate</sprite>
-      <sprite>sprites\sCharonLightFrigate</sprite>
-      <sprite>sprites\sParisHeavyFrigate</sprite>
-      <sprite>sprites\sSDVHeavyCorvette</sprite>
-      <sprite>sprites\sCCSBattlecruiser</sprite>
-      <sprite>sprites\sBanshee</sprite>
-      <sprite>sprites\sLongsword</sprite>
-      <sprite>sprites\sSeraph</sprite>
-      <sprite>sprites\sCPVDestroyer</sprite>
-      <sprite>sprites\sShipsHW2</sprite>
-      <sprite>sprites\sPhantom</sprite>
-      <sprite>sprites\sprite67</sprite>
-    </sprites>
     <sprites name="UI">
       <sprite>sprites\smouse</sprite>
       <sprite>sprites\smousescroll</sprite>
       <sprite>sprites\smouseglow</sprite>
-      <sprite>sprites\sGUIbg</sprite>
-    </sprites>
-    <sprites name="Solar">
-      <sprites name="Stars">
-        <sprite>sprites\sStar_BlackHole</sprite>
-        <sprite>sprites\sStar_Blue</sprite>
-        <sprite>sprites\sStar_BlueWhite</sprite>
-        <sprite>sprites\sStar_BrownDwarf</sprite>
-        <sprite>sprites\sStar_Green</sprite>
-        <sprite>sprites\sStar_Orange</sprite>
-        <sprite>sprites\sStar_Red</sprite>
-        <sprite>sprites\sStar_WhiteDwarf</sprite>
-        <sprite>sprites\sStar_Yellow</sprite>
-      </sprites>
-      <sprites name="Planets">
-        <sprite>sprites\sPlanet_Arctic</sprite>
-        <sprite>sprites\sPlanet_Desert</sprite>
-        <sprite>sprites\sPlanet_Earthlike</sprite>
-        <sprite>sprites\sPlanet_Greenhouse</sprite>
-        <sprite>sprites\sPlanet_Mountainous</sprite>
-        <sprite>sprites\sPlanet_Oceanic</sprite>
-        <sprite>sprites\sPlanet_Artificial</sprite>
-        <sprite>sprites\sPlanet_Rocky</sprite>
-        <sprite>sprites\sPlanet_Volcanic</sprite>
-      </sprites>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
-    <sprites name="Icons">
-      <sprite>sprites\sShipyard</sprite>
-      <sprite>sprites\sRefinery</sprite>
-      <sprite>sprites\sAcademy</sprite>
-      <sprite>sprites\sPopulation</sprite>
-      <sprite>sprites\sMaterial</sprite>
-    </sprites>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
     <sprite>sprites\sTracer</sprite>
   </sprites>
@@ -247,6 +204,7 @@
     <objects name="Weaponry">
       <object>objects\obeamweaponry</object>
       <object>objects\oprojectileweaponry</object>
+      <object>objects\ocapitalprojectileweaponry</object>
       <object>objects\odestructableweaponry</object>
       <objects name="UNSC">
         <object>objects\oUNSC_50mm</object>

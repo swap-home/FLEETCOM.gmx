@@ -213,6 +213,35 @@ else
         </arguments>
       </action>
     </event>
+    <event eventtype="4" ename="ocapitalprojectileweaponry">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (side != other.side)
+{
+    Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
+    Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
+    Damage_Unit(other.dmg_thermal, other.id, id, "thermal");
+    with (other){instance_destroy();}
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="4" ename="oallcapitalships">
       <action>
         <libid>1</libid>
@@ -230,7 +259,9 @@ else
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var degree = point_direction(x, y, other.x, other.y);
+            <string>//push colliding ships away from each other until we get better pathing system
+
+var degree = point_direction(x, y, other.x, other.y);
 x -= lengthdir_x(0.10, degree);
 y -= lengthdir_y(0.10, degree);
 </string>
