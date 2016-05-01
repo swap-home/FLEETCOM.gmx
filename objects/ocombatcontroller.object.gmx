@@ -134,28 +134,28 @@ with (oallships)
             <string>var ctrl = id;
 with (oCovecapitalships)
 {
-    side = 1;
+    side = COVE;
     direction = ctrl.leftdir;
     moveTo(id, ctrl.rightmid, y);
     ai = true;
 }
 with (oCovesingleships)
 {
-    side = 1;
+    side = COVE;
     direction = ctrl.leftdir;
     moveTo(id, ctrl.rightmid, y);
     ai = true;
 }
 with (oUNSCcapitalships)
 {
-    side = 0;
+    side = UNSC;
     direction = ctrl.rightdir;
     moveTo(id, ctrl.leftmid, y);
     ai = false;
 }
 with (oUNSCsingleships)
 {
-    side = 0;
+    side = UNSC;
     direction = ctrl.rightdir;
     moveTo(id, ctrl.leftmid, y);
     ai = false;
@@ -200,7 +200,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         {
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
-            side = 1;
+            side = COVE;
             ai = true;
         }
     }
@@ -212,7 +212,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         {
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
-            side = 1;
+            side = COVE;
             ai = true;
         }
     }
@@ -224,7 +224,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         {
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
-            side = 1;
+            side = COVE;
             ai = true;
         }
     }
@@ -236,7 +236,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         {
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
-            side = 1;
+            side = COVE;
             ai = true;
         }
     }
@@ -250,7 +250,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         with (createId)
         {
             moveTo(id, ctrl.rightmid, y);
-            side = 0;
+            side = UNSC;
             ai = false;
         }
     }
@@ -261,7 +261,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         with (createId)
         {
             moveTo(id, ctrl.rightmid, y);
-            side = 0;
+            side = UNSC;
             ai = false;
         }
     }
@@ -272,7 +272,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         with (createId)
         {
             moveTo(id, ctrl.rightmid, y);
-            side = 0;
+            side = UNSC;
             ai = false;
         }
     }
@@ -283,7 +283,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         with (createId)
         {
             moveTo(id, ctrl.rightmid, y);
-            side = 0;
+            side = UNSC;
             ai = false;
         }
     }

@@ -57,7 +57,7 @@ if (time >= 0) {
     }
     
     if (object_exists(projectile_ind)) {
-        //not implemented 
+        // creating object in this script - not implemented 
     }
     
 }

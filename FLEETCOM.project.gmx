@@ -69,6 +69,7 @@
     <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
     <sprite>sprites\sUNSC_pheonix</sprite>
     <sprite>sprites\sUNSC_pelican</sprite>
+    <sprite>sprites\sUNSC_broadsword</sprite>
     <sprite>sprites\sUNSC_longsword</sprite>
     <sprite>sprites\sUNSC_odp</sprite>
     <sprite>sprites\sUNSC_station</sprite>
@@ -162,6 +163,7 @@
           <object>objects\oUNSCsingleships</object>
           <objects name="Fighters">
             <object>objects\oUNSC_longsword_GATL1</object>
+            <object>objects\oUNSC_broadsword_F41</object>
           </objects>
           <objects name="Transports">
             <object>objects\oUNSCtransports</object>
@@ -241,8 +243,8 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
-    <room>rooms\FixedBattle</room>
     <room>rooms\RandomBattle</room>
+    <room>rooms\FixedBattle</room>
   </rooms>
   <constants number="20">
     <constant name="GUI_ALPHA">0.65</constant>

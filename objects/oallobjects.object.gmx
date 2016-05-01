@@ -89,12 +89,7 @@ speed = movespeed; //for now
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (!init) {
-    init = true; 
-}
-
-event_inherited();
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>

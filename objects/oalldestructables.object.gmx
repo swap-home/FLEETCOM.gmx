@@ -40,6 +40,9 @@
           <argument>
             <kind>1</kind>
             <string>///All objects that can take damage and be destroyed
+
+hull = 0;
+hull_max = 0;
 </string>
           </argument>
         </arguments>

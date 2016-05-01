@@ -49,12 +49,6 @@ archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 60;
 archerpod_range = 350;
-
-var ID = id;
-singleship_trail_color = c_yellow;
-with(trail) {
-    trail_color = ID.singleship_trail_color;
-}
 </string>
           </argument>
         </arguments>

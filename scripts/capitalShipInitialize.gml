@@ -9,8 +9,12 @@ movespeed = maxspeed;
 
 if (race == "unsc")
 {
+    broadsword = broadsword_max;
+    broadsword_deploy_cd = broadsword_deploy_cd_max;
     longsword = longsword_max;
     longsword_deploy_cd = longsword_deploy_cd_max;
+    pelican = pelican_max;
+    pelican_deploy_cd = pelican_deploy_cd_max;
     mac_cooldown = mac_cooldown_max;
 }
 else
@@ -25,3 +29,5 @@ else
 }
 
 alarm[0] = findtarget_delay;
+
+init = true;

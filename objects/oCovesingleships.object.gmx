@@ -43,12 +43,6 @@ heavyplasmacannon = 0;
 heavyplasmacannon_cooldown = 0;
 heavyplasmacannon_cooldown_max = 150;
 heavyplasmacannon_range = 350;
-
-var ID = id;
-singleship_trail_color = c_purple;
-with(trail) {
-    trail_color = ID.singleship_trail_color;
-}
 </string>
           </argument>
         </arguments>
