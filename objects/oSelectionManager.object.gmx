@@ -46,6 +46,10 @@ click_down = false;
 click_double = false;
 
 current_command = NO_COMMAND;
+
+formation = FORMATION_LINE;
+unit_separation = 72;
+separation_angle = 90; // 115, 45
 </string>
           </argument>
         </arguments>
@@ -226,18 +230,12 @@ if (click_x != mouse_x &amp;&amp; click_y != mouse_y) //dragging a box
         }
         else
         {
-            for (var i = 0; i &lt; ds_list_size(selection); i++)
-            {
-                moveTo(ds_list_find_value(selection, i), mouse_x, mouse_y);
-            }
+            formationMove(selection, mouse_x, mouse_y);
         }
     }
     else
     {
-        for (var i = 0; i &lt; ds_list_size(selection); i++)
-        {
-            moveTo(ds_list_find_value(selection, i), mouse_x, mouse_y);
-        }
+        formationMove(selection, mouse_x, mouse_y);
     }
 }
 </string>
@@ -299,7 +297,7 @@ if (click_x != mouse_x &amp;&amp; click_y != mouse_y) //dragging a box
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (!ds_list_empty(selection))
+            <string>if (!ds_list_empty(selection) &amp;&amp; global.debug)
 {
     var selectedUnit = ds_list_find_value(selection, 0);
     draw_set_color(c_yellow);
@@ -654,6 +652,43 @@ draw_set_alpha(oldAlpha);
           <argument>
             <kind>1</kind>
             <string>controlGroupKey(0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="32">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (++formation == FORMATION_MAX)
+{
+    formation = FORMATION_LINE;
+}
+switch(formation) {
+    case FORMATION_LINE:
+        separation_angle = 90;
+        break;
+    case FORMATION_ARROWHEAD:
+        separation_angle = 115;
+        break;
+    case FORMATION_TRIDENT:
+        separation_angle = 45;
+        break;
+}
 </string>
           </argument>
         </arguments>

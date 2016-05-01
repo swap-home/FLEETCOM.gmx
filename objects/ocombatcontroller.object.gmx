@@ -96,14 +96,14 @@ with (oallships)
 {
     if (x &lt;= room_width/2) 
     {
-        side = 0;
+        side = UNSC;
         direction = ctrl.rightdir;
         moveTo(id, ctrl.leftmid, y);
         ai = false;
     }
     else
     {
-        side = 1;
+        side = REBEL;
         direction = ctrl.leftdir;
         moveTo(id, ctrl.rightmid, y);
         ai = true;

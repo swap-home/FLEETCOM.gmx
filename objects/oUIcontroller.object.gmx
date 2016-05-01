@@ -28,6 +28,8 @@
             <string>if (global.ui_controller != 0){show_error("Multiple UI Controllers detected!", global.WARNING);}
 global.ui_controller = id;
 
+display_scale = display_get_gui_width() / view_wview[PRIMARY_VIEW];
+
 SCREEN_NAME_BASE = "screenshot_";
 SCREEN_EXT = ".png";
 screennum = 0;
@@ -39,6 +41,116 @@ while (true) {
         break;
     }
     screennum++;
+}
+
+border = 32; // from edge of display
+minimap_width = 128;
+minimap_height = 64;
+minimap_square_size = 2;
+padding = 32; // between elements
+button_size = 64;
+button_sprites = ds_list_create();
+button_actions = ds_list_create();
+button_mouseover = -1; // -1 means no mouse is not over any button
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/*
+if (instance_exists(global.selection_manager)) {
+    var selection = global.selection_manager.selection;
+    if (
+*/
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var button_count = ds_list_size(button_actions);
+var draw_x = 0 + border;
+var draw_y = view_hview[PRIMARY_VIEW] - border - minimap_height;
+
+var minimap_wscale = minimap_width / room_width;
+var minimap_hscale = minimap_height / room_height;
+var minimap_square_length = minimap_square_size;
+
+draw_set_alpha(GUI_ALPHA);
+
+// draw minimap
+draw_set_color(c_gray);
+draw_ellipse(draw_x * display_scale, 
+    draw_y * display_scale, 
+    (draw_x + minimap_width) * display_scale, 
+    (draw_y + minimap_height) * display_scale, 
+    false);
+
+// TODO: move this computation out of draw step, decouple minimap state from game state
+with (oallcapitalships) {
+    if (side == global.playerside) {draw_set_color(c_yellow);}
+    else {draw_set_color(c_red);}
+    
+    draw_rectangle((draw_x + x * minimap_wscale) * global.ui_controller.display_scale - minimap_square_length/2, 
+    (draw_y + y * minimap_hscale) * global.ui_controller.display_scale - minimap_square_length/2,
+    (draw_x + x * minimap_wscale) * global.ui_controller.display_scale + minimap_square_length/2,
+    (draw_y + y * minimap_hscale) * global.ui_controller.display_scale + minimap_square_length/2,
+    false);
+     
+}
+
+draw_x += minimap_width;
+
+// draw UI buttons
+draw_set_color(c_gray);
+for (var i = 0; i &lt; button_count; i++) {
+    draw_x += padding;
+    draw_rectangle(draw_x * display_scale, 
+        draw_y * display_scale,
+        (draw_x + button_length) * display_scale,
+        (draw_y + button_length) * display_scale,
+        false);
+    
+    
+    if (!sprite_exists(button_sprites[| i])) {
+        show_error("sprite does not exist for " + string(button_sprites[| i]) + " on " + string(i) + "th position of ui buttons", true);
+    }
+    
+    draw_sprite(button_sprites[| i], 0, draw_x * display_scale, draw_y * display_scale);
+    draw_x += button_length;
 }
 </string>
           </argument>

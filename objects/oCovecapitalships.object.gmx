@@ -49,17 +49,17 @@ phantom_deploy_cd_max = 90;
 
 energyprojector = 0;
 energyprojector_cooldown = 0;
-energyprojector_cooldown_max = 600;
+energyprojector_cooldown_max = 1800;
 energyprojector_range = 1400;
 
 plasmaturret = 0;
 plasmaturret_cooldown = 0;
-plasmaturret_cooldown_max = 135;
+plasmaturret_cooldown_max = 420;
 plasmaturret_range = 1000;
 
 plt = 0;
 plt_cooldown = 0;
-plt_cooldown_max = 30;
+plt_cooldown_max = 45;
 plt_range = 450;
 pulselaser_draw = 0;
 
@@ -72,10 +72,6 @@ pldraworigin_x[0] = 0;
 pldraworigin_y[0] = 0;
 pldrawtarget_x[0] = 0;
 pldrawtarget_y[0] = 0;
-
-energyprojector_cooldown_max *= 3;
-plasmaturret_cooldown_max *= 3;
-plt_cooldown_max *= 3;
 </string>
           </argument>
         </arguments>
@@ -431,7 +427,7 @@ draw_set_alpha(GUI_ALPHA);
 draw_bar(x-sprite_width/2,
     y-(sprite_height/2)-3,
     sprite_width,
-    1,
+    3,
     energyprojector_cooldown_max-energyprojector_cooldown,
     energyprojector_cooldown_max,
     c_yellow,

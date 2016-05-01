@@ -18,5 +18,5 @@ with (childId) {
     ai = ID.ai;
     direction = create_direction;
 }
-    
+
 return childId;

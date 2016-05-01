@@ -270,6 +270,16 @@ if (selected || global.debug)
         draw_set_color(c_red);
         draw_line(x, y, targetid.x, targetid.y);
     }
+    
+    if (instance_exists(fighter_targetid))
+    {
+        draw_set_color(c_yellow);
+        draw_line(x, y, fighter_targetid.x, fighter_targetid.y);
+    } else if (fighter_targetid == noone) {
+        draw_set_color(c_yellow);
+        draw_line(x, y, fighter_target_x, fighter_target_y);
+    }
+    
 }
 event_inherited();
 </string>

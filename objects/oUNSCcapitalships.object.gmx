@@ -45,7 +45,7 @@ side = 0;
 //INITIALIZATION of UNSC ship vars
 mac = 0;
 mac_cooldown = 0;
-mac_cooldown_max = 600;
+mac_cooldown_max = 1800;
 mac_range = 1300;
 
 archerpod = 0;
@@ -62,33 +62,7 @@ pdt_burst_count_max = 8;
 pdt_cooldown = 0;
 pdt_cooldown_max = 90;
 pdt_range = 250;
-
-mac_cooldown_max *= 3;
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>movespeed</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0.15</string>
           </argument>
         </arguments>
       </action>
@@ -355,7 +329,7 @@ draw_set_alpha(GUI_ALPHA);
 draw_bar(x-sprite_width/2,
     y-(sprite_height/2)-3,
     sprite_width,
-    1,
+    3,
     mac_cooldown_max-mac_cooldown,
     mac_cooldown_max,
     c_yellow,

@@ -85,6 +85,7 @@
       <sprite>sprites\smouse</sprite>
       <sprite>sprites\smousescroll</sprite>
       <sprite>sprites\smouseglow</sprite>
+      <sprite>sprites\sFighters</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
@@ -95,7 +96,6 @@
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\draw_shield_bar.gml</script>
     <script>scripts\draw_bar.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
@@ -105,7 +105,6 @@
     <script>scripts\firepointdefenseturret.gml</script>
     <script>scripts\firepulselaserturret.gml</script>
     <script>scripts\Damage_Unit.gml</script>
-    <script>scripts\zoom.gml</script>
     <scripts name="enums">
       <script>scripts\enumDamageTypes.gml</script>
     </scripts>
@@ -118,7 +117,7 @@
       <script>scripts\saveCtrlGroup.gml</script>
       <script>scripts\controlGroupKey.gml</script>
     </scripts>
-    <scripts name="commands">
+    <scripts name="unitorders">
       <script>scripts\homing_obj.gml</script>
       <script>scripts\homing_point.gml</script>
       <script>scripts\turnTowards.gml</script>
@@ -131,6 +130,7 @@
         <script>scripts\intercept.gml</script>
         <script>scripts\attack.gml</script>
       </scripts>
+      <script>scripts\formationMove.gml</script>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
@@ -160,8 +160,13 @@
         <object>objects\oUNSCcapitalships</object>
         <objects name="Single Craft">
           <object>objects\oUNSCsingleships</object>
-          <object>objects\oUNSC_longsword_GATL1</object>
-          <object>objects\oUNSC_pelican</object>
+          <objects name="Fighters">
+            <object>objects\oUNSC_longsword_GATL1</object>
+          </objects>
+          <objects name="Transports">
+            <object>objects\oUNSCtransports</object>
+            <object>objects\oUNSC_pelican</object>
+          </objects>
         </objects>
         <objects name="Frigate">
           <object>objects\oUNSC_frigate_charonL</object>
@@ -236,12 +241,11 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
-    <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
-    <room>rooms\room5</room>
-    <room>rooms\room4</room>
+    <room>rooms\RandomBattle</room>
   </rooms>
-  <constants number="9">
+  <constants number="20">
+    <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
     <constant name="INTERCEPT">1</constant>
     <constant name="ATTACK">2</constant>
@@ -250,7 +254,17 @@
     <constant name="NO_COMMAND">0</constant>
     <constant name="LAUNCH_FIGHTERS">1</constant>
     <constant name="LAUNCH_TRANSPORTS">2</constant>
-    <constant name="GUI_ALPHA">0.75</constant>
+    <constant name="FIRE_PRIMARY">3</constant>
+    <constant name="ABILITY_1">4</constant>
+    <constant name="ABILITY_2">5</constant>
+    <constant name="FORMATION_LINE">0</constant>
+    <constant name="FORMATION_ARROWHEAD">1</constant>
+    <constant name="FORMATION_TRIDENT">2</constant>
+    <constant name="FORMATION_MAX">3</constant>
+    <constant name="PRIMARY_VIEW">0</constant>
+    <constant name="UNSC">0</constant>
+    <constant name="REBEL">1</constant>
+    <constant name="COVE">2</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

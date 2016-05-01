@@ -23,3 +23,7 @@ y2 = y1 + height;
 draw_set_color(merge_color(color1, color2, value/value_max));
 draw_rectangle(x1,y1,x2,y2,false);
 
+//border
+draw_set_color(merge_color(color1, color2, value/value_max));
+draw_rectangle(x1,y1,x1+width,y1+height, true);
+

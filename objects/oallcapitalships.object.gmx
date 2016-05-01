@@ -179,7 +179,7 @@ alarm[0] = findtarget_delay;
 
 var dist_tolerance = maxspeed;
 var angle_tolerance = 0.5;
-var turn_heuristic = 2; //give this many times the amount of time to turn
+var turn_heuristic = 0.5; //compensate for time to turn
 
 if (abs(move_x - x) &lt;= dist_tolerance &amp;&amp; abs(move_y - y) &lt;= dist_tolerance)
 {
@@ -192,8 +192,14 @@ else
     var distance = point_distance(x, y, move_x, move_y) * turn_heuristic;
     var angle = point_direction(x, y, move_x, move_y);
     
-    var estimated_time = angle / maxturnrate;
+    var angle_to_turn = abs(angle_difference(direction, angle));
+    var estimated_time = angle_to_turn / maxturnrate;
+    var turn_adjusted_speed = distance / estimated_time;
+    
     if (estimated_time == 0) {exit;}
+    if (angle_to_turn &gt; 90) {turn_adjusted_speed = 0;}
+    
+    turn_adjusted_speed *= 1 - angle_to_turn / 90;
     
     if (!withinDegrees(direction, angle, angle_tolerance))
     {
@@ -201,7 +207,7 @@ else
         {
             turnTowards(angle);
         }
-        movespeed = min(distance / estimated_time, maxspeed);
+        movespeed = min(turn_adjusted_speed, maxspeed);
     }
     else
     {
@@ -261,9 +267,12 @@ else
             <kind>1</kind>
             <string>//push colliding ships away from each other until we get better pathing system
 
-var degree = point_direction(x, y, other.x, other.y);
-x -= lengthdir_x(0.10, degree);
-y -= lengthdir_y(0.10, degree);
+/*
+if (move_x == x &amp;&amp; move_y == y) {
+    var degree = point_direction(x, y, other.x, other.y);
+    x -= lengthdir_x(0.10, degree);
+    y -= lengthdir_y(0.10, degree);
+}*/
 </string>
           </argument>
         </arguments>
@@ -295,11 +304,11 @@ var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
 //draw a health bar
-draw_bar(x-sprite_width/2,y-(sprite_height/2)-6,sprite_width,3,hull,hull_max,c_red,c_green);
+draw_bar(x-sprite_width/2,y-(sprite_height/2)-9,sprite_width,5,hull,hull_max,c_red,c_green);
 
 //draw a shield bar
 if (shield_max &gt; 0)
-{draw_shield_bar(x-sprite_width/2,y-(sprite_height/2)-12,sprite_width,5,shield,shield_max);}
+{draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);}
 
 draw_set_alpha(oldAlpha);
 </string>
