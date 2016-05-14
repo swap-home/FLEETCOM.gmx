@@ -81,7 +81,9 @@ target_y = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var selfid_l;
+            <string>// Check nearby targets and switch targets if necessary
+
+var selfid_l;
 selfid_l = id;
 
 switch(state) {
@@ -201,8 +203,14 @@ event_inherited();
             <kind>1</kind>
             <string>event_inherited();
 
+// Switch states
+
 switch(state) {
-    case MOVING:
+    case MOVING: 
+        // Move to target capital for escort or attack, ignoring everything
+        // Change to escort or attack when close enough to target
+        // return to escort parent if original target is down
+        // intercept current position if parent is also gone
         if (!instance_exists(targetid)) {
             if (instance_exists(parentid)) {
                 escort(parentid);
@@ -221,6 +229,7 @@ switch(state) {
         break;
         
     case ATTACK:
+        // attack a capital ship in range, ignore singleships
         if (!instance_exists(targetid)) {
             if (instance_exists(parentid)) {
                 escort(parentid);
@@ -233,16 +242,18 @@ switch(state) {
         break;
 
     case INTERCEPT:
+        // intercept any enemy ship on route to area
         if (!instance_exists(targetid)) {
-            //if (distance_to_point(target_x, target_y) &gt; leash_range) {
                 homing_point(target_x, target_y);
-            //}
         } else {
             homing_obj(targetid);
         }
         break;
         
     case ESCORT:
+        // move to allied capital ship, and intercept enemy ships near that
+        // return to escort parent if original escort is down
+        // intercept current position if parent is also gone
         if (distance_to_object(escortid) &gt; leash_range) {
             escort(escortid);
         } else if (!instance_exists(targetid)) {
@@ -259,6 +270,38 @@ switch(state) {
             homing_obj(targetid);
         }
         break;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// adjust movespeed to be slower than singleship target if about to overtake them 
+
+movespeed = maxspeed;
+if (instance_exists(targetid)) {
+    if (object_is_ancestor(targetid.object_index, oallsingleships)) {
+        if (movespeed &gt; targetid.movespeed) {
+            if (distance_to_object(targetid) &lt; (movespeed - targetid.movespeed)) {
+                movespeed = targetid.movespeed;
+            }
+        }
+    }
 }
 </string>
           </argument>

@@ -125,7 +125,175 @@ global.selection_manager = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>switch (current_command) {
+            <string>
+
+// Global left pressed
+if (mouse_check_button_pressed(mb_left)) {
+    
+    if (global.ui_controller != 0 &amp;&amp; global.ui_controller.ui_click) {
+        exit;
+    }
+
+    // Left press on oselectableships
+    var click_id = collision_point(mouse_x, mouse_y, oselectableships, true, false)
+    if (click_id != noone) {
+        with (click_id) {
+            focus = true;
+        }
+    }
+    
+    if (current_command == NO_COMMAND) {
+        click_x = mouse_x;
+        click_y = mouse_y;
+        click_down = true;
+    } else if (current_command == LAUNCH_FIGHTERS) {
+        if (!ds_list_empty(selection))
+        {
+            ackSound();
+            var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
+            for (var i = 0; i &lt; ds_list_size(selection); i++)
+            {
+                commandFighters(ds_list_find_value(selection, i), mouse_x, mouse_y, targetId);
+            }
+        }
+        current_command = NO_COMMAND;
+    }
+}
+
+// Global left released
+if (mouse_check_button_released(mb_left)) {
+    
+    if (current_command != NO_COMMAND) {
+        exit;
+    }
+    
+    // Left release on oselectableships
+    var click_id = collision_point(mouse_x, mouse_y, oselectableships, true, false)
+    if (click_id != noone) {
+        with (click_id) {
+            if (focus) {            
+                //click and release on a unit 
+                // tried to consider WC3 http://classic.battle.net/war3/basics/specialcommands.shtml
+                var shiftdown, ctrldown;
+                shiftdown = keyboard_check_direct(vk_lshift);
+                ctrldown = keyboard_check_direct(vk_lcontrol);
+                
+                if (global.playerside == side){
+                    reportSound();
+                }
+                
+                if (shiftdown &amp;&amp; ctrldown) { //add all units of same type on screen to group
+                    with(object_index) {
+                        if (!selected &amp;&amp; collision_rectangle(view_xview[0], view_yview[0], view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], id, false, false)) {
+                            if (global.playerside == side) {
+                                addSelection(id);
+                            }
+                        }
+                    }
+                }
+                else if (shiftdown) {      //adds unit to group if unselected, else removes
+                    if (global.playerside == side) {
+                        if (selected) {
+                            removeSelection(id);
+                        } else {
+                            addSelection(id);
+                        }
+                    }
+                }
+                else if (ctrldown) {     //selects all units of same type on screen
+                    clearSelection();
+                    with(object_index) {
+                        if (!selected &amp;&amp; collision_rectangle(view_xview[0], view_yview[0], view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], id, false, false)) {
+                            if (global.playerside == side) {
+                                addSelection(id);
+                            }
+                        }
+                    }
+                } else {
+                    if (mouse_x == global.selection_manager.click_x &amp;&amp; mouse_y == global.selection_manager.click_y) {
+                        clearSelection();
+                        if (global.selection_manager.click_double) { //double click
+                            with(object_index) {
+                                if (!selected &amp;&amp; collision_rectangle(view_xview[0], view_yview[0], view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], id, false, false)) {
+                                    if (global.playerside == side) {
+                                        addSelection(id);
+                                    }
+                                }
+                            }
+                        } else {   //single click
+                            if (global.playerside == side) {
+                                addSelection(id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    with (oselectableships) {
+        focus = false;
+    }
+    
+    // Select units in box released
+    // TODO check abs(click_x - mouse_x) to prevent small boxes
+    if (click_down &amp;&amp; click_x != mouse_x &amp;&amp; click_y != mouse_y) //dragging a box
+    {
+        if(!keyboard_check_direct(vk_lshift))
+        {
+            clearSelection();
+        }
+        
+        var selectedSomething = false;
+        with(oselectableships)
+        {
+            if (collision_rectangle(global.selection_manager.click_x, global.selection_manager.click_y, mouse_x, mouse_y, id, false, false))
+            {
+                if (global.playerside == side)
+                {
+                    addSelection(id);
+                    selectedSomething = true;
+                }
+            }
+        }
+        
+        if (selectedSomething)
+        {
+            reportSound();
+        }
+    }
+    
+    click_down = false;
+    click_double = true;
+    alarm[0] = room_speed/2; //half a second
+}
+
+// Global right pressed
+if (mouse_check_button_pressed(mb_right)) {
+    if (current_command != NO_COMMAND) {
+        current_command = NO_COMMAND;
+    } else {
+        if (!ds_list_empty(selection)) {
+            ackSound();
+            var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
+            if (targetId != noone) {
+                if (targetId.side != global.playerside) {
+                    for (var i = 0; i &lt; ds_list_size(selection); i++) {
+                        attackTarget(ds_list_find_value(selection, i), targetId);
+                    }
+                }
+                else {
+                    formationMove(selection, mouse_x, mouse_y);
+                }
+            }
+            else {
+                formationMove(selection, mouse_x, mouse_y);
+            }
+        }
+    }
+}
+    
+// Modify cursor sprite to match current command
+switch (current_command) {
     case NO_COMMAND:
         cursor_sprite = smouse;
         break;
@@ -135,145 +303,6 @@ global.selection_manager = 0;
     case LAUNCH_TRANSPORTS:
         cursor_sprite = sUNSC_pelican;
         break;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="6" enumb="56">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>click_down = false;
-click_double = true;
-alarm[0] = room_speed/2; //half a second
-
-if (current_command != NO_COMMAND) {
-    current_command = NO_COMMAND;
-    exit;
-}
-
-// TODO check abs(click_x - mouse_x) to prevent small boxes
-if (click_x != mouse_x &amp;&amp; click_y != mouse_y) //dragging a box
-{
-    if(!keyboard_check_direct(vk_lshift))
-    {
-        clearSelection();
-    }
-    
-    var selectedSomething = false;
-    with(oselectableships)
-    {
-        if (collision_rectangle(global.selection_manager.click_x, global.selection_manager.click_y, mouse_x, mouse_y, id, false, false))
-        {
-            if (global.playerside == side)
-            {
-                addSelection(id);
-                selectedSomething = true;
-            }
-        }
-    }
-    
-    if (selectedSomething)
-    {
-        reportSound();
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="6" enumb="54">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if (!ds_list_empty(selection))
-{
-    ackSound();
-    var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
-    if (targetId != noone)
-    {
-        if (targetId.side != global.playerside)
-        {
-            for (var i = 0; i &lt; ds_list_size(selection); i++)
-            {
-                attackTarget(ds_list_find_value(selection, i), targetId);
-            }
-        }
-        else
-        {
-            formationMove(selection, mouse_x, mouse_y);
-        }
-    }
-    else
-    {
-        formationMove(selection, mouse_x, mouse_y);
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="6" enumb="53">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if (current_command == NO_COMMAND) {
-    click_x = mouse_x;
-    click_y = mouse_y;
-    click_down = true;
-} else if (current_command == LAUNCH_FIGHTERS) {
-    if (!ds_list_empty(selection))
-    {
-        ackSound();
-        var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
-        for (var i = 0; i &lt; ds_list_size(selection); i++)
-        {
-            commandFighters(ds_list_find_value(selection, i), mouse_x, mouse_y, targetId);
-        }
-    }
 }
 </string>
           </argument>
@@ -344,33 +373,6 @@ draw_set_alpha(oldAlpha);
         </arguments>
       </action>
     </event>
-    <event eventtype="9" enumb="87">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if (current_command != LAUNCH_TRANSPORTS) {
-    current_command = LAUNCH_TRANSPORTS;
-} else {
-    current_command = NO_COMMAND;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
     <event eventtype="9" enumb="83">
       <action>
         <libid>1</libid>
@@ -394,33 +396,6 @@ draw_set_alpha(oldAlpha);
     {
         stop(ds_list_find_value(selection, i));
     }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="81">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if (current_command != LAUNCH_FIGHTERS) {
-    current_command = LAUNCH_FIGHTERS;
-} else {
-    current_command = NO_COMMAND;
 }
 </string>
           </argument>

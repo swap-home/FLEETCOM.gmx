@@ -87,6 +87,7 @@
       <sprite>sprites\smousescroll</sprite>
       <sprite>sprites\smouseglow</sprite>
       <sprite>sprites\sFighters</sprite>
+      <sprite>sprites\sTransports</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
@@ -230,9 +231,9 @@
     </objects>
     <objects name="Controllers">
       <object>objects\oscroll</object>
+      <object>objects\oStartMenucontroller</object>
       <object>objects\ocombatcontroller</object>
       <object>objects\oFX_control</object>
-      <object>objects\oStartMenucontroller</object>
       <object>objects\oSelectionManager</object>
       <object>objects\oUIcontroller</object>
     </objects>

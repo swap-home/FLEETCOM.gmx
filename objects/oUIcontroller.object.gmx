@@ -48,10 +48,119 @@ minimap_width = 128;
 minimap_height = 64;
 minimap_square_size = 2;
 padding = 32; // between elements
+text_padding = 6; // between elements and their captions
 button_size = 64;
 button_sprites = ds_list_create();
 button_actions = ds_list_create();
+button_keys = ds_list_create();
 button_mouseover = -1; // -1 means no mouse is not over any button
+ui_click = false;
+
+ds_list_add(button_keys, ord("Q"));
+ds_list_add(button_keys, ord("W"));
+ds_list_add(button_keys, ord("E"));
+ds_list_add(button_keys, ord("R"));
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ds_list_destroy(button_sprites);
+ds_list_destroy(button_actions);
+ds_list_destroy(button_keys);
+
+global.ui_controller = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ui_click = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Check if buttons should be pressed
+if (global.selection_manager != 0) {
+    for (var i = 0; i &lt; ds_list_size(button_actions); i++) {
+    
+        // Check for keys pressed
+        if (keyboard_check_pressed(button_keys[| i])) {
+            if (global.selection_manager.current_command == button_actions[| i]) {
+                global.selection_manager.current_command = NO_COMMAND;
+            } else {
+                global.selection_manager.current_command = button_actions[| i];
+            }
+        }
+        
+        // Check if buttons pressed by mouse
+        if (mouse_check_button_pressed(mb_left) 
+            &amp;&amp; mouse_x &gt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * i)
+            &amp;&amp; mouse_x &lt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * (i+1))
+            &amp;&amp; mouse_y &gt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height
+            &amp;&amp; mouse_y &lt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height + button_size) {
+            
+            ui_click = true;
+            if (global.selection_manager.current_command == button_actions[| i]) {
+                global.selection_manager.current_command = NO_COMMAND;
+            } else {
+                global.selection_manager.current_command = button_actions[| i];
+            }
+        }
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -74,11 +183,20 @@ button_mouseover = -1; // -1 means no mouse is not over any button
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*
+            <string>// Populate UI buttons depending on current selected ships
+ds_list_clear(button_sprites);
+ds_list_clear(button_actions);
+
 if (instance_exists(global.selection_manager)) {
     var selection = global.selection_manager.selection;
-    if (
-*/
+    if (!ds_list_empty(selection)) {
+        ds_list_add(button_sprites, sFighters);
+        ds_list_add(button_actions, LAUNCH_FIGHTERS);
+        
+        ds_list_add(button_sprites, sTransports);
+        ds_list_add(button_actions, LAUNCH_TRANSPORTS);
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -140,17 +258,29 @@ for (var i = 0; i &lt; button_count; i++) {
     draw_x += padding;
     draw_rectangle(draw_x * display_scale, 
         draw_y * display_scale,
-        (draw_x + button_length) * display_scale,
-        (draw_y + button_length) * display_scale,
+        (draw_x + button_size) * display_scale,
+        (draw_y + button_size) * display_scale,
         false);
     
+    // draw border
+    /*
+    if (i == 0) {
+        draw_set_color(c_red);
+        draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height);
+        draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size);
+        draw_set_color(c_gray);
+    }*/
     
     if (!sprite_exists(button_sprites[| i])) {
         show_error("sprite does not exist for " + string(button_sprites[| i]) + " on " + string(i) + "th position of ui buttons", true);
     }
     
     draw_sprite(button_sprites[| i], 0, draw_x * display_scale, draw_y * display_scale);
-    draw_x += button_length;
+    
+    draw_set_font(Halo);
+    draw_set_halign(fa_center);
+    draw_text((draw_x + button_size/2) * display_scale, (draw_y + button_size + text_padding) * display_scale, string(chr(button_keys[| i])));
+    draw_x += button_size;
 }
 </string>
           </argument>
