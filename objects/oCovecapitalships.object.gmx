@@ -213,37 +213,26 @@ if (seraph_deploy_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*
-var selfid_l;
-selfid_l = id;
-var deployed_l;
-deployed_l = 0;
+            <string>var singleship_type = oCove_phantom_T52;
 
-with (oCove_phantom_T52)
+if (scramble_transports &amp;&amp; phantom_deploy_cd == 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
 {
-    if (parentid == selfid_l)
-    {
-        deployed_l += 1;
-    }
-}
-
-if (scramble_fighters &amp;&amp; phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; deployed_l &lt; phantom_deploy_max)
-{
-    if (targetid.side!=side)
-    {
+    var transport_targetid = transport_targetid_queue[| 0];
+    ds_list_delete(transport_targetid_queue, 0);
+    if (instance_exists(transport_targetid)) {
+        var transport = createChild(x,y,singleship_type, irandom_range(0,359));
+        with (transport) {
+            board(transport_targetid);
+        }
         phantom_deploy_cd = phantom_deploy_cd_max;
         phantom -= 1;
-        var ID;
-        ID = instance_create(x,y,oCove_phantom_T52);
-        ID.direction = irandom_range(0,359);
-        ID.targetid = targetid;
-        ID.side = side;
-        ID.parentid = selfid_l;
     }
+    
 }
 
-phantom_deploy_cd -= 1;
-*/
+if (phantom_deploy_cd &gt; 0) {
+    phantom_deploy_cd -= 1;
+}
 </string>
           </argument>
         </arguments>

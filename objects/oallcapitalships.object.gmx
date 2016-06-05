@@ -64,16 +64,47 @@ fighter_target_x = 0;
 fighter_target_y = 0;
 
 scramble_transports = false;
-transport_targetid = noone;
-transport_target_x = 0;
-transport_target_y = 0;
+transport_targetid_queue = ds_list_create();
 
 fire_primary = false;
 fire_secondary = true;
 fire_pointdef = true;
 
+security_level = 0;
+boarding_level = 0;
+boarding_timer = 0;
+boarding_timer_max = STEPS_PER_SECOND * 7;
+
+status_half_pointdefense = 0;
+status_half_secondary = 0;
+status_half_primarycharge = 0;
+status_immobilization = 0;
 
 //instance_create(x,y,oshockring);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ds_list_destroy(transport_targetid_queue);
+event_inherited();
 </string>
           </argument>
         </arguments>
@@ -223,22 +254,50 @@ else
     var estimated_time = angle_to_turn / maxturnrate;
     var turn_adjusted_speed = distance / estimated_time;
     
-    if (estimated_time == 0) {exit;}
-    if (angle_to_turn &gt; 90) {turn_adjusted_speed = 0;}
-    
-    turn_adjusted_speed *= 1 - angle_to_turn / 90;
-    
-    if (!withinDegrees(direction, angle, angle_tolerance))
-    {
-        if (!turning)
+    if (estimated_time != 0) {
+        if (angle_to_turn &gt; 90) {turn_adjusted_speed = 0;}
+        
+        turn_adjusted_speed *= 1 - angle_to_turn / 90;
+        
+        if (!withinDegrees(direction, angle, angle_tolerance))
         {
-            turnTowards(angle);
+            if (!turning)
+            {
+                turnTowards(angle);
+            }
+            movespeed = min(turn_adjusted_speed, maxspeed);
         }
-        movespeed = min(turn_adjusted_speed, maxspeed);
+        else
+        {
+            movespeed = maxspeed;
+        }
     }
-    else
-    {
-        movespeed = maxspeed;
+}
+
+// Update Boarding status
+if (security_level != boarding_level) {
+    if (boarding_level &gt; security_level) {
+        boarding_timer--;
+    } else if (security_level &gt; boarding_level) {
+        boarding_timer++;
+    }
+    
+    // Check boarding progress conditions
+    if (boarding_timer &lt;= -1 * boarding_timer_max) {
+        // Boarding success
+        
+        if (security_level == 0) {
+            // Boarding neutralizes ship with no security
+            instance_destroy();
+        } else {
+            security_level--;
+            boarding_timer = 0;
+            apply_random_debuff(id, 7);
+        }
+    } else if (boarding_timer &gt;= boarding_timer_max) {
+        // Boarding repelled
+        boarding_level--;
+        boarding_timer = 0;
     }
 }
 </string>
@@ -269,6 +328,54 @@ else
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
     Damage_Unit(other.dmg_thermal, other.id, id, "thermal");
     with (other){instance_destroy();}
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="oallsingleships">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Refuel
+if (side == other.side &amp;&amp;  id == other.targetid &amp;&amp; other.state == REFUEL)
+{
+    //show_message(object_get_name(object_index));
+    if (object_get_name(other.object_index) == "oUNSC_longsword_GATL1"){longsword += 1;}
+    if (object_get_name(other.object_index) == "oUNSC_broadsword_F41"){broadsword += 1;}
+    if (object_get_name(other.object_index) == "oUNSC_pelican"){pelican += 1;}
+    if (object_get_name(other.object_index) == "oCove_banshee_T27XMF"){banshee += 1;}
+    if (object_get_name(other.object_index) == "oCove_seraph_T31XMF") {seraph += 1;}
+    with (other) {
+        instance_destroy();
+    }
+}
+
+// Boarding
+if (other.targetid == id &amp;&amp; other.state == BOARDING)
+{
+    if (side != other.side) {
+        boarding_level++;
+    } else {
+        security_level++;
+    }
+    with (other) {
+        instance_destroy();
+    }
 }
 </string>
           </argument>
@@ -336,6 +443,16 @@ draw_bar(x-sprite_width/2,y-(sprite_height/2)-9,sprite_width,5,hull,hull_max,c_r
 //draw a shield bar
 if (shield_max &gt; 0)
 {draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);}
+
+//draw a boarding bar
+if (boarding_level &gt; 0) {
+    draw_bar_split(x-sprite_width/2,y-(sprite_height/2)-21,sprite_width,5,boarding_timer+boarding_timer_max,2*boarding_timer_max,c_green,c_red);
+    draw_set_font(Halo);
+    draw_set_color(c_gray);
+    draw_text(x-sprite_width/2 - 22,y-(sprite_height/2)-21-4,string(security_level));
+    draw_text(x-sprite_width/2 + sprite_width + 22,y-(sprite_height/2)-21-4,string(boarding_level));
+    draw_text(x,y-(sprite_height/2)-42,string(boarding_timer));
+}
 
 draw_set_alpha(oldAlpha);
 </string>

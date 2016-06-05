@@ -237,6 +237,14 @@ draw_ellipse(draw_x * display_scale,
     (draw_y + minimap_height) * display_scale, 
     false);
 
+// draw minimap screen
+draw_set_color(c_white);
+draw_rectangle((draw_x + view_xview[PRIMARY_VIEW] * minimap_wscale) * display_scale, 
+    (draw_y + view_yview[PRIMARY_VIEW] * minimap_hscale) * display_scale,
+    (draw_x + (view_wview[PRIMARY_VIEW] + view_xview[PRIMARY_VIEW]) * minimap_wscale) * display_scale,
+    (draw_y + (view_hview[PRIMARY_VIEW] + view_yview[PRIMARY_VIEW]) * minimap_hscale) * display_scale,
+    true);
+    
 // TODO: move this computation out of draw step, decouple minimap state from game state
 with (oallcapitalships) {
     if (side == global.playerside) {draw_set_color(c_yellow);}

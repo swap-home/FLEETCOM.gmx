@@ -5,16 +5,24 @@ var command_y = argument2;
 //Overrides x,y if commandTarget exists
 var commandTarget = argument3;
 
+var fighter_race;
+if (commandUnit.race == "unsc") {
+    fighter_race = global.UNSCfighters;
+} else if (commandUnit.race == "cove") {
+    fighter_race = global.Covefighters;
+}
+
 with (commandUnit) {
     if (instance_exists(commandTarget)) {
         // ATTACK
         if (commandUnit.side != commandTarget.side) {
             // Order fighters to attack target enemy, ignoring other fighters
-            // TODO: store types of fighters on ships to optimze this if needed
-            with (oallsingleships) {
-                if (parentid == commandUnit)
-                {
-                    attack(commandTarget);
+            for (var i = 0; i < ds_list_size(fighter_race); i++) {
+                with (fighter_race[| i]) {
+                    if (parentid == commandUnit)
+                    {
+                        attack(commandTarget);
+                    }
                 }
             }
             scramble_fighters = true;
@@ -23,10 +31,12 @@ with (commandUnit) {
         // ESCORT
         else {
             // Order fighters to intercept enemies near target ally
-            with (oallsingleships) {
-                if (parentid == commandUnit)
-                {
-                    escort(commandTarget);
+            for (var i = 0; i < ds_list_size(fighter_race); i++) {
+                with (fighter_race[| i]) {
+                    if (parentid == commandUnit)
+                    {
+                        escort(commandTarget);
+                    }
                 }
             }
             scramble_fighters = true;
@@ -34,12 +44,14 @@ with (commandUnit) {
         }
     } else {
         //INTERCEPT
-        with (oallsingleships) {
-            if (parentid == commandUnit)
-            {
-                intercept(command_x, command_y);
+        for (var i = 0; i < ds_list_size(fighter_race); i++) {
+                with (fighter_race[| i]) {
+                    if (parentid == commandUnit)
+                    {
+                        intercept(command_x, command_y);
+                    }
+                }
             }
-        }
         scramble_fighters = true;
         fighter_targetid = noone;
         fighter_target_x = command_x;

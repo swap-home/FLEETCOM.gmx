@@ -99,6 +99,7 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\draw_bar.gml</script>
+    <script>scripts\draw_bar_split.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
     <script>scripts\Sight.gml</script>
@@ -127,10 +128,13 @@
       <script>scripts\moveTo.gml</script>
       <script>scripts\stop.gml</script>
       <script>scripts\commandFighters.gml</script>
+      <script>scripts\commandTransports.gml</script>
       <scripts name="fighters">
         <script>scripts\escort.gml</script>
         <script>scripts\intercept.gml</script>
         <script>scripts\attack.gml</script>
+        <script>scripts\board.gml</script>
+        <script>scripts\refuel.gml</script>
       </scripts>
       <script>scripts\formationMove.gml</script>
     </scripts>
@@ -146,6 +150,7 @@
     <script>scripts\firingSolution.gml</script>
     <script>scripts\quadratic_smallest_nonnegative.gml</script>
     <script>scripts\createChild.gml</script>
+    <script>scripts\apply_random_debuff.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\Halo</font>
@@ -186,9 +191,14 @@
         <object>objects\oCovecapitalships</object>
         <objects name="Single Craft">
           <object>objects\oCovesingleships</object>
-          <object>objects\oCove_banshee_T27XMF</object>
-          <object>objects\oCove_seraph_T31XMF</object>
-          <object>objects\oCove_phantom_T52</object>
+          <objects name="Fighters">
+            <object>objects\oCove_banshee_T27XMF</object>
+            <object>objects\oCove_seraph_T31XMF</object>
+          </objects>
+          <objects name="Transports">
+            <object>objects\oCovetransports</object>
+            <object>objects\oCove_phantom_T52</object>
+          </objects>
         </objects>
         <objects name="Corvette">
           <object>objects\oCove_corvette_SDVH</object>
@@ -244,16 +254,19 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
-    <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
+    <room>rooms\RandomBattle</room>
+    <room>rooms\room3</room>
   </rooms>
-  <constants number="20">
+  <constants number="22">
+    <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
     <constant name="INTERCEPT">1</constant>
     <constant name="ATTACK">2</constant>
     <constant name="ESCORT">3</constant>
-    <constant name="REFUEL">4</constant>
+    <constant name="BOARDING">4</constant>
+    <constant name="REFUEL">5</constant>
     <constant name="NO_COMMAND">0</constant>
     <constant name="LAUNCH_FIGHTERS">1</constant>
     <constant name="LAUNCH_TRANSPORTS">2</constant>

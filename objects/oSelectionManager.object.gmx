@@ -157,6 +157,51 @@ if (mouse_check_button_pressed(mb_left)) {
             }
         }
         current_command = NO_COMMAND;
+    }  else if (current_command == LAUNCH_TRANSPORTS) {
+        if (!ds_list_empty(selection))
+        {
+            ackSound();
+            var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
+            var closest_available_id = noone;
+            var closest_available_distance = 9999;
+            var closest_cooldown_id = noone;
+            var closest_cooldown_distance = 9999;
+            
+            // Search for closest with transport available and off cooldown
+            for (var i = 0; i &lt; ds_list_size(selection); i++)
+            {
+                with (selection[| i]) {
+                    var dist = distance_to_point(mouse_x, mouse_y);
+                    if (race == "unsc") {
+                        if (pelican - ds_list_size(transport_targetid_queue) &gt; 0) {
+                            if (pelican_deploy_cd == 0 &amp;&amp; dist &lt; closest_available_distance) {
+                                closest_available_id = id;
+                                closest_available_distance = dist;
+                            } else if (pelican_deploy_cd &gt; 0 &amp;&amp; dist &lt; closest_cooldown_distance) {
+                                closest_cooldown_id = id;
+                                closest_cooldown_distance = dist;
+                            }
+                        }
+                    } else if (race == "cove") {
+                        if (phantom - ds_list_size(transport_targetid_queue) &gt; 0) {
+                            if (phantom_deploy_cd == 0 &amp;&amp; dist &lt; closest_available_distance) {
+                                closest_available_id = id;
+                                closest_available_distance = dist;
+                            } else if (phantom_deploy_cd &gt; 0 &amp;&amp; dist &lt; closest_cooldown_distance) {
+                                closest_cooldown_id = id;
+                                closest_cooldown_distance = dist;
+                            }
+                        }
+                    }
+                }
+            }
+            if (instance_exists(closest_available_id)) {
+                commandTransports(closest_available_id, mouse_x, mouse_y, targetId);
+            } else if (instance_exists(closest_cooldown_id)) {
+                commandTransports(closest_cooldown_id, mouse_x, mouse_y, targetId);
+            }
+        }
+        //current_command = NO_COMMAND;
     }
 }
 
@@ -280,12 +325,10 @@ if (mouse_check_button_pressed(mb_right)) {
                     for (var i = 0; i &lt; ds_list_size(selection); i++) {
                         attackTarget(ds_list_find_value(selection, i), targetId);
                     }
-                }
-                else {
+                } else {
                     formationMove(selection, mouse_x, mouse_y);
                 }
-            }
-            else {
+            } else {
                 formationMove(selection, mouse_x, mouse_y);
             }
         }

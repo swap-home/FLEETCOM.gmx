@@ -58,17 +58,17 @@ mac_range = 1300;
 
 archerpod = 0;
 archerpod_cooldown = 0;
-archerpod_cooldown_max = 270;
+archerpod_cooldown_max = 150;
 archerpod_range = 900;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
 pdt_burst_delay = 0;
-pdt_burst_delay_max = 10;
+pdt_burst_delay_max = 30;
 pdt_burst_count = 0;
-pdt_burst_count_max = 8;
+pdt_burst_count_max = 4;
 pdt_cooldown = 0;
-pdt_cooldown_max = 90;
+pdt_cooldown_max = 40;
 pdt_range = 250;
 </string>
           </argument>
@@ -192,6 +192,46 @@ if (longsword_deploy_cd &gt; 0) {
     longsword_deploy_cd -= 1;
 }
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var singleship_type = oUNSC_pelican;
+
+if (scramble_transports &amp;&amp; pelican_deploy_cd == 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
+{
+    var transport_targetid = transport_targetid_queue[| 0];
+    ds_list_delete(transport_targetid_queue, 0);
+    if (instance_exists(transport_targetid)) {
+        var transport = createChild(x,y,singleship_type, irandom_range(0,359));
+        with (transport) {
+            board(transport_targetid);
+        }
+        pelican_deploy_cd = pelican_deploy_cd_max;
+        pelican -= 1;   
+    }
+    
+}
+
+if (pelican_deploy_cd &gt; 0) {
+    pelican_deploy_cd -= 1;
+}
 </string>
           </argument>
         </arguments>

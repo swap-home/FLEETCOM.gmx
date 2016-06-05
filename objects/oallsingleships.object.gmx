@@ -89,6 +89,8 @@ selfid_l = id;
 switch(state) {
     case MOVING:
     case ATTACK:
+    case BOARDING:
+    case REFUEL:
         //no need to change targets in these states
         break;
     case ESCORT:
@@ -268,6 +270,30 @@ switch(state) {
             }
         } else {
             homing_obj(targetid);
+        }
+        break;
+
+    case BOARDING:
+        // board a capital ship in range, ignore singleships
+        if (!instance_exists(targetid)) {
+            if (instance_exists(parentid)) {
+                refuel(parentid);
+            } else {
+                intercept(x,y);
+            }
+        } else {
+            homing_obj(targetid);
+        }
+        break;
+        
+    case REFUEL:
+        // return to parentship, restocking singleship
+        if (instance_exists(parentid)) {
+            targetid = parentid;
+            homing_obj(targetid);
+        } else {
+            intercept(x,y); // Temp solution, patrol current area
+            // TODO: Find nearest ally ship to refuel in
         }
         break;
 }
