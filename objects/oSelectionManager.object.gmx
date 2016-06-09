@@ -373,7 +373,16 @@ switch (current_command) {
 {
     var selectedUnit = ds_list_find_value(selection, 0);
     draw_set_color(c_yellow);
-    draw_text(view_xview[0]+60, view_yview[0]+30, string(selectedUnit.movespeed));
+    draw_text(view_xview[PRIMARY_VIEW]+60, view_yview[PRIMARY_VIEW]+30, string(selectedUnit.movespeed));
+    
+    for (var i = 0; i &lt; ds_list_size(selection); i++) {
+        if (instance_exists(selection[| i])) {
+            draw_set_color(c_green);
+        } else {
+            draw_set_color(c_red);
+        }
+        draw_text(view_xview[PRIMARY_VIEW]+view_wview[PRIMARY_VIEW]/2, view_yview[PRIMARY_VIEW] + 45 * i+1, string(selection[| i]));
+    }   
 }
 </string>
           </argument>

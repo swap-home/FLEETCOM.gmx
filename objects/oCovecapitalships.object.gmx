@@ -109,7 +109,10 @@ with (singleship_type)
     }
 }
 
-if (scramble_fighters &amp;&amp; banshee_deploy_cd == 0 &amp;&amp; banshee &gt; 0 &amp;&amp; deployed_l &lt; banshee_deploy_max)
+var max_deploy = banshee_deploy_max;
+if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
+
+if (scramble_fighters &amp;&amp; banshee_deploy_cd &lt;= 0 &amp;&amp; banshee &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
 {
     banshee_deploy_cd = banshee_deploy_cd_max;
     banshee -= 1;
@@ -169,7 +172,10 @@ with (singleship_type)
     }
 }
 
-if (scramble_fighters &amp;&amp; seraph_deploy_cd == 0 &amp;&amp; seraph &gt; 0 &amp;&amp; deployed_l &lt; seraph_deploy_max) 
+var max_deploy = seraph_deploy_max;
+if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
+
+if (scramble_fighters &amp;&amp; seraph_deploy_cd &lt;= 0 &amp;&amp; seraph &gt; 0 &amp;&amp; deployed_l &lt; max_deploy) 
 {
     seraph_deploy_cd = seraph_deploy_cd_max;
     seraph -= 1;
@@ -215,7 +221,7 @@ if (seraph_deploy_cd &gt; 0) {
             <kind>1</kind>
             <string>var singleship_type = oCove_phantom_T52;
 
-if (scramble_transports &amp;&amp; phantom_deploy_cd == 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
+if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
 {
     var transport_targetid = transport_targetid_queue[| 0];
     ds_list_delete(transport_targetid_queue, 0);
@@ -253,32 +259,33 @@ if (phantom_deploy_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_primary &amp;&amp; instance_exists(targetid) &amp;&amp; energyprojector_cooldown &lt;= 0)
+            <string>if (fire_primary &amp;&amp; energyprojector_cooldown &lt;= 0 &amp;&amp; energyprojector &gt; 0)
 {
-    if (point_distance(x,y,targetid.x,targetid.y) &lt;= energyprojector_range)
-    {
-        var selfid = id;
-        var targetdir = point_direction(x, y, targetid.x, targetid.y);
+    var selfid = id;
         
-        sound_play(energyProjectorFire);
-        energyprojector_cooldown = energyprojector_cooldown_max;
-        var i;
-        for (i = 0; i &lt; energyprojector; i+=1)
+    sound_play(energyProjectorFire);
+    energyprojector_cooldown = energyprojector_cooldown_max;
+    for (var i = 0; i &lt; energyprojector; i++)
+    {
+        with (instance_create(x,y,oCove_EnergyProjector))
         {
-            with (instance_create(x,y,oCove_EnergyProjector))
-            {
-                target = selfid.targetid;
-                x = selfid.x;
-                y = selfid.y;
-                dir = targetdir;
-                side = selfid.side;
-                parentid = selfid;
-            }
+            x = selfid.x;
+            y = selfid.y;
+            dir = primary_target_dir;
+            side = selfid.side;
+            parentid = selfid;
         }
     }
+    fire_primary = false;
 }
 
-energyprojector_cooldown -= 1;
+if (energyprojector_cooldown &gt; 0) {
+    if (status_half_primarycharge != 0) {
+        energyprojector_cooldown -= 0.5;
+    } else {
+        energyprojector_cooldown -= 1;
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -304,7 +311,12 @@ energyprojector_cooldown -= 1;
     if (point_distance(x,y,targetid.x,targetid.y) &lt;= plasmaturret_range)
     {
         plasmaturret_cooldown = plasmaturret_cooldown_max;
-        repeat (plasmaturret/3)
+        
+        var plasmaturret_shots = plasmaturret/3;
+        if (status_half_secondary != 0) {
+            plasmaturret_shots /= 2;
+        }
+        repeat (plasmaturret_shots)
         {
             ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oCove_PlasmaTorpedo);
             ID.side = side;
@@ -314,7 +326,10 @@ energyprojector_cooldown -= 1;
     }
 }
 
-plasmaturret_cooldown -= 1;
+if (plasmaturret_cooldown &gt; 0) {
+    plasmaturret_cooldown -= 1;    
+}
+
 </string>
           </argument>
         </arguments>
@@ -363,15 +378,21 @@ plasmaturret_cooldown -= 1;
     if (target_count_l &gt; 0)
     {
         plt_cooldown = plt_cooldown_max;
-        var i;
-        for (i = 0; i &lt; plt; i+=1)
+        
+        var plt_shots = plt;
+        if (status_half_pointdefense != 0) {
+            plt_shots /= 2;
+        }
+        for (var i = 0; i &lt; plt_shots; i+=1)
         {
             firepulselaserturret(i,targets_l[i mod target_count_l]);
         }
     }
 }
-plt_cooldown -= 1;
 
+if (plt_cooldown &gt; 0) {
+    plt_cooldown -= 1;
+}
 </string>
           </argument>
         </arguments>

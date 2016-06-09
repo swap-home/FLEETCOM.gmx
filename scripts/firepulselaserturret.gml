@@ -18,7 +18,6 @@ selfid = id;
 
 targetdir = point_direction(turret_x, turret_y, targetid.x, targetid.y);
 
-global.shots++;
 with (instance_create(turret_x,turret_y,oCove_PulseLaser))
 {
     target = targetid;

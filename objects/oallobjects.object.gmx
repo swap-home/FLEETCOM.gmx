@@ -67,6 +67,8 @@ init = false;
             <string>image_speed = 0;
 image_angle = direction;
 speed = movespeed;
+
+turning = false;
 </string>
           </argument>
         </arguments>

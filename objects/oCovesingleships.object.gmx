@@ -73,36 +73,37 @@ if (instance_exists(targetid))
     {
         var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; plasmacannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= plasmacannon_range)
+        if (((withinDegrees(direction, targetdir_l, 5) &amp;&amp; distance_to_object(targetid) &lt;= plasmacannon_range)
+            || collision_line(x,y,x+lengthdir_x(plasmacannon_range,direction),y+lengthdir_y(plasmacannon_range,direction),targetid,false,true))
+            &amp;&amp; plasmacannon_cooldown &lt;= 0)
         {
+            //sound_play(plasmaCannonFire);
             plasmacannon_cooldown = plasmacannon_cooldown_max;
             
-            var i;
-            for (i = 0; i &lt; plasmacannon; i+=1)
+            for (var i = 0; i &lt; plasmacannon; i++)
             {
-                //sound_play(plasmaCannonFire);
                 createChild(x,y,oCove_EnergyGun_class2, targetdir_l);
             }
         }
 
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; fuelrodcannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
+        if (((withinDegrees(direction, targetdir_l, 5) &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
+            || collision_line(x,y,x+lengthdir_x(fuelrodcannon_range,direction),y+lengthdir_y(fuelrodcannon_range,direction),targetid,false,true))
+            &amp;&amp; fuelrodcannon_cooldown &lt;= 0)
         {
             //sound_play(fuelRodFire);
             fuelrodcannon_cooldown = fuelrodcannon_cooldown_max;
             
-            var i;
-            for (i = 0; i &lt; fuelrodcannon; i+=1)
+            for (var i = 0; i &lt; fuelrodcannon; i++)
             {
                 createChild(x,y,oCove_ProjectileCannon_class2, targetdir_l);
             }
         }
 
-        if (heavyplasmacannon_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= heavyplasmacannon_range)
+        if (heavyplasmacannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= heavyplasmacannon_range)
         {
             heavyplasmacannon_cooldown = heavyplasmacannon_cooldown_max;
             
-            var i;
-            for (i = 0; i &lt; heavyplasmacannon; i+=1)
+            for (var i = 0; i &lt; heavyplasmacannon; i++)
             {
                 createChild(x,y,oCove_EnergyGun_class2_Heavy, targetdir_l);
             }

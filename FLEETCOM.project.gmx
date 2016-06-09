@@ -88,6 +88,7 @@
       <sprite>sprites\smouseglow</sprite>
       <sprite>sprites\sFighters</sprite>
       <sprite>sprites\sTransports</sprite>
+      <sprite>sprites\sStatusPrimary</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
@@ -137,20 +138,24 @@
         <script>scripts\refuel.gml</script>
       </scripts>
       <script>scripts\formationMove.gml</script>
+      <script>scripts\apply_ai.gml</script>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
     <script>scripts\projectileInitialize.gml</script>
     <script>scripts\beamCollision.gml</script>
+    <script>scripts\checkLoS.gml</script>
     <scripts name="sound">
       <script>scripts\ackSound.gml</script>
       <script>scripts\reportSound.gml</script>
     </scripts>
-    <script>scripts\checkLoS.gml</script>
     <script>scripts\firingSolution.gml</script>
     <script>scripts\quadratic_smallest_nonnegative.gml</script>
     <script>scripts\createChild.gml</script>
-    <script>scripts\apply_random_debuff.gml</script>
+    <scripts name="status">
+      <script>scripts\apply_random_debuff.gml</script>
+      <script>scripts\clear_all_debuffs.gml</script>
+    </scripts>
   </scripts>
   <fonts name="fonts">
     <font>fonts\Halo</font>
@@ -254,9 +259,9 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
-    <room>rooms\FixedBattle</room>
     <room>rooms\RandomBattle</room>
     <room>rooms\room3</room>
+    <room>rooms\FixedBattle</room>
   </rooms>
   <constants number="22">
     <constant name="STEPS_PER_SECOND">30</constant>

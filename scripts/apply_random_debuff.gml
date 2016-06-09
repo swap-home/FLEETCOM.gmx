@@ -5,20 +5,21 @@ if (!object_is_ancestor(unitId.object_index, oallcapitalships)) {
     exit;
 }
 
-var rand = irandom(3);
-
+var rand = irandom(4);
 switch (rand) {
     case 0: 
-        status_half_pointdefense += duration * STEPS_PER_SECOND;
+        status_half_primarycharge += duration * STEPS_PER_SECOND;
         break;
     case 1:
         status_half_secondary += duration * STEPS_PER_SECOND;
         break;
     case 2:
-        status_half_primarycharge += duration * STEPS_PER_SECOND;
+        status_half_pointdefense += duration * STEPS_PER_SECOND;
         break;
     case 3:
+        status_half_fighter_deploymax += duration * STEPS_PER_SECOND;
+        break;
+    case 4:
         status_immobilization += duration * STEPS_PER_SECOND;
         break;
-}
-    
+}    

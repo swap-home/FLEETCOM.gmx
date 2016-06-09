@@ -356,11 +356,11 @@ pulselaserturret_A[35] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>side</string>
+            <string>security_level</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1</string>
+            <string>64</string>
           </argument>
         </arguments>
       </action>

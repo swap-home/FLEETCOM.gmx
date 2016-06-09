@@ -58,15 +58,16 @@ move_x = x;
 move_y = y;
 turning = false;
 
-scramble_fighters = true;
+scramble_fighters = false;
 fighter_targetid = id;
 fighter_target_x = 0;
 fighter_target_y = 0;
 
-scramble_transports = false;
 transport_targetid_queue = ds_list_create();
 
+primary_target_dir = 0;
 fire_primary = false;
+
 fire_secondary = true;
 fire_pointdef = true;
 
@@ -75,12 +76,13 @@ boarding_level = 0;
 boarding_timer = 0;
 boarding_timer_max = STEPS_PER_SECOND * 7;
 
-status_half_pointdefense = 0;
-status_half_secondary = 0;
+// status denotes the duration of the status, -1 is infinite duration
 status_half_primarycharge = 0;
+status_half_secondary = 0;
+status_half_pointdefense = 0;
+status_half_fighter_deploymax = 0;
 status_immobilization = 0;
 
-//instance_create(x,y,oshockring);
 </string>
           </argument>
         </arguments>
@@ -166,17 +168,39 @@ if (!instance_exists(assignedTargetid))
                 metric_target_id = id;
             } 
         }
-        //else if (strategy = targetclustered)
+        else if (strategy == "highest")
+        {
+            if (hull+shield &gt; metric_value)
+            {
+                metric_value = hull+shield;
+                metric_target_id = id;
+            }
+        }
     }
     
     targetid = metric_target_id;
 }
 
-//select fighter target if AI
+//select fighter target if AI controlled
 if (ai) {
     if (instance_exists(targetid)) {
-        // Intercept singleships near enemy ship
-        commandFighters(id, targetid.x, targetid.y, noone);
+        var intercept_range_low = 2;
+        var intercept_range_high = 8;
+        
+        // TODO: enable risk overlap, save each valid command and then pick a random one
+        if (risk &gt;= 0 &amp;&amp; risk &lt;= 1) {
+            // Escort self
+            commandFighters(id, 0, 0, id);
+        } else if (risk &gt;= intercept_range_low &amp;&amp; risk &lt;= intercept_range_high) {
+            // Intercept area
+            var diff_x = targetid.x - x;
+            var diff_y = targetid.y - y;
+            var ratio = (risk - intercept_range_low) / (intercept_range_high - intercept_range_low);
+            commandFighters(id, x + ratio*diff_x, y + ratio*diff_y, noone);
+        } else if (risk &gt;= 9 &amp;&amp; risk &lt;= 10) {
+            // Attack enemy capital ship
+            commandFighters(id, targetid.x, targetid.y, noone);
+        }
     } else {
         // Escort self if no targets
         commandFighters(id, 0, 0, id);
@@ -275,7 +299,7 @@ else
 }
 
 // Update Boarding status
-if (security_level != boarding_level) {
+if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
     if (boarding_level &gt; security_level) {
         boarding_timer--;
     } else if (security_level &gt; boarding_level) {
@@ -292,12 +316,16 @@ if (security_level != boarding_level) {
         } else {
             security_level--;
             boarding_timer = 0;
-            apply_random_debuff(id, 7);
+            //apply_random_debuff(id, 7);
         }
     } else if (boarding_timer &gt;= boarding_timer_max) {
         // Boarding repelled
-        boarding_level--;
-        boarding_timer = 0;
+        if (boarding_level == 1) {
+            clear_all_debuffs(id);
+        } else {
+            boarding_level--;
+            boarding_timer = 0;
+        }
     }
 }
 </string>
@@ -369,7 +397,11 @@ if (side == other.side &amp;&amp;  id == other.targetid &amp;&amp; other.state =
 if (other.targetid == id &amp;&amp; other.state == BOARDING)
 {
     if (side != other.side) {
+        if (boarding_level == 0) {
+            apply_random_debuff(id, -1);
+        }
         boarding_level++;
+        
     } else {
         security_level++;
     }
@@ -451,8 +483,31 @@ if (boarding_level &gt; 0) {
     draw_set_color(c_gray);
     draw_text(x-sprite_width/2 - 22,y-(sprite_height/2)-21-4,string(security_level));
     draw_text(x-sprite_width/2 + sprite_width + 22,y-(sprite_height/2)-21-4,string(boarding_level));
-    draw_text(x,y-(sprite_height/2)-42,string(boarding_timer));
+    //draw_text(x,y-(sprite_height/2)-42,string(boarding_timer));
 }
+
+//draw status effects
+draw_set_font(Halo);
+draw_set_color(c_red);
+var status = "";
+if (status_half_primarycharge != 0) {
+    status += "A";
+}
+if (status_half_secondary != 0) {
+    status += "B";
+}
+if (status_half_pointdefense != 0) {
+    status += "C";
+}
+if (status_half_fighter_deploymax != 0) {
+    status += "D";
+}
+if (status_immobilization != 0) {
+    status += "E";
+}
+
+draw_set_halign(fa_center);
+draw_text(x, y, status);
 
 draw_set_alpha(oldAlpha);
 </string>

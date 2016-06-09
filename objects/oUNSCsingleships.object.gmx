@@ -79,7 +79,9 @@ if (instance_exists(targetid))
     {
         var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         
-        if (withinDegrees(direction, targetdir_l, 45) &amp;&amp; pdt_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= pdt_range)
+        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= pdt_range)
+            || collision_line(x,y,x+lengthdir_x(pdt_range,direction),y+lengthdir_y(pdt_range,direction),targetid,false,true))
+            &amp;&amp; pdt_cooldown &lt;= 0)
         {
             pdt_cooldown = pdt_cooldown_max;
             
@@ -90,7 +92,9 @@ if (instance_exists(targetid))
             }
         }
 
-        if (withinDegrees(direction, targetdir_l, 5) &amp;&amp; archerpod_cooldown == 0 &amp;&amp; distance_to_object(targetid) &lt;= archerpod_range)
+        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= archerpod_range)
+            || collision_line(x,y,x+lengthdir_x(archerpod_range,direction),y+lengthdir_y(archerpod_range,direction),targetid,false,true))
+            &amp;&amp; archerpod_cooldown &lt;= 0)
         {
             archerpod_cooldown = archerpod_cooldown_max;
         

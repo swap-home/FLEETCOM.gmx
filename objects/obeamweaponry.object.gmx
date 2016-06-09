@@ -33,6 +33,8 @@ dmg_thermal = 0;
 
 parentid = 0;
 targetid = 0;
+
+global.shots++;
 </string>
           </argument>
         </arguments>

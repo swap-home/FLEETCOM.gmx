@@ -57,8 +57,6 @@ global.singleShips[1] = ds_list_create();
 global.destructableProjectiles[0] = ds_list_create();
 global.destructableProjectiles[1] = ds_list_create();
 
-
-
 global.hits = 0;
 global.shots = 0;
 
@@ -108,14 +106,13 @@ with (oallships)
         side = UNSC;
         direction = ctrl.rightdir;
         moveTo(id, ctrl.leftmid, y);
-        ai = false;
     }
     else
     {
         side = REBEL;
         direction = ctrl.leftdir;
         moveTo(id, ctrl.rightmid, y);
-        ai = true;
+        apply_ai(id, -1);
     }
 }
 </string>
@@ -146,28 +143,26 @@ with (oCovecapitalships)
     side = COVE;
     direction = ctrl.leftdir;
     moveTo(id, ctrl.rightmid, y);
-    ai = true;
+    apply_ai(id, -1);
 }
 with (oCovesingleships)
 {
     side = COVE;
     direction = ctrl.leftdir;
     moveTo(id, ctrl.rightmid, y);
-    ai = true;
+    apply_ai(id, -1);
 }
 with (oUNSCcapitalships)
 {
     side = UNSC;
     direction = ctrl.rightdir;
     moveTo(id, ctrl.leftmid, y);
-    ai = false;
 }
 with (oUNSCsingleships)
 {
     side = UNSC;
     direction = ctrl.rightdir;
     moveTo(id, ctrl.leftmid, y);
-    ai = false;
 }
 </string>
           </argument>
@@ -210,7 +205,7 @@ if (coveShipCount*2 &lt; unscShipCount)
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
             side = COVE;
-            ai = true;
+            apply_ai(createId, -1);
         }
     }
     
@@ -222,7 +217,7 @@ if (coveShipCount*2 &lt; unscShipCount)
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
             side = COVE;
-            ai = true;
+            apply_ai(createId, -1);
         }
     }
     
@@ -234,7 +229,7 @@ if (coveShipCount*2 &lt; unscShipCount)
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
             side = COVE;
-            ai = true;
+            apply_ai(createId, -1);
         }
     }
     
@@ -246,7 +241,7 @@ if (coveShipCount*2 &lt; unscShipCount)
             direction = ctrl.leftdir;
             moveTo(id, ctrl.leftmid, y);
             side = COVE;
-            ai = true;
+            apply_ai(createId, -1);
         }
     }
 }
@@ -260,7 +255,6 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            ai = false;
         }
     }
 
@@ -271,7 +265,7 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            ai = false;
+            
         }
     }
     
@@ -282,7 +276,6 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            ai = false;
         }
     }
     
@@ -293,7 +286,6 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            ai = false;
         }
     }
 }
@@ -321,7 +313,7 @@ alarm[0] = irandom(15*30)+ 10*30;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>show_message(string(global.hits) + "/" + string(global.shots));
+            <string>show_message(string(global.hits) + "/" + string(global.shots) + " : " + string(global.hits/global.shots));
 </string>
           </argument>
         </arguments>

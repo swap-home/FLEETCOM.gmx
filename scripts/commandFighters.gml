@@ -5,6 +5,10 @@ var command_y = argument2;
 //Overrides x,y if commandTarget exists
 var commandTarget = argument3;
 
+if (!instance_exists(commandUnit)) {
+    exit;
+}
+
 var fighter_race;
 if (commandUnit.race == "unsc") {
     fighter_race = global.UNSCfighters;

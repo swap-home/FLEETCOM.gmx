@@ -15,9 +15,9 @@ if (!instance_exists(parentid)) {instance_destroy();}
 
 var selfid = id;
 
-with (parentid) 
+with (parentid)
 {
-    first_instance = collision_line(x, y, xx, yy, affects, false, false);
+    first_instance = collision_line(_x, _y, xx, yy, affects, false, true);
 
     if (first_instance != noone)
     {
@@ -39,7 +39,7 @@ with (parentid)
     
     cx = xx - dx;
     cy = yy - (dy * 2);
-    if (first_instance == selfid.target) {global.hits++;}
+    if (instance_exists(selfid.targetid) && first_instance == selfid.targetid) {global.hits++;}
     if (first_instance != noone)
     {
         if (side != first_instance.side)
