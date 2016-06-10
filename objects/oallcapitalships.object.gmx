@@ -322,10 +322,9 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
         // Boarding repelled
         if (boarding_level == 1) {
             clear_all_debuffs(id);
-        } else {
-            boarding_level--;
-            boarding_timer = 0;
         }
+        boarding_level--;
+        boarding_timer = 0;
     }
 }
 </string>
