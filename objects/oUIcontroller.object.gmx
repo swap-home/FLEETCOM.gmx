@@ -195,6 +195,9 @@ if (instance_exists(global.selection_manager)) {
         
         ds_list_add(button_sprites, sTransports);
         ds_list_add(button_actions, LAUNCH_TRANSPORTS);
+        
+        ds_list_add(button_sprites, sPrimaryFire);
+        ds_list_add(button_actions, FIRE_PRIMARY);
     }
 }
 </string>

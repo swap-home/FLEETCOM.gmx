@@ -88,6 +88,7 @@
       <sprite>sprites\smouseglow</sprite>
       <sprite>sprites\sFighters</sprite>
       <sprite>sprites\sTransports</sprite>
+      <sprite>sprites\sPrimaryFire</sprite>
       <sprite>sprites\sStatusPrimary</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
@@ -130,6 +131,7 @@
       <script>scripts\stop.gml</script>
       <script>scripts\commandFighters.gml</script>
       <script>scripts\commandTransports.gml</script>
+      <script>scripts\firePrimary.gml</script>
       <scripts name="fighters">
         <script>scripts\escort.gml</script>
         <script>scripts\intercept.gml</script>

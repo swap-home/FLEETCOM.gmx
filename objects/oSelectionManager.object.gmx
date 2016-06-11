@@ -157,10 +157,9 @@ if (mouse_check_button_pressed(mb_left)) {
             }
         }
         current_command = NO_COMMAND;
-    }  else if (current_command == LAUNCH_TRANSPORTS) {
+    } else if (current_command == LAUNCH_TRANSPORTS) {
         if (!ds_list_empty(selection))
         {
-            ackSound();
             var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
             var closest_available_id = noone;
             var closest_available_distance = 9999;
@@ -174,7 +173,7 @@ if (mouse_check_button_pressed(mb_left)) {
                     var dist = distance_to_point(mouse_x, mouse_y);
                     if (race == "unsc") {
                         if (pelican - ds_list_size(transport_targetid_queue) &gt; 0) {
-                            if (pelican_deploy_cd == 0 &amp;&amp; dist &lt; closest_available_distance) {
+                            if (pelican_deploy_cd &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
                                 closest_available_id = id;
                                 closest_available_distance = dist;
                             } else if (pelican_deploy_cd &gt; 0 &amp;&amp; dist &lt; closest_cooldown_distance) {
@@ -184,7 +183,7 @@ if (mouse_check_button_pressed(mb_left)) {
                         }
                     } else if (race == "cove") {
                         if (phantom - ds_list_size(transport_targetid_queue) &gt; 0) {
-                            if (phantom_deploy_cd == 0 &amp;&amp; dist &lt; closest_available_distance) {
+                            if (phantom_deploy_cd &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
                                 closest_available_id = id;
                                 closest_available_distance = dist;
                             } else if (phantom_deploy_cd &gt; 0 &amp;&amp; dist &lt; closest_cooldown_distance) {
@@ -196,12 +195,43 @@ if (mouse_check_button_pressed(mb_left)) {
                 }
             }
             if (instance_exists(closest_available_id)) {
+                ackSound();
                 commandTransports(closest_available_id, mouse_x, mouse_y, targetId);
             } else if (instance_exists(closest_cooldown_id)) {
+                ackSound();
                 commandTransports(closest_cooldown_id, mouse_x, mouse_y, targetId);
             }
         }
-        //current_command = NO_COMMAND;
+        current_command = NO_COMMAND;
+    } else if (current_command == FIRE_PRIMARY) {
+        if (!ds_list_empty(selection))
+        {
+            var closest_available_id = noone;
+            var closest_available_distance = 9999;
+            
+            // Search for closest with primary weapon available and off cooldown
+            for (var i = 0; i &lt; ds_list_size(selection); i++)
+            {
+                with (selection[| i]) {
+                    var dist = point_distance(x, y, mouse_x, mouse_y);
+                    if (race == "unsc") {
+                        if (mac_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                            closest_available_id = id;
+                            closest_available_distance = dist;
+                        }
+                    } else if (race == "cove") {
+                        if (energyprojector_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                            closest_available_id = id;
+                            closest_available_distance = dist;
+                        }
+                    }
+                }
+            }
+            if (instance_exists(closest_available_id)) {
+                firePrimary(closest_available_id, mouse_x, mouse_y);
+            }
+        }
+        current_command = NO_COMMAND;
     }
 }
 
@@ -346,6 +376,9 @@ switch (current_command) {
     case LAUNCH_TRANSPORTS:
         cursor_sprite = sUNSC_pelican;
         break;
+    case FIRE_PRIMARY:
+        cursor_sprite = smouseglow;
+        break;
 }
 </string>
           </argument>
@@ -371,10 +404,12 @@ switch (current_command) {
             <kind>1</kind>
             <string>if (!ds_list_empty(selection) &amp;&amp; global.debug)
 {
+    // draw speed
     var selectedUnit = ds_list_find_value(selection, 0);
     draw_set_color(c_yellow);
     draw_text(view_xview[PRIMARY_VIEW]+60, view_yview[PRIMARY_VIEW]+30, string(selectedUnit.movespeed));
     
+    // draw selection ids
     for (var i = 0; i &lt; ds_list_size(selection); i++) {
         if (instance_exists(selection[| i])) {
             draw_set_color(c_green);
@@ -382,7 +417,51 @@ switch (current_command) {
             draw_set_color(c_red);
         }
         draw_text(view_xview[PRIMARY_VIEW]+view_wview[PRIMARY_VIEW]/2, view_yview[PRIMARY_VIEW] + 45 * i+1, string(selection[| i]));
-    }   
+    }
+}
+
+    
+// draw targeting line
+if (current_command == FIRE_PRIMARY) {
+    if (!ds_list_empty(selection))
+    {
+        var closest_available_id = noone;
+        var closest_available_distance = 9999;
+        
+        // Search for closest with primary weapon available and off cooldown
+        for (var i = 0; i &lt; ds_list_size(selection); i++)
+        {
+            with (selection[| i]) {
+                var dist = point_distance(x, y, mouse_x, mouse_y);
+                if (race == "unsc") {
+                    if (mac_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                        closest_available_id = id;
+                        closest_available_distance = dist;
+                    }
+                } else if (race == "cove") {
+                    if (energyprojector_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                        closest_available_id = id;
+                        closest_available_distance = dist;
+                    }
+                }
+            }
+        }
+        //show_debug_message(string(closest_available_id));
+        if (instance_exists(closest_available_id)) {
+            draw_set_color(c_red);
+            var fire_x = closest_available_id.x + lengthdir_x(closest_available_id.primary_origin_distance_offset,closest_available_id.primary_origin_angle_offset);
+            var fire_y = closest_available_id.y + lengthdir_y(closest_available_id.primary_origin_distance_offset,closest_available_id.primary_origin_angle_offset);
+            var range = 0;
+            var dir = point_direction(fire_x, fire_y, mouse_x, mouse_y);
+            if (closest_available_id.race = "unsc") {
+                range = closest_available_id.mac_range;
+            } else if (closest_available_id.race = "cove") {
+                range = closest_available_id.energyprojector_range;
+            }
+            //show_debug_message("range: " + string(range) + ", dir: " + string(dir));
+            draw_line_width(fire_x,fire_y,fire_x+lengthdir_x(range,dir),fire_y+lengthdir_y(range,dir),2);
+        }
+    }
 }
 </string>
           </argument>
@@ -420,6 +499,42 @@ if (click_down)
 
 draw_set_color(oldColor);
 draw_set_alpha(oldAlpha);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="90">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>for (var i = 0; i &lt; ds_list_size(selection); i++)
+{
+    with (selection[| i]) {
+        if (race == "unsc") {
+            mac_cooldown = 0;
+            hull = hull_max;
+            shield = shield_max;
+        } else if (race == "cove") {
+            energyprojector_cooldown = 0;
+            hull = hull_max;
+            shield = shield_max;
+        }
+    }
+}
 </string>
           </argument>
         </arguments>

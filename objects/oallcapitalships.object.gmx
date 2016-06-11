@@ -67,6 +67,8 @@ transport_targetid_queue = ds_list_create();
 
 primary_target_dir = 0;
 fire_primary = false;
+primary_origin_angle_offset = 0;
+primary_origin_distance_offset = 0;
 
 fire_secondary = true;
 fire_pointdef = true;
