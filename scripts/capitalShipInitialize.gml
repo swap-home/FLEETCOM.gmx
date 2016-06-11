@@ -6,6 +6,7 @@ shield_max = shield_max*7;
 hull = hull_max;
 shield = shield_max;
 movespeed = maxspeed;
+security_level = security_level_initial;
 
 if (race == "unsc")
 {

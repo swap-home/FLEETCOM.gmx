@@ -437,7 +437,7 @@ pulselaserturret_A[17] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>security_level</string>
+            <string>security_level_initial</string>
           </argument>
           <argument>
             <kind>0</kind>

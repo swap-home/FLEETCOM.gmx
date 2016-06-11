@@ -73,6 +73,7 @@ primary_origin_distance_offset = 0;
 fire_secondary = true;
 fire_pointdef = true;
 
+security_level_initial = 0;
 security_level = 0;
 boarding_level = 0;
 boarding_timer = 0;
@@ -478,7 +479,7 @@ if (shield_max &gt; 0)
 {draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);}
 
 //draw a boarding bar
-if (boarding_level &gt; 0) {
+if (boarding_level &gt; 0 || security_level != security_level_initial) {
     draw_bar_split(x-sprite_width/2,y-(sprite_height/2)-21,sprite_width,5,boarding_timer+boarding_timer_max,2*boarding_timer_max,c_green,c_red);
     draw_set_font(Halo);
     draw_set_color(c_gray);
