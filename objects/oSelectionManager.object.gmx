@@ -449,17 +449,15 @@ if (current_command == FIRE_PRIMARY) {
         //show_debug_message(string(closest_available_id));
         if (instance_exists(closest_available_id)) {
             draw_set_color(c_red);
-            var fire_x = closest_available_id.x + lengthdir_x(closest_available_id.primary_origin_distance_offset,closest_available_id.primary_origin_angle_offset);
-            var fire_y = closest_available_id.y + lengthdir_y(closest_available_id.primary_origin_distance_offset,closest_available_id.primary_origin_angle_offset);
             var range = 0;
-            var dir = point_direction(fire_x, fire_y, mouse_x, mouse_y);
+            var dir = point_direction(closest_available_id.x, closest_available_id.y, mouse_x, mouse_y);
             if (closest_available_id.race = "unsc") {
                 range = closest_available_id.mac_range;
             } else if (closest_available_id.race = "cove") {
                 range = closest_available_id.energyprojector_range;
             }
             //show_debug_message("range: " + string(range) + ", dir: " + string(dir));
-            draw_line_width(fire_x,fire_y,fire_x+lengthdir_x(range,dir),fire_y+lengthdir_y(range,dir),2);
+            draw_line_width(closest_available_id.x,closest_available_id.y,closest_available_id.x+lengthdir_x(range,dir),closest_available_id.y+lengthdir_y(range,dir),2);
         }
     }
 }

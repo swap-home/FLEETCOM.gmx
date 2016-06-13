@@ -271,9 +271,8 @@ if (pelican_deploy_cd &gt; 0) {
         {
             with (instance_create(x,y,oUNSC_MAC))
             {
-                // TODO: add angle offset for weapon 
-                var fire_x = selfid.x + lengthdir_x(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset);
-                var fire_y = selfid.y + lengthdir_y(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset);
+                var fire_x = selfid.x + lengthdir_x(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset+selfid.direction);
+                var fire_y = selfid.y + lengthdir_y(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset+selfid.direction);
                 x = fire_x;
                 y = fire_y;
                 dir = selfid.primary_target_dir;

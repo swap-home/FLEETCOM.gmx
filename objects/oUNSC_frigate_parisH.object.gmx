@@ -423,11 +423,11 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_mac</string>
+            <string>security_level_initial</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0</string>
+            <string>2</string>
           </argument>
         </arguments>
       </action>
@@ -447,11 +447,11 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>security_level_initial</string>
+            <string>primary_origin_distance_offset</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>2</string>
+            <string>69</string>
           </argument>
         </arguments>
       </action>
