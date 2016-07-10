@@ -38,6 +38,7 @@ shield = 0;
 shield_max = 0;
 
 maxturnrate = 0;
+turning = false;
 movespeed = 0;
 maxspeed = 0;
 targetid = noone;
@@ -66,7 +67,7 @@ ai = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (side != other.side)
+            <string>if (side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -95,7 +96,7 @@ ai = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (side != other.side)
+            <string>if (side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");

@@ -28,11 +28,11 @@
             <string>trail_x = ds_list_create();
 trail_y = ds_list_create();
 
-if (instance_exists(oFX_control) &amp;&amp; surface_exists(oFX_control.surf))
+if (instance_exists(global.fx_control) &amp;&amp; surface_exists(global.fx_control.surf))
 {
-    tex = surface_get_texture(oFX_control.surf);
-    srf_w = surface_get_width(oFX_control.surf);
-    srf_h = surface_get_height(oFX_control.surf);
+    tex = surface_get_texture(global.fx_control.surf);
+    srf_w = surface_get_width(global.fx_control.surf);
+    srf_h = surface_get_height(global.fx_control.surf);
     tex_w = texture_get_width(tex);
     tex_h = texture_get_height(tex);
 }
@@ -43,7 +43,7 @@ trail_point_per_steps = 2;
 trail_color = c_white;
 alarm[0] = trail_point_per_steps;
 
-parent = -1;
+parent = noone;
 </string>
           </argument>
         </arguments>

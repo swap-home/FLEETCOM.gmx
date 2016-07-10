@@ -21,13 +21,13 @@ with (parentid)
 
     if (first_instance != noone)
     {
-        dx = xx - x;
-        dy = yy - y;
+        dx = xx - _x;
+        dy = yy - _y;
         while (abs(dx) >= 1 || abs(dy) >= 1) 
         {
             dx /= 2;
             dy /= 2;
-            instance = collision_line(x, y, xx - dx, yy - dy, affects, true, true);
+            instance = collision_line(_x, _y, xx - dx, yy - dy, affects, true, true);
             if (instance != noone) 
             {
                 first_instance = instance;
@@ -39,6 +39,7 @@ with (parentid)
     
     cx = xx - dx;
     cy = yy - (dy * 2);
+
     if (instance_exists(selfid.targetid) && first_instance == selfid.targetid) {global.hits++;}
     if (first_instance != noone)
     {
@@ -49,6 +50,6 @@ with (parentid)
             Damage_Unit(selfid.dmg_thermal, selfid, first_instance, "thermal");
         }
     }
-        
-    selfid.image_xscale = point_distance(x, y, cx, cy) / 256;
+
+    selfid.image_xscale = point_distance(_x, _y, cx, cy) / 256;
 }

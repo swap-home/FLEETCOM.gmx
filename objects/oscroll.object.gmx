@@ -25,48 +25,71 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>globalvar view_mx;
-globalvar view_vx;
-globalvar view_my;
-globalvar view_vy;
-globalvar viewwidth;
-globalvar viewheight;
-globalvar viewdrag_visible;
+            <string>view_mx = 0;
+view_vx = 0;
+view_my = 0;
+view_vy = 0;
+viewdrag_visible = false;
 
-global.view_mx = 0;
-global.view_vx = 0
-global.view_my = 0
-global.view_vy = 0
-global.viewwidth = 1024
-global.viewheight = 768
-global.viewdrag_visible = false
+scrollspeed = 16;
+full_scroll_border = 32;
+half_scroll_border = 64;
+screen_locked = false;
+
 
 cursor_sprite = smouse;
+
+x = (view_wview[PRIMARY_VIEW]-view_xview[PRIMARY_VIEW])/2;
+y = (view_hview[PRIMARY_VIEW]-view_yview[PRIMARY_VIEW])/2
 </string>
           </argument>
         </arguments>
       </action>
+    </event>
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
-        <id>109</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_to</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>(global.viewwidth-view_xview[0])/2</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>(global.viewheight-view_yview[0])/2</string>
+            <kind>1</kind>
+            <string>if (!screen_locked) {
+
+    if (mouse_x &lt; view_xview[PRIMARY_VIEW] + full_scroll_border) {
+        screenLeft(scrollspeed);
+    } else if (mouse_x &lt; view_xview[PRIMARY_VIEW] + half_scroll_border) {
+        screenLeft(scrollspeed/2);
+    }
+    
+    if (mouse_y &lt; view_yview[PRIMARY_VIEW] + full_scroll_border) {
+        screenUp(scrollspeed);
+    } else if (mouse_y &lt; view_yview[PRIMARY_VIEW] + half_scroll_border) {
+        screenUp(scrollspeed/2);
+    }
+    
+    if (mouse_x &gt; view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - full_scroll_border) {
+        screenRight(scrollspeed);
+    } else if (mouse_x &gt; view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - half_scroll_border) {
+        screenRight(scrollspeed/2);
+    }
+    
+    if (mouse_y &gt; view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - full_scroll_border) {
+        screenDown(scrollspeed);
+    } else if (mouse_y &gt; view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - half_scroll_border) {
+        screenDown(scrollspeed/2);
+    }
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -74,53 +97,24 @@ cursor_sprite = smouse;
     <event eventtype="5" enumb="40">
       <action>
         <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>-1</isquestion>
+        <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>y</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>room_height - (global.viewheight/2)</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>1</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>109</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_to</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>-1</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>0</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>20</string>
+            <kind>1</kind>
+            <string>if (!screen_locked) {
+    screenDown(scrollspeed);
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -128,53 +122,24 @@ cursor_sprite = smouse;
     <event eventtype="5" enumb="39">
       <action>
         <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>-1</isquestion>
+        <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>x</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>room_width - (global.viewwidth/2)</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>1</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>109</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_to</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>-1</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>20</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0</string>
+            <kind>1</kind>
+            <string>if (!screen_locked) {
+    screenRight(scrollspeed);
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -182,53 +147,24 @@ cursor_sprite = smouse;
     <event eventtype="5" enumb="38">
       <action>
         <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>-1</isquestion>
+        <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>y</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>global.viewheight/2</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>2</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>109</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_to</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>-1</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>0</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>-20</string>
+            <kind>1</kind>
+            <string>if (!screen_locked) {
+    screenUp(scrollspeed);
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -236,53 +172,24 @@ cursor_sprite = smouse;
     <event eventtype="5" enumb="37">
       <action>
         <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>-1</isquestion>
+        <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>x</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>global.viewwidth/2</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>2</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>109</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_to</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>-1</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>-20</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0</string>
+            <kind>1</kind>
+            <string>if (!screen_locked) {
+    screenLeft(scrollspeed);
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -304,7 +211,7 @@ cursor_sprite = smouse;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.viewdrag_visible = false
+            <string>viewdrag_visible = false;
 //Cursor_Refresh()
 </string>
           </argument>
@@ -328,11 +235,13 @@ cursor_sprite = smouse;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>global.view_mx = window_mouse_get_x();
-global.view_vx = view_xview;
-global.view_my = window_mouse_get_y();
-global.view_vy = view_yview;
-global.viewdrag_visible = false
+            <string>if (!screen_locked) {
+    view_mx = window_mouse_get_x();
+    view_vx = view_xview[PRIMARY_VIEW];
+    view_my = window_mouse_get_y();
+    view_vy = view_yview[PRIMARY_VIEW];
+    viewdrag_visible = false;
+}
 </string>
           </argument>
         </arguments>
@@ -355,16 +264,17 @@ global.viewdrag_visible = false
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (global.viewdrag_visible)
-{
-    global.difference_x = window_mouse_get_x() - global.view_mx
-    global.difference_y = window_mouse_get_y() - global.view_my
-    x = (global.viewwidth/2) + global.view_vx - global.difference_x
-    y = (global.viewheight/2) + global.view_vy - global.difference_y
-}
-if (ds_list_size(global.selection_manager.selection) == 0)
-{
-    global.viewdrag_visible = true
+            <string>if (!screen_locked) {
+    if (viewdrag_visible) {
+        var difference_x = window_mouse_get_x() - view_mx;
+        var difference_y = window_mouse_get_y() - view_my;
+        x = (view_wview[PRIMARY_VIEW]/2) + view_vx - difference_x;
+        y = (view_hview[PRIMARY_VIEW]/2) + view_vy - difference_y;
+    }
+    
+    if (instance_exists(global.selection_manager) &amp;&amp; ds_list_empty(global.selection_manager.selection)) {
+        viewdrag_visible = true;
+    }
 }
 </string>
           </argument>

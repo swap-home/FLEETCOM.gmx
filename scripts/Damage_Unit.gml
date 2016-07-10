@@ -5,7 +5,7 @@ attackerid = argument1;
 targetid = argument2;
 damagetype = argument3;
 
-if (basedmg == 0 || !instance_exists(targetid)){exit;}
+if (basedmg == 0 || !instance_exists(targetid) || targetid.invulnerable){exit;}
 
 if (targetid.shield > 0)  //damage shields
 {

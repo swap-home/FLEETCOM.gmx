@@ -75,7 +75,7 @@ archerpod_range = 350;
 
 if (instance_exists(targetid))
 {
-    if (targetid.side != side)
+    if (targetid.side != side &amp;&amp; targetid.side != NEUTRAL &amp;&amp; !targetid.invulnerable)
     {
         var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         

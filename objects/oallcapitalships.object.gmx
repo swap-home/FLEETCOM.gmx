@@ -56,7 +56,6 @@ findtarget_delay = 30;
 
 move_x = x;
 move_y = y;
-turning = false;
 
 scramble_fighters = false;
 fighter_targetid = id;
@@ -78,14 +77,21 @@ security_level = 0;
 boarding_level = 0;
 boarding_timer = 0;
 boarding_timer_max = STEPS_PER_SECOND * 7;
+boarding_captures = false;
+boarding_side = NEUTRAL;
 
 // status denotes the duration of the status, -1 is infinite duration
 status_half_primarycharge = 0;
 status_half_secondary = 0;
 status_half_pointdefense = 0;
 status_half_fighter_deploymax = 0;
+status_half_speed = 0;
 status_immobilization = 0;
 
+// ai vars
+ai_boarding_range = 1500;
+
+ship_name = "";
 </string>
           </argument>
         </arguments>
@@ -149,8 +155,8 @@ if (!instance_exists(assignedTargetid))
     assignedTargetid = noone;
     with (oallcapitalships)
     {
-        //ignore units outside sight range or on the same team
-        if (distance_to_object(selfid) &gt; sight_range || side == selfside)
+        //ignore units outside sight range, on the same team, neutral, or invulnerable
+        if (distance_to_object(selfid) &gt; sight_range || side == selfside || side == NEUTRAL || invulnerable)
         {
             continue;
         }
@@ -184,8 +190,9 @@ if (!instance_exists(assignedTargetid))
     targetid = metric_target_id;
 }
 
-//select fighter target if AI controlled
+// if AI controlled
 if (ai) {
+    // set fighter target
     if (instance_exists(targetid)) {
         var intercept_range_low = 2;
         var intercept_range_high = 8;
@@ -208,6 +215,53 @@ if (ai) {
         // Escort self if no targets
         commandFighters(id, 0, 0, id);
     }
+    
+    // set trasport target
+    if (race == "unsc") {
+        if (pelican - ds_list_size(transport_targetid_queue) &gt; 0) {
+            if (instance_exists(targetid) 
+                &amp;&amp; irandom(10) &gt;= risk 
+                &amp;&amp; distance_to_object(targetid) &lt;= risk/10 * ai_boarding_range) {
+             
+                commandTransports(id, targetid.x, targetid.y, targetid);   
+            }
+        }
+    } else if (race == "cove") {
+        if (phantom - ds_list_size(transport_targetid_queue) &gt; 0) {
+            if (instance_exists(targetid) 
+                &amp;&amp; irandom(10) &gt;= risk 
+                &amp;&amp; distance_to_object(targetid) &lt;= risk/10 * ai_boarding_range) {
+             
+                commandTransports(id, targetid.x, targetid.y, targetid);   
+            }
+        }
+    }
+    
+    // set primary target
+    
+    if (race == "unsc") {
+        if (mac_cooldown &lt;= 0 &amp;&amp; mac &gt; 0 &amp;&amp; irandom(10) &gt;= risk) {
+            var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            if (instance_exists(targetid) 
+                &amp;&amp; checkLoS(fire_x, fire_y, mac_range, point_direction(fire_x, fire_y, targetid.x, targetid.y), oallcapitalships) == targetid) {
+             
+                firePrimary(id, targetid.x, targetid.y);   
+            }
+        }
+    } else if (race == "cove") {
+        if (energyprojector_cooldown &lt;= 0 &amp;&amp; energyprojector &gt; 0 &amp;&amp; irandom(10) &gt;= risk) {
+            var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            if (instance_exists(targetid) 
+                &amp;&amp; checkLoS(fire_x, fire_y, energyprojector_range, point_direction(fire_x, fire_y, targetid.x, targetid.y), oallcapitalships) == targetid) {
+             
+                firePrimary(id, targetid.x, targetid.y);   
+            }
+        }
+    }
+    
+    
 }
 
 alarm[0] = findtarget_delay;
@@ -315,11 +369,17 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
         
         if (security_level == 0) {
             // Boarding neutralizes ship with no security
-            instance_destroy();
+            if (boarding_captures) {
+                side = boarding_side;
+                security_level = boarding_level;
+                boarding_level = 0;
+                clear_all_debuffs(id);
+            } else if (!invulnerable) {
+                instance_destroy();
+            }
         } else {
             security_level--;
             boarding_timer = 0;
-            //apply_random_debuff(id, 7);
         }
     } else if (boarding_timer &gt;= boarding_timer_max) {
         // Boarding repelled
@@ -352,7 +412,7 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (side != other.side)
+            <string>if (side != other.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -400,10 +460,10 @@ if (other.targetid == id &amp;&amp; other.state == BOARDING)
 {
     if (side != other.side) {
         if (boarding_level == 0) {
-            apply_random_debuff(id, -1);
+            apply_boarding_debuff(id, -1);
         }
         boarding_level++;
-        
+        boarding_side = other.side;
     } else {
         security_level++;
     }
@@ -411,36 +471,6 @@ if (other.targetid == id &amp;&amp; other.state == BOARDING)
         instance_destroy();
     }
 }
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="oallcapitalships">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>//push colliding ships away from each other until we get better pathing system
-
-/*
-if (move_x == x &amp;&amp; move_y == y) {
-    var degree = point_direction(x, y, other.x, other.y);
-    x -= lengthdir_x(0.10, degree);
-    y -= lengthdir_y(0.10, degree);
-}*/
 </string>
           </argument>
         </arguments>
@@ -465,52 +495,58 @@ if (move_x == x &amp;&amp; move_y == y) {
             <kind>1</kind>
             <string>event_inherited();
 
-//redraw the object's sprite
+// redraw the object's sprite
 draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
 
 var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
-//draw a health bar
+// draw a health bar
 draw_bar(x-sprite_width/2,y-(sprite_height/2)-9,sprite_width,5,hull,hull_max,c_red,c_green);
 
-//draw a shield bar
+// draw a shield bar
 if (shield_max &gt; 0)
 {draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);}
 
-//draw a boarding bar
-if (boarding_level &gt; 0 || security_level != security_level_initial) {
+// draw a boarding bar
+if (boarding_level &gt; 0 || global.debug) { //|| security_level != security_level_initial) {
     draw_bar_split(x-sprite_width/2,y-(sprite_height/2)-21,sprite_width,5,boarding_timer+boarding_timer_max,2*boarding_timer_max,c_green,c_red);
     draw_set_font(Halo);
     draw_set_color(c_gray);
     draw_text(x-sprite_width/2 - 22,y-(sprite_height/2)-21-4,string(security_level));
     draw_text(x-sprite_width/2 + sprite_width + 22,y-(sprite_height/2)-21-4,string(boarding_level));
-    //draw_text(x,y-(sprite_height/2)-42,string(boarding_timer));
 }
 
-//draw status effects
-draw_set_font(Halo);
-draw_set_color(c_red);
-var status = "";
-if (status_half_primarycharge != 0) {
-    status += "A";
-}
-if (status_half_secondary != 0) {
-    status += "B";
-}
-if (status_half_pointdefense != 0) {
-    status += "C";
-}
-if (status_half_fighter_deploymax != 0) {
-    status += "D";
-}
-if (status_immobilization != 0) {
-    status += "E";
+// draw ship name
+if (ship_name != "" &amp;&amp; (selected || global.debug)) {
+    draw_set_font(Halo);
+    draw_set_color(c_gray);
+    draw_set_halign(fa_center);
+    //draw_text(x, y-(sprite_height/2) - 42, ship_name_string);
+    draw_text(x, y+24, ship_name);
 }
 
-draw_set_halign(fa_center);
-draw_text(x, y, status);
+// draw status effects
+if (boarding_level &gt; 0) {
+    draw_set_font(Halo);
+    draw_set_color(c_red);
+    var status = "BOARDED";
+    draw_set_halign(fa_center);
+    draw_text(x, y, status);
+}
 
+// draw targeting reticule
+if (instance_exists(global.ui_controller)) {
+    var size_multiplier = global.ui_controller.ui_size_clock/global.ui_controller.ui_size_clock_max;
+    var rotation_multiplier = global.ui_controller.ui_rotation_clock/global.ui_controller.ui_rotation_clock_max * 360;
+    if (side == global.playerside) {
+        draw_sprite_ext(sTargetBox,0,x,y,1,1,rotation_multiplier,c_green,GUI_ALPHA);
+    } else if (side == NEUTRAL) {
+        draw_sprite_ext(sTargetBox,0,x,y,1,1,rotation_multiplier,c_white,GUI_ALPHA);
+    } else {
+        draw_sprite_ext(sTargetBox,0,x,y,1,1,rotation_multiplier,c_red,GUI_ALPHA);
+    }
+}
 draw_set_alpha(oldAlpha);
 </string>
           </argument>

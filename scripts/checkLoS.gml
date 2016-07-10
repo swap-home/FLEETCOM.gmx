@@ -2,7 +2,8 @@ var xx, yy, dx, dy, cx, cy, instance, first_instance;
 var _x = argument0;
 var _y = argument1;
 var range = argument2;
-var affects = argument3;
+var dir = argument3;
+var affects = argument4;
 
 dx = 0;
 dy = 0;
@@ -12,38 +13,33 @@ cy = 0;
 xx = _x + lengthdir_x(range, dir);
 yy = _y + lengthdir_y(range, dir);
 
-if (!instance_exists(parentid)) {instance_destroy();}
-
 var selfid = id;
 
-with (parentid) 
-{
-    first_instance = collision_line(x, y, xx, yy, affects, false, false);
+first_instance = collision_line(x, y, xx, yy, affects, false, true);
 
-    if (first_instance != noone)
+if (first_instance != noone)
+{
+    dx = xx - x;
+    dy = yy - y;
+    while (abs(dx) >= 1 || abs(dy) >= 1) 
     {
-        dx = xx - x;
-        dy = yy - y;
-        while (abs(dx) >= 1 || abs(dy) >= 1) 
+        dx /= 2;
+        dy /= 2;
+        instance = collision_line(x, y, xx - dx, yy - dy, affects, true, true);
+        if (instance != noone) 
         {
-            dx /= 2;
-            dy /= 2;
-            instance = collision_line(x, y, xx - dx, yy - dy, affects, true, true);
-            if (instance != noone) 
-            {
-                first_instance = instance;
-                xx -= dx;
-                yy -= dy;
-            }
+            first_instance = instance;
+            xx -= dx;
+            yy -= dy;
         }
     }
-    
-    cx = xx - dx;
-    cy = yy - (dy * 2);
-    if (first_instance != noone)
-    {
-        return first_instance;
-    }
+}
+
+cx = xx - dx;
+cy = yy - (dy * 2);
+if (first_instance != noone)
+{
+    return first_instance;
 }
 
 return noone;

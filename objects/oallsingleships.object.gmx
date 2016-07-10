@@ -102,7 +102,7 @@ switch(state) {
         //Find nearest singleship within range
         with (oallsingleships)
         {
-            if (side != selfid_l.side)
+            if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
             {
                 if (distance_to_object(selfid_l) &lt; closest_l)
                 {
@@ -117,7 +117,7 @@ switch(state) {
         {
             with (oallcapitalships)
             {
-                if (side != selfid_l.side)
+                if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
                 {
                     if (distance_to_object(selfid_l) &lt; closest_l)
                     {
@@ -221,7 +221,7 @@ switch(state) {
             }
         }
         else if (distance_to_object(targetid) &lt;= sight_range) {
-            if (targetid.side == side) {
+            if (targetid.side == side || targetid.side == NEUTRAL || targetid.invulnerable) {
                 state = ESCORT;
             } else {
                 state = ATTACK;

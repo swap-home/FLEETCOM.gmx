@@ -25,7 +25,40 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>surf = -1;
+            <string>if (instance_exists(global.fx_control)) {
+    show_error("Warning, duplicate fx_control detected", global.WARNING);
+}
+global.fx_control = id;
+
+surf = -1;
+
+ps = part_system_create();
+part_system_depth(ps, -9000);
+
+p_flare = part_type_create();
+part_type_shape(p_flare, pt_shape_flare);
+part_type_size(p_flare, 1, 1.5, -1/15, 0);
+part_type_scale(p_flare, 10, 10);
+part_type_colour2(p_flare, c_white, c_white);
+part_type_alpha2(p_flare, 1, 1);
+part_type_speed(p_flare, 0, 0, 0, 0);
+part_type_direction(p_flare, 0, 0, 0, 0);
+part_type_gravity(p_flare, 0, 270);
+part_type_orientation(p_flare, 0, 359, 0, 0, 1);
+part_type_blend(p_flare, 0);
+part_type_life(p_flare, 23, 23);
+
+
+// Settings
+fx = true;                      // master switch
+
+blue = false;
+blue_intensity = 0.01;
+
+bloom = true;                   // bloom - light bleed effect
+bloom_intensity = 0.40;         
+bloom_sampleSize = 1.0/512.0;
+
 </string>
           </argument>
         </arguments>
@@ -48,9 +81,106 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if surface_exists(surf)
-{
+            <string>if (surface_exists(surf)) {
     surface_free(surf);
+}
+
+for (var i = 0; i &lt; ds_list_size(part_types); i++) {
+    if (part_type_exists(part_types[| i])) {
+        part_type_clear(part_types[| i]);
+    }
+}
+
+if (part_system_exists(ps)) {
+    part_system_destroy(ps);
+}
+
+global.fx_control = noone;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (surface_exists(surf)) {
+    surface_free(surf);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="77">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (fx &amp;&amp; shaders_are_supported()) {
+
+    /*
+    if (blue) {
+        if ( shader_is_compiled(sh_blue)) {
+            shader_set(sh_blue);
+            
+            var intensity = shader_get_uniform(sh_blue, "intensity");
+            
+            shader_set_uniform_f(intensity, blue_intensity);
+            
+            if (surface_exists(application_surface)) {
+                surface_set_target(application_surface);
+                draw_surface(application_surface,0,0);
+                surface_reset_target();
+            }
+            shader_reset();
+        }
+    }*/
+
+    if (bloom) {
+        if (shader_is_compiled(sh_bloom)) {
+            shader_set(sh_bloom);
+            
+            var intensity = shader_get_uniform(sh_bloom, "intensity");
+            var sampleSize = shader_get_uniform(sh_bloom, "sampleSize");
+            
+            shader_set_uniform_f(intensity, bloom_intensity);
+            shader_set_uniform_f(sampleSize, bloom_sampleSize);
+            
+            if (surface_exists(application_surface) &amp;&amp; surface_exists(surf)) {
+                surface_set_target(application_surface);
+                draw_surface(surf,0,0);
+                surface_reset_target();
+            }
+            shader_reset();
+        }
+    }   
 }
 </string>
           </argument>
@@ -77,13 +207,79 @@
             <string>if (!surface_exists(surf))
 {
     surf = surface_create(view_wview[1], view_hview[1]);
-    //surf = surface_create(room_width, room_height);
     surface_set_target(surf);
     draw_clear_alpha(c_black, 0);
     surface_reset_target();
     view_surface_id[1] = surf;
 }
-else {
+
+if (global.debug) {
+    var displayfx;
+    if (fx) {
+        displayfx = "ON";
+    } else {
+        displayfx = "OFF";
+    }
+    draw_set_color(c_gray);
+    draw_text(view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - 100, 100, displayfx);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="70">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>fx = !fx;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="66">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var input;
+
+if (blue) {
+    input = real(get_string("Set blue intensity (0.0~1.0)", blue_intensity));
+    clamp(input, 0.0, 1.0);
+    blue_intensity = input;
+}
+
+if (bloom) {
+    input = real(get_string("Set bloom intensity (0.0~1.0)", bloom_intensity));
+    clamp(input, 0.0, 1.0);
+    bloom_intensity = input;
 }
 </string>
           </argument>

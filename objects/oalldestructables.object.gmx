@@ -45,6 +45,8 @@ hull = 0;
 hull_max = 0;
 shield = 0;
 shield_max = 0;
+
+invulnerable = false;
 </string>
           </argument>
         </arguments>

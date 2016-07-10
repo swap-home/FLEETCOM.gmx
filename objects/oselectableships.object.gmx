@@ -29,6 +29,7 @@
 
 selected = false;
 focus = false;
+unselectable = false;
 
 move_x = 0;
 move_y = 0;

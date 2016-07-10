@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,7 +25,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (global.selection_manager != 0){show_error("Multiple Selection Managers detected!", global.WARNING);}
+            <string>if (instance_exists(global.selection_manager) &amp;&amp; global.selection_manager != 0) { // != 0 is a hack
+    show_error("Multiple Selection Managers detected! " +
+        "old: " + string(global.selection_manager) + ", new: " + string(id),
+        global.WARNING);
+}
 global.selection_manager = id;
 
 selection = ds_list_create();
@@ -79,7 +83,7 @@ for(i = 0; i &lt; 10; i+=1)
     ds_list_destroy(ctrlgrp[i]);
 }
 
-global.selection_manager = 0;
+global.selection_manager = noone;
 </string>
           </argument>
         </arguments>
@@ -130,13 +134,13 @@ global.selection_manager = 0;
 // Global left pressed
 if (mouse_check_button_pressed(mb_left)) {
     
-    if (global.ui_controller != 0 &amp;&amp; global.ui_controller.ui_click) {
+    if (instance_exists(global.ui_controller) &amp;&amp; global.ui_controller.ui_click) {
         exit;
     }
 
     // Left press on oselectableships
     var click_id = collision_point(mouse_x, mouse_y, oselectableships, true, false)
-    if (click_id != noone) {
+    if (click_id != noone &amp;&amp; !click_id.unselectable) {
         with (click_id) {
             focus = true;
         }
@@ -244,7 +248,7 @@ if (mouse_check_button_released(mb_left)) {
     
     // Left release on oselectableships
     var click_id = collision_point(mouse_x, mouse_y, oselectableships, true, false)
-    if (click_id != noone) {
+    if (click_id != noone &amp;&amp; !click_id.unselectable) {
         with (click_id) {
             if (focus) {            
                 //click and release on a unit 
@@ -323,7 +327,7 @@ if (mouse_check_button_released(mb_left)) {
         {
             if (collision_rectangle(global.selection_manager.click_x, global.selection_manager.click_y, mouse_x, mouse_y, id, false, false))
             {
-                if (global.playerside == side)
+                if (global.playerside == side &amp;&amp; !id.unselectable)
                 {
                     addSelection(id);
                     selectedSomething = true;
@@ -456,6 +460,7 @@ if (current_command == FIRE_PRIMARY) {
             } else if (closest_available_id.race = "cove") {
                 range = closest_available_id.energyprojector_range;
             }
+            range += closest_available_id.primary_origin_distance_offset;
             //show_debug_message("range: " + string(range) + ", dir: " + string(dir));
             draw_line_width(closest_available_id.x,closest_available_id.y,closest_available_id.x+lengthdir_x(range,dir),closest_available_id.y+lengthdir_y(range,dir),2);
         }

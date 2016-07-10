@@ -67,7 +67,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1800</string>
+            <string>1000</string>
           </argument>
         </arguments>
       </action>
@@ -90,9 +90,6 @@
             <string>alarm[1] = 1;
 alarm[0] = 2;
 alpha = 0.6;
-first_instance = noone;
-cx = x;
-cy = y;
 image_xscale=0;
 beamColor = c_yellow;
 affects = oallcapitalships;

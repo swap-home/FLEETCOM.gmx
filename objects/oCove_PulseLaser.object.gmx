@@ -90,10 +90,7 @@
             <string>alarm[1] = 1;
 alarm[0] = 2;
 alpha = 0.8;
-first_instance = noone;
-cx = x;
-cy = y;
-image_xscale=0;
+image_xscale = 0;
 beamColor = c_purple;
 affects = oalldestructables;
 image_yscale = 1;

@@ -115,31 +115,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0.5</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>movespeed</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0.35</string>
+            <string>0.6</string>
           </argument>
         </arguments>
       </action>
@@ -293,6 +269,30 @@ pulselaserturret_A[17] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>phantom_max</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>1</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>seraph_max</string>
           </argument>
           <argument>
@@ -418,30 +418,6 @@ pulselaserturret_A[17] = -17.7;
           <argument>
             <kind>0</kind>
             <string>30</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>crew</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>1000</string>
           </argument>
         </arguments>
       </action>

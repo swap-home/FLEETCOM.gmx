@@ -31,11 +31,11 @@ r_max = 120;    //Maximum radius of the effect
 spd = 1;        //Expansion speed
 d = 360/15;     //Ring "segments" to be drawn
 
-if (instance_exists(oFX_control) &amp;&amp; surface_exists(oFX_control.surf))
+if (instance_exists(global.fx_control) &amp;&amp; surface_exists(global.fx_control.surf))
 {
-    tex = surface_get_texture(oFX_control.surf);
-    srf_w = surface_get_width(oFX_control.surf);
-    srf_h = surface_get_height(oFX_control.surf);
+    tex = surface_get_texture(global.fx_control.surf);
+    srf_w = surface_get_width(global.fx_control.surf);
+    srf_h = surface_get_height(global.fx_control.surf);
     tex_w = texture_get_width(tex);
     tex_h = texture_get_height(tex);
 }
@@ -66,7 +66,11 @@ else {
             <kind>1</kind>
             <string>if (view_current == 1) {exit;}
 
-if radius &lt; r_max radius += spd else instance_destroy();
+if (radius &lt; r_max) {
+    radius += spd;
+} else {
+    instance_destroy();
+}
 
 var o, c, xx, yy, a, sx, sy;
 

@@ -12,6 +12,7 @@
       <sound>sound\macFire</sound>
       <sound>sound\fuelRodFire</sound>
       <sound>sound\plasmaCannonFire</sound>
+      <sound>sound\tone</sound>
     </sounds>
     <sounds name="Units">
       <sounds name="ack">
@@ -73,7 +74,6 @@
     <sprite>sprites\sUNSC_longsword</sprite>
     <sprite>sprites\sUNSC_odp</sprite>
     <sprite>sprites\sUNSC_station</sprite>
-    <sprite>sprites\sprite64</sprite>
     <sprite>sprites\sUNSC_Explosion</sprite>
     <sprite>sprites\sUNSC_ArcherMissile</sprite>
     <sprite>sprites\sUNSC_50mm</sprite>
@@ -94,6 +94,7 @@
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
     <sprite>sprites\sTracer</sprite>
+    <sprite>sprites\sTargetBox</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -140,7 +141,13 @@
         <script>scripts\refuel.gml</script>
       </scripts>
       <script>scripts\formationMove.gml</script>
+      <script>scripts\closestMatches.gml</script>
       <script>scripts\apply_ai.gml</script>
+      <scripts name="checks">
+        <script>scripts\groupHasFighters.gml</script>
+        <script>scripts\groupHasTransports.gml</script>
+        <script>scripts\groupHasPrimaryFire.gml</script>
+      </scripts>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
     <script>scripts\singleShipInitialize.gml</script>
@@ -157,8 +164,23 @@
     <scripts name="status">
       <script>scripts\apply_random_debuff.gml</script>
       <script>scripts\clear_all_debuffs.gml</script>
+      <script>scripts\apply_boarding_debuff.gml</script>
+    </scripts>
+    <scripts name="scrolling">
+      <script>scripts\screenLeft.gml</script>
+      <script>scripts\screenUp.gml</script>
+      <script>scripts\screenRight.gml</script>
+      <script>scripts\screenDown.gml</script>
+    </scripts>
+    <scripts name="effects">
+      <script>scripts\createShipWarpTrail.gml</script>
     </scripts>
   </scripts>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\sh_bloom.shader</shader>
+    <shader type="GLSLES">shaders\sh_blue.shader</shader>
+    <shader type="GLSLES">shaders\sh_old.shader</shader>
+  </shaders>
   <fonts name="fonts">
     <font>fonts\Halo</font>
   </fonts>
@@ -193,6 +215,11 @@
         <objects name="Cruiser">
           <object>objects\oUNSC_cruiser_marathonH</object>
         </objects>
+        <objects name="Structures">
+          <object>objects\oUNSCstructures</object>
+          <object>objects\oUNSC_odp</object>
+          <object>objects\oUNSC_station</object>
+        </objects>
       </objects>
       <objects name="Covenant">
         <object>objects\oCovecapitalships</object>
@@ -222,10 +249,6 @@
         </objects>
       </objects>
     </objects>
-    <objects name="Structures">
-      <object>objects\oallstructures</object>
-      <object>objects\object43</object>
-    </objects>
     <objects name="Weaponry">
       <object>objects\obeamweaponry</object>
       <object>objects\oprojectileweaponry</object>
@@ -235,6 +258,7 @@
         <object>objects\oUNSC_50mm</object>
         <object>objects\oUNSC_ArcherMissile</object>
         <object>objects\oUNSC_MAC</object>
+        <object>objects\oUNSC_SMAC</object>
         <object>objects\object7</object>
       </objects>
       <objects name="Covenant">
@@ -253,19 +277,24 @@
       <object>objects\oFX_control</object>
       <object>objects\oSelectionManager</object>
       <object>objects\oUIcontroller</object>
+      <object>objects\oSaveManager</object>
+      <object>objects\oTutorialHelper</object>
+      <object>objects\oGameMenucontroller</object>
     </objects>
     <objects name="Effects">
       <object>objects\oshockring</object>
       <object>objects\oribbontrail</object>
+      <object>objects\owarp</object>
     </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
+    <room>rooms\Tutorial</room>
+    <room>rooms\MissionMenu</room>
     <room>rooms\RandomBattle</room>
-    <room>rooms\room3</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="22">
+  <constants number="23">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -288,6 +317,7 @@
     <constant name="UNSC">0</constant>
     <constant name="REBEL">1</constant>
     <constant name="COVE">2</constant>
+    <constant name="NEUTRAL">3</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

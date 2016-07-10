@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (global.ui_controller != 0){show_error("Multiple UI Controllers detected!", global.WARNING);}
+            <string>if (instance_exists(global.ui_controller)) {
+    show_error("Multiple UI Controllers detected!", global.WARNING);
+}
 global.ui_controller = id;
 
 display_scale = display_get_gui_width() / view_wview[PRIMARY_VIEW];
@@ -33,8 +35,6 @@ display_scale = display_get_gui_width() / view_wview[PRIMARY_VIEW];
 SCREEN_NAME_BASE = "screenshot_";
 SCREEN_EXT = ".png";
 screennum = 0;
-
-globalvar global.debug = false;
 
 while (true) {
     if (!file_exists(SCREEN_NAME_BASE + string(screennum) + SCREEN_EXT)) {
@@ -55,6 +55,13 @@ button_actions = ds_list_create();
 button_keys = ds_list_create();
 button_mouseover = -1; // -1 means no mouse is not over any button
 ui_click = false;
+objective_text_padding = 32;
+objective_string = "";
+
+ui_rotation_clock = 0;
+ui_rotation_clock_max = 100;
+ui_size_clock = 0;
+ui_size_clock_max = 100;
 
 ds_list_add(button_keys, ord("Q"));
 ds_list_add(button_keys, ord("W"));
@@ -86,7 +93,7 @@ ds_list_add(button_keys, ord("R"));
 ds_list_destroy(button_actions);
 ds_list_destroy(button_keys);
 
-global.ui_controller = 0;
+global.ui_controller = noone;
 </string>
           </argument>
         </arguments>
@@ -190,15 +197,33 @@ ds_list_clear(button_actions);
 if (instance_exists(global.selection_manager)) {
     var selection = global.selection_manager.selection;
     if (!ds_list_empty(selection)) {
-        ds_list_add(button_sprites, sFighters);
-        ds_list_add(button_actions, LAUNCH_FIGHTERS);
+        if (groupHasFighters(selection)) {
+            ds_list_add(button_sprites, sFighters);
+            ds_list_add(button_actions, LAUNCH_FIGHTERS);
+        }
         
-        ds_list_add(button_sprites, sTransports);
-        ds_list_add(button_actions, LAUNCH_TRANSPORTS);
+        if (groupHasTransports(selection)) {
+            ds_list_add(button_sprites, sTransports);
+            ds_list_add(button_actions, LAUNCH_TRANSPORTS);
+        }
         
-        ds_list_add(button_sprites, sPrimaryFire);
-        ds_list_add(button_actions, FIRE_PRIMARY);
+        if (groupHasPrimaryFire(selection)) {
+            ds_list_add(button_sprites, sPrimaryFire);
+            ds_list_add(button_actions, FIRE_PRIMARY);
+        }
+        
     }
+}
+
+// Update animation timers
+ui_rotation_clock++;
+if (ui_rotation_clock == ui_rotation_clock_max) {
+    ui_rotation_clock = 0;
+}
+
+ui_size_clock++;
+if (ui_size_clock == ui_size_clock_max) {
+    ui_size_clock = 0;
 }
 </string>
           </argument>
@@ -251,6 +276,7 @@ draw_rectangle((draw_x + view_xview[PRIMARY_VIEW] * minimap_wscale) * display_sc
 // TODO: move this computation out of draw step, decouple minimap state from game state
 with (oallcapitalships) {
     if (side == global.playerside) {draw_set_color(c_yellow);}
+    else if (side == NEUTRAL) {draw_set_color(c_white);}
     else {draw_set_color(c_red);}
     
     draw_rectangle((draw_x + x * minimap_wscale) * global.ui_controller.display_scale - minimap_square_length/2, 
@@ -292,6 +318,15 @@ for (var i = 0; i &lt; button_count; i++) {
     draw_set_halign(fa_center);
     draw_text((draw_x + button_size/2) * display_scale, (draw_y + button_size + text_padding) * display_scale, string(chr(button_keys[| i])));
     draw_x += button_size;
+}
+
+
+// draw current objectives
+if (objective_string != "") {
+    draw_set_color(c_gray);
+    draw_set_font(Halo);
+    draw_set_halign(fa_center);
+    draw_text_ext(view_wview[PRIMARY_VIEW]/2, objective_text_padding, "Current Objective: #" + objective_string, -1, view_wview[PRIMARY_VIEW]);
 }
 </string>
           </argument>

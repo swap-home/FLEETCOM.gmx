@@ -43,9 +43,8 @@ seraph_deploy_cd_max = 60;
 
 phantom = 0;
 phantom_max = 0;
-phantom_deploy_max = 0;
 phantom_deploy_cd = 0;
-phantom_deploy_cd_max = 90;
+phantom_deploy_cd_max = 30;
 
 energyprojector = 0;
 energyprojector_cooldown = 0;
@@ -54,12 +53,12 @@ energyprojector_range = 1400;
 
 plasmaturret = 0;
 plasmaturret_cooldown = 0;
-plasmaturret_cooldown_max = 420;
+plasmaturret_cooldown_max = 300;
 plasmaturret_range = 1000;
 
 plt = 0;
 plt_cooldown = 0;
-plt_cooldown_max = 45;
+plt_cooldown_max = 25;
 plt_range = 450;
 pulselaser_draw = 0;
 
@@ -263,17 +262,15 @@ if (phantom_deploy_cd &gt; 0) {
 {
     var selfid = id;
         
-    sound_play(energyProjectorFire);
     energyprojector_cooldown = energyprojector_cooldown_max;
+    sound_play(energyProjectorFire);
     for (var i = 0; i &lt; energyprojector; i++)
     {
-        with (instance_create(x,y,oCove_EnergyProjector))
+        var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+        var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+        with (instance_create(fire_x,fire_y,oCove_EnergyProjector))
         {
-            var fire_x = selfid.x + lengthdir_x(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset+selfid.direction);
-            var fire_y = selfid.y + lengthdir_y(selfid.primary_origin_distance_offset,selfid.primary_origin_angle_offset+selfid.direction);
-            x = fire_x;
-            y = fire_y;
-            dir = primary_target_dir;
+            dir = selfid.primary_target_dir;
             side = selfid.side;
             parentid = selfid;
         }
@@ -361,7 +358,7 @@ if (plasmaturret_cooldown &gt; 0) {
     target_count_l = 0;
     with(odestructableweaponry)
     {
-        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.plt_range) 
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.plt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable) 
         {
             targets_l[target_count_l] = id;
             target_count_l+=1;
@@ -369,7 +366,7 @@ if (plasmaturret_cooldown &gt; 0) {
     }
     with(oallsingleships)
     {
-        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.plt_range)
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.plt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
         {
             targets_l[target_count_l] = id;
             target_count_l+=1;
@@ -436,14 +433,16 @@ if (plt_cooldown &gt; 0) {
 var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
-draw_bar(x-sprite_width/2,
-    y-(sprite_height/2)-3,
-    sprite_width,
-    3,
-    energyprojector_cooldown_max-energyprojector_cooldown,
-    energyprojector_cooldown_max,
-    c_yellow,
-    c_white);
+if (energyprojector &gt; 0 &amp;&amp; (selected || global.debug)) {
+    draw_bar(x-sprite_width/2,
+        y-(sprite_height/2)-3,
+        sprite_width,
+        3,
+        energyprojector_cooldown_max-energyprojector_cooldown,
+        energyprojector_cooldown_max,
+        c_yellow,
+        c_white);
+}
 
 draw_set_alpha(oldAlpha);
 </string>

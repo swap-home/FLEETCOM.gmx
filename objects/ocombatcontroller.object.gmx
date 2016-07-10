@@ -25,9 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//sound_loop(sound0);
-
-global.damageRatio[0,0] = 0.75;    //kinetic -&gt; titaniumA
+            <string>global.damageRatio[0,0] = 0.75;    //kinetic -&gt; titaniumA
 global.damageRatio[0,1] = 0.75;    //kinetic -&gt; shield
 global.damageRatio[0,2] = 1;       //kinetic -&gt; battleplating
 
@@ -47,7 +45,6 @@ global.Covefighters = ds_list_create();
 ds_list_add(global.Covefighters, oCove_banshee_T27XMF);
 ds_list_add(global.Covefighters, oCove_seraph_T31XMF);
 
-
 global.capitalShips[0] = ds_list_create();
 global.capitalShips[1] = ds_list_create();
 
@@ -65,6 +62,10 @@ if (room == RandomBattle)
     alarm[1] = 1;
     alarm[0] = irandom(10*30)+ 10*30;
 }
+else if (room == Tutorial)
+{
+    alarm[3] = 1;
+}
 else
 {
     alarm[2] = 1;
@@ -76,6 +77,31 @@ rightside = 0.95*room_width;
 rightmid = 0.65*room_width;
 leftdir = 180;
 rightdir = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.ui_controller.objective_string = "Retake Remote Station Alpha";
+
+instance_create(0,0,oTutorialHelper);
 </string>
           </argument>
         </arguments>
@@ -221,7 +247,7 @@ if (coveShipCount*2 &lt; unscShipCount)
         }
     }
     
-    if (irandom(7) == 0) 
+    if (irandom(5) == 0) 
     {
         createId = instance_create(ctrl.rightside,random_range(0.2*room_height, 0.8*room_height), oCove_cruiser_CRS);
         with (createId)
@@ -255,6 +281,9 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
+            if (global.debug) {
+                apply_ai(createId, -1);
+            }
         }
     }
 
@@ -265,17 +294,22 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            
+            if (global.debug) {
+                apply_ai(createId, -1);
+            }
         }
     }
     
-    if (irandom(1) == 0) 
+    if (irandom(2) == 0) 
     {
         createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_destroyer_halberd);
         with (createId)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
+            if (global.debug) {
+                apply_ai(createId, -1);
+            }
         }
     }
     
@@ -286,6 +320,9 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
+            if (global.debug) {
+                apply_ai(createId, -1);
+            }
         }
     }
 }
@@ -317,22 +354,6 @@ alarm[0] = irandom(15*30)+ 10*30;
 </string>
           </argument>
         </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="8">
-      <action>
-        <libid>1</libid>
-        <id>331</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_restart_game</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
   </events>
