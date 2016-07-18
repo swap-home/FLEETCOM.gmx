@@ -34,7 +34,8 @@
 2 - Move ship into range
 3 - Launch fighters to intercept 
 4 - Launch transports to retake station
-5 - ??? Profit
+5 - Launch more transports at the same time
+6 - ??? Profit
 */
 
 text_show_count = 0;
@@ -56,6 +57,8 @@ textbox_text_alpha = 1;
 
 fighters_to_spawn = 5;
 fighters_spawn_delay = 30;
+
+station_boarded = false;
 
 // Setup Tutorial mission
 stationid = instance_create(1280, 320, oUNSC_station);
@@ -219,8 +222,18 @@ if (tutorial_step &lt; 4 &amp;&amp; fighters_to_spawn == 0 &amp;&amp; rebel_figh
 }
 
 with (stationid) {
-    if (selfid.tutorial_step &lt; 5 &amp;&amp; side == UNSC) {
-        selfid.tutorial_step = 5;
+    if (selfid.tutorial_step &lt; 6 &amp;&amp; side == UNSC) {
+        selfid.tutorial_step = 6;
+    }
+    
+    if (!selfid.station_boarded) {
+        if (boarding_level &gt; 0) {
+            selfid.station_boarded = true;
+        }
+    } else {
+        if (selfid.tutorial_step &lt; 5 &amp;&amp; boarding_level == 0) {
+            selfid.tutorial_step = 5;
+        }
     }
 }
 </string>
@@ -316,14 +329,19 @@ switch (tutorial_step) {
             "#With UNSC Seven Seas selected, right click near the Station to move to it", 32, 600);
         break;
     case 3:
-        draw_text_ext(1036, 400, "Launch UNSC Seven Seas' own fighter complement to intercept" +
+        draw_text_ext(836, 400, "Launch UNSC Seven Seas' own fighter complement to intercept" +
             "#with the Q key, or by clicking the Launch Fighter button in the bottom left" +
             "#and selecting a location or target for the fighters", 32, 600);
         break;
     case 4:
-        draw_text_ext(1236, 400, "With the fighters out of the way, board the Station" +
+        draw_text_ext(1036, 400, "With the fighters out of the way, board the Station" +
             "#with the W key, or by clicking the Launch Transports button in the bottom left" +
             "#and selecting the Station as the target", 32, 600);
+        break;
+    case 5: 
+        draw_text_ext(1036, 400, "The number on the left of the boarding bar indicates its" +
+            "#security level, which you will have to overcome with transports" +
+            "#try launching multiple transports within a short timeframe", 32, 600);
         break;
 }
 </string>

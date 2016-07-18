@@ -64,9 +64,12 @@
     <sprite>sprites\sCove_phantom</sprite>
     <sprite>sprites\sCove_seraph</sprite>
     <sprite>sprites\sCove_banshee</sprite>
+    <sprite>sprites\sUNSC_corvette_fast</sprite>
+    <sprite>sprites\sUNSC_corvette_repair</sprite>
     <sprite>sprites\sUNSC_frigate_charonL</sprite>
     <sprite>sprites\sUNSC_frigate_parisH</sprite>
     <sprite>sprites\sUNSC_destroyer_halberd</sprite>
+    <sprite>sprites\sUNSC_destroyer_diligence</sprite>
     <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
     <sprite>sprites\sUNSC_pheonix</sprite>
     <sprite>sprites\sUNSC_pelican</sprite>
@@ -95,6 +98,8 @@
     <sprite>sprites\sCove_cruiser_Rev</sprite>
     <sprite>sprites\sTracer</sprite>
     <sprite>sprites\sTargetBox</sprite>
+    <sprite>sprites\sprite37</sprite>
+    <sprite>sprites\sprite42</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -113,6 +118,8 @@
     <script>scripts\Damage_Unit.gml</script>
     <scripts name="enums">
       <script>scripts\enumDamageTypes.gml</script>
+      <script>scripts\shiptype_to_objectindex.gml</script>
+      <script>scripts\objectindex_to_shiptype.gml</script>
     </scripts>
     <scripts name="selection">
       <script>scripts\addSelection.gml</script>
@@ -174,11 +181,19 @@
     </scripts>
     <scripts name="effects">
       <script>scripts\createShipWarpTrail.gml</script>
+      <script>scripts\createShieldFlare.gml</script>
+    </scripts>
+    <scripts name="save">
+      <script>scripts\loadPreview.gml</script>
+      <script>scripts\loadSave.gml</script>
+      <script>scripts\newSave.gml</script>
+      <script>scripts\updateSave.gml</script>
+      <script>scripts\writeSave.gml</script>
     </scripts>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_bloom.shader</shader>
-    <shader type="GLSLES">shaders\sh_blue.shader</shader>
+    <shader type="GLSLES">shaders\sh_plasma.shader</shader>
     <shader type="GLSLES">shaders\sh_old.shader</shader>
   </shaders>
   <fonts name="fonts">
@@ -205,12 +220,17 @@
             <object>objects\oUNSC_pelican</object>
           </objects>
         </objects>
+        <objects name="Corvette">
+          <object>objects\oUNSC_corvette_fast</object>
+          <object>objects\oUNSC_corvette_repair</object>
+        </objects>
         <objects name="Frigate">
           <object>objects\oUNSC_frigate_charonL</object>
           <object>objects\oUNSC_frigate_parisH</object>
         </objects>
         <objects name="Destroyer">
           <object>objects\oUNSC_destroyer_halberd</object>
+          <object>objects\oUNSC_destroyer_diligence</object>
         </objects>
         <objects name="Cruiser">
           <object>objects\oUNSC_cruiser_marathonH</object>
@@ -285,6 +305,7 @@
       <object>objects\oshockring</object>
       <object>objects\oribbontrail</object>
       <object>objects\owarp</object>
+      <object>objects\oshieldflare</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -294,7 +315,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="23">
+  <constants number="33">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -307,8 +328,16 @@
     <constant name="LAUNCH_FIGHTERS">1</constant>
     <constant name="LAUNCH_TRANSPORTS">2</constant>
     <constant name="FIRE_PRIMARY">3</constant>
-    <constant name="ABILITY_1">4</constant>
-    <constant name="ABILITY_2">5</constant>
+    <constant name="MORAY_MINES">4</constant>
+    <constant name="SHIVA_TACNUKE">5</constant>
+    <constant name="NO_SHIP">29</constant>
+    <constant name="CORVETTE_FAST">30</constant>
+    <constant name="CORVETTE_REPAIR">31</constant>
+    <constant name="FRIGATE_CHARON">32</constant>
+    <constant name="FRIGATE_PARIS">33</constant>
+    <constant name="DESTROYER_DILIGENCE">34</constant>
+    <constant name="DESTROYER_HALBERD">35</constant>
+    <constant name="CRUISER_MARATHON">36</constant>
     <constant name="FORMATION_LINE">0</constant>
     <constant name="FORMATION_ARROWHEAD">1</constant>
     <constant name="FORMATION_TRIDENT">2</constant>
@@ -318,6 +347,8 @@
     <constant name="REBEL">1</constant>
     <constant name="COVE">2</constant>
     <constant name="NEUTRAL">3</constant>
+    <constant name="SAVE_SLOT_COUNT">2</constant>
+    <constant name="MODULE_MAC">1</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

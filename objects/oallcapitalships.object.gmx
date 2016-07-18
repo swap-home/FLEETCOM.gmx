@@ -91,7 +91,10 @@ status_immobilization = 0;
 // ai vars
 ai_boarding_range = 1500;
 
+// ship progression stats
 ship_name = "";
+ship_exp = 0;
+ship_modules = 0;
 </string>
           </argument>
         </arguments>

@@ -26,7 +26,6 @@
           <argument>
             <kind>1</kind>
             <string>draw = 0;
-draw_ships = true;
 alarm[0] = 150;
 titlealpha = 0.8;
 sound_volume(FarthestOutpost, 0.25);
@@ -37,14 +36,49 @@ global.debug = false;
 global.WARNING = false;
 global.gameName = "FLEETCOM";
 global.playerside = 0;
-global.selection_manager = noone;
+global.selection_manager = noone; //TODO: find what is causing this be to be 0
 global.ui_controller = noone;
 global.save_manager = noone;
 global.fx_control = noone;
 
+savebox_padding = 32;
+savebox_height = 64;
+savebox_width = 600;
+savebox_text_padding = 16;
+savebox_padding_from_title = 64;
+
+mouseover_savebox = -1;
+
+ships_to_spawn = ds_list_create();
+spawn_timer = 0;
+spawn_timer_max = 10;
+
 randomize();
 
 //font_replace(Halo,"Halo3.ttf",12,0,0,32,127);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ds_list_destroy(ships_to_spawn);
 </string>
           </argument>
         </arguments>
@@ -116,14 +150,33 @@ alarm[1] = 150;
             <kind>1</kind>
             <string>if (draw == 0) {
     titlealpha = titlealpha - 0.005;
-} else if (draw == 2 &amp;&amp; draw_ships) {
-    draw_ships = false;
-    with (instance_create(irandom(room_width), irandom(room_height), oUNSC_frigate_charonL)) {
-        side = UNSC;
-        moveTo(id, room_width + 1000, y);
+} else if (draw == 3 &amp;&amp; !ds_list_empty(ships_to_spawn)) {
+    spawn_timer++;
+    if (spawn_timer &gt;= spawn_timer_max) {
+        spawn_timer = 0;
+        var shipid = instance_create(irandom(room_width), irandom(room_height), shiptype_to_objectindex(ships_to_spawn[| 0]));
+        ds_list_delete(ships_to_spawn, 0);
+        with (shipid) {
+            side = UNSC;
+            moveTo(id, room_width + 1000, y);
         
-        createShipWarpTrail(id, 5, 0.5, 0.5);
+            createShipWarpTrail(id, 5, 0.5, 0.5);
+        }
     }
+}
+
+var draw_y = room_height/2 + savebox_padding_from_title;
+for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
+
+    if (mouse_x &lt;= room_width/2 + savebox_width/2 &amp;&amp;
+        mouse_x &gt;= room_width/2 - savebox_width/2 &amp;&amp;
+        mouse_y &gt;= draw_y + savebox_padding &amp;&amp;
+        mouse_y &lt;= draw_y + savebox_padding + savebox_height) {
+
+        mouseover_savebox = i;
+    }
+        
+    draw_y += savebox_padding + savebox_height;
 }
 </string>
           </argument>
@@ -155,8 +208,30 @@ alarm[1] = 150;
         alarm[1] = 1;
         break;
     case 2:
+        if (mouseover_savebox != -1) {
+            var selfid = id;
+            with (global.save_manager) {
+                if (mission_preview[| selfid.mouseover_savebox] != -1) {
+                    loadSave(selfid.mouseover_savebox);
+                } else {
+                    newSave(selfid.mouseover_savebox);
+                }
+            }
+            ds_list_copy(ships_to_spawn, global.save_manager.ship_type);
+            draw = 3;
+        }
+        break;
+    case 3:
+        //TODO proceed, cancel, and delete options
         sound_stop(FarthestOutpost);
-        room_goto(Tutorial);
+        with (oscroll) {
+            screen_locked = false;
+        }
+        if (global.save_manager.mission == 0) {
+            room_goto(Tutorial);
+        } else {
+            room_goto(MissionMenu);
+        }
         break;
 }
 </string>
@@ -184,70 +259,197 @@ alarm[1] = 150;
             <string>draw_set_font(Halo);
 draw_set_halign(fa_center);
 
-if (draw == 0) 
-{
-    draw_text_transformed_color(
-        room_width/2, 
-        room_height/3, 
-        global.gameName, 
-        2, 
-        1.5, 
-        0, 
-        14145495, 
-        14145495, 
-        5131854, 
-        5131854, 
-        titlealpha);
-}
-
-if (draw == 1)
-{
-    draw_text_transformed_color(
-        room_width/2, 
-        room_height/2, 
-        global.gameName + " was created under Microsoft's#Game Content Usage Rules using assets from#Halo CE, Halo 2, Halo 3, Halo ODST, and Halo Reach,#� Copyright Microsoft Corporation.#http://www.xbox.com/en-us/developers/rules", 
-        1, 
-        1, 
-        0, 
-        12632256, 
-        12632256, 
-        12632256, 
-        12632256, 
-        1);
-}
-
-if (draw == 2)
-{
-
-    draw_text_transformed_color(
-        room_width/2, 
-        room_height/3, 
-        global.gameName, 
-        2, 
-        1.5, 
-        0, 
-        14145495, 
-        14145495, 
-        5131854, 
-        5131854, 
-        1);
-
-    draw_text_transformed_color(
-        room_width/2, 
-        room_height*2/3 , 
-        "Click to Start", 
-        1, 
-        1, 
-        0, 
-        12632256, 
-        12632256, 
-        12632256, 
-        12632256, 
-        1);
+switch (draw) {
+    case 0:
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/3, 
+            global.gameName, 
+            2, 
+            1.5, 
+            0, 
+            14145495, 
+            14145495, 
+            5131854, 
+            5131854, 
+            titlealpha);
+        break;
+    
+    case 1:
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/2, 
+            global.gameName + " was created under Microsoft's#Game Content Usage Rules using assets from#Halo CE, Halo 2, Halo 3, Halo ODST, and Halo Reach,#� Copyright Microsoft Corporation.#http://www.xbox.com/en-us/developers/rules", 
+            1, 
+            1, 
+            0, 
+            12632256, 
+            12632256, 
+            12632256, 
+            12632256, 
+            1);
+        break;
+        
+    case 2:
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/3, 
+            global.gameName, 
+            2, 
+            1.5, 
+            0, 
+            14145495, 
+            14145495, 
+            5131854, 
+            5131854, 
+            1);
+    
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/2, 
+            "Select Save Slot", 
+            1, 
+            1, 
+            0, 
+            12632256, 
+            12632256, 
+            12632256, 
+            12632256, 
+            1);
+        
+        draw_set_halign(fa_left);
+        var draw_y = room_height/2 + savebox_padding_from_title;
+        for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
+            draw_set_alpha(GUI_ALPHA);
+            draw_set_color(c_gray);
+            draw_rectangle(room_width/2 - savebox_width/2, 
+                draw_y + savebox_padding,
+                room_width/2 + savebox_width/2,
+                draw_y + savebox_padding + savebox_height,
+                false);
+            
+            draw_set_color(c_white);
+            var mission = global.save_manager.mission_preview[| i];
+            var ship_count = global.save_manager.ship_count_preview[| i];
+            
+            if (mission == -1) {
+                draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
+                    draw_y + savebox_padding + savebox_height/2,
+                    "EMPTY SLOT",
+                    savebox_text_padding,
+                    savebox_width - 2 * savebox_text_padding,
+                    0.5,
+                    0.5,
+                    0);
+            } else {
+                draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
+                    draw_y + savebox_padding + savebox_height/2,
+                    "MISSION: " + string(mission) + " FLEET SIZE: " + string(ship_count),
+                    savebox_text_padding,
+                    savebox_width - 2 * savebox_text_padding,
+                    0.5,
+                    0.5,
+                    0);
+            }
+                
+            draw_set_alpha(1);
+            if (mouseover_savebox == i) {
+                draw_set_color(c_white);
+            } else {
+                draw_set_color(c_blue);
+            }
+            draw_rectangle(room_width/2 - savebox_width/2, 
+                draw_y + savebox_padding,
+                room_width/2 + savebox_width/2,
+                draw_y + savebox_padding + savebox_height,
+                true);
+            draw_y += savebox_padding + savebox_height;
+        }
+        break;
+        
+    case 3:
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/3, 
+            global.gameName, 
+            2, 
+            1.5, 
+            0, 
+            14145495, 
+            14145495, 
+            5131854, 
+            5131854, 
+            1);
+    
+        draw_text_transformed_color(
+            room_width/2, 
+            room_height/2, 
+            "Click to Proceed", 
+            1, 
+            1, 
+            0, 
+            12632256, 
+            12632256, 
+            12632256, 
+            12632256, 
+            1);
+        break;
 }
 
 draw_set_halign(-1);
 draw_set_font(-1);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="40">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>mouseover_savebox++;
+if (mouseover_savebox &gt;= SAVE_SLOT_COUNT) {
+    mouseover_savebox = 0;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="38">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>mouseover_savebox--;
+if (mouseover_savebox &lt; 0) {
+    mouseover_savebox = SAVE_SLOT_COUNT-1;
+}
 </string>
           </argument>
         </arguments>

@@ -25,7 +25,17 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>shipSelected = 0;
+            <string>shipyardid = instance_create(room_width/2 - 200, room_height/2, oUNSC_station);
+with (shipyardid) {
+    side = UNSC;
+    name = "Shipyard";
+}
+
+refitid = instance_create(room_width/2 + 200, room_height/2, oUNSC_station);
+with (refitid) {
+    side = UNSC;
+    name = "Refit Station";
+}
 </string>
           </argument>
         </arguments>

@@ -17,6 +17,9 @@ if (race == "unsc")
     pelican = pelican_max;
     pelican_deploy_cd = pelican_deploy_cd_max;
     mac_cooldown = mac_cooldown_max;
+    if (ship_modules | MODULE_MAC == 0) {
+        mac = 0;
+    }
 }
 else
 {
