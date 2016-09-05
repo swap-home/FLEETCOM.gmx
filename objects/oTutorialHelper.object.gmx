@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -35,25 +35,14 @@
 3 - Launch fighters to intercept 
 4 - Launch transports to retake station
 5 - Launch more transports at the same time
-6 - ??? Profit
+6 - Mission End screen
+7 - Room Transition
+8 - Move to refit station to upgrade
+9 - Purchase a module for Seven Seas
+10 - Purchase another Ship
+11 - Move ships into deploy area, explain fleet strength
+12 - launch mission from mission controller
 */
-
-text_show_count = 0;
-text_speed = 1;
-text_string = "At 1400 hours, March 14, contact was lost with a remote station" +
-    " in the system Theta Tauri. " +
-    "##UNSC Seven Seas was dispatched to the area by local FLEETCOM." +
-    "##Your first field mission is to retake the station." +
-    "###Insurrectionist activity is suspected in the system.";
-text_fade_begin = 120;
-text_fade_end = 100;
-text_fade_counter = 0;
-
-textbox_alpha = 0.80;
-textbox_width = 800;
-textbox_height = 400;
-textbox_padding = 16;
-textbox_text_alpha = 1;
 
 fighters_to_spawn = 5;
 fighters_spawn_delay = 30;
@@ -61,10 +50,17 @@ fighters_spawn_delay = 30;
 station_boarded = false;
 
 // Setup Tutorial mission
+var tutorial_string = "At 1400 hours, March 14, contact was lost with a remote station" +
+    " in the system Theta Tauri. " +
+    "##UNSC Seven Seas was dispatched to the area by local FLEETCOM." +
+    "##Your first field mission is to retake the station." +
+    "###Insurrectionist activity is suspected in the system.";
+textbox_show(tutorial_string, 100, 120, 800, 400);
+
 stationid = instance_create(1280, 320, oUNSC_station);
 with (stationid) {
     side = NEUTRAL;
-    pdt = 0;
+    pdt = 2;
     broadsword_max = 0;
     longsword_max = 0;
     pelican_max = 0;
@@ -78,6 +74,29 @@ with (oscroll) {
 }
 
 shipid = noone;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>room_goto(MissionMenu);
 </string>
           </argument>
         </arguments>
@@ -143,14 +162,11 @@ shipid = instance_create(192,320, oUNSC_frigate_charonL);
 with (shipid) {
     direction = 0;
     side = UNSC;
-    mac = 0;
-    pdt = 2;
     ship_name = "UNSC Seven Seas";
     
     createShipWarpTrail(id, 5, 0.5, 0.5);
 }
-
-tutorial_step = 0;
+global.save_manager.ship_id[| 0] = shipid;
 
 with (oscroll) {
     screen_locked = false;
@@ -179,23 +195,19 @@ with (oscroll) {
             <kind>1</kind>
             <string>var selfid = id;
 
-if (text_string != "" &amp;&amp; text_show_count &lt; string_length(text_string)) {
-    text_show_count += text_speed;
-} else if (text_show_count == string_length(text_string)) {
-    text_fade_counter++;
-    if (text_fade_counter &gt;= text_fade_begin) {
-        textbox_text_alpha -= 1/(text_fade_end - text_fade_begin);
-    }
-    if (text_fade_counter == text_fade_end) {
-        text_string = "";
-        alarm[0] = 45;
-    }
+if (global.ui_controller.text_string == "" &amp;&amp; tutorial_step == -1) {
+    tutorial_step = 0;
+    alarm[0] = 45;
+}
+
+if (global.ui_controller.text_string == "" &amp;&amp; tutorial_step == 6) {
+    tutorial_step = 7;
+    alarm[2] = 5;
 }
 
 with (shipid) {
-    hull = hull_max;
-    longsword = longsword_max;
-    pelican = pelican_max;
+    if (hull &lt; hull_max/10) {hull = hull_max/10;}
+    if (pelican == 0) {pelican = pelican_max;}
     if (selfid.tutorial_step &lt; 1 &amp;&amp; selected) {
         selfid.tutorial_step = 1;
     }
@@ -204,6 +216,9 @@ with (shipid) {
         selfid.stationid.side = REBEL;
         selfid.stationid.invulnerable = true;
         selfid.alarm[1] = selfid.fighters_spawn_delay;
+    }
+    if (selfid.tutorial_step &lt; 10 &amp;&amp; ship_modules | MODULE_MAC) {
+        tutorial_step = 10;
     }
 }
 
@@ -223,6 +238,7 @@ if (tutorial_step &lt; 4 &amp;&amp; fighters_to_spawn == 0 &amp;&amp; rebel_figh
 
 with (stationid) {
     if (selfid.tutorial_step &lt; 6 &amp;&amp; side == UNSC) {
+        mission_end(15,true);
         selfid.tutorial_step = 6;
     }
     
@@ -236,12 +252,42 @@ with (stationid) {
         }
     }
 }
+
+if (tutorial_step == 8) {
+    var ctrlid = instance_find(oGameMenucontroller, 0);
+    // Starting ship is the ship being upgraded
+    if (instance_exists(ctrlid) &amp;&amp; instance_exists(ctrlid.refitid) &amp;&amp; instance_exists(ctrlid.refitid.upgradeid) &amp;&amp; ctrlid.refitid.upgradeid == global.save_manager.ship_id[| 0]) {
+        // Selected refitid
+        //if (!ds_list_empty(global.selection_manager.selection) &amp;&amp; global.selection_manager.selection[| 0] == ctrlid.refitid) {
+            tutorial_step = 9;
+        //}
+    }
+}
+
+if (tutorial_step == 10 &amp;&amp; (instance_exists(oUNSC_corvette_fast) || instance_exists(oUNSC_corvette_repair))) {
+    tutorial_step = 11;
+}
+
+if (tutorial_step == 11) {
+    var ctrlid = instance_find(oGameMenucontroller, 0);
+    // Both ships are in the deploy zone
+    if (instance_exists(ctrlid) &amp;&amp; shipid.x &gt; room_width - ctrlid.warp_zone + ctrlid.warp_zone_border) {
+        var corvetteid = noone;
+        corvetteid = instance_find(oUNSC_corvette_fast,0);
+        if (corvetteid == noone) {
+            corvetteid = instance_find(oUNSC_corvette_repair,0);
+        }
+        if (corvetteid.x &gt; room_width - ctrlid.warp_zone + ctrlid.warp_zone_border) {
+            tutorial_step = 12;
+        }
+    }
+}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="64">
+    <event eventtype="7" enumb="4">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -258,31 +304,8 @@ with (stationid) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (text_string != "") {
-    draw_set_alpha(1);
-    draw_set_color(c_gray);
-    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
-        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
-        true);
-
-    draw_set_alpha(textbox_alpha);        
-    draw_set_color(c_black);
-    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
-        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
-        false);
-        
-    var text_x = view_wview[PRIMARY_VIEW]/2 - textbox_width/2 + textbox_padding;
-    var text_y = view_hview[PRIMARY_VIEW]/2 - textbox_height/2 + textbox_padding;
-    draw_set_font(Halo);
-    draw_set_halign(fa_left);
-    var display_string = string_copy(text_string, 1, floor(text_show_count)); // 1-indexed instead of 0-indexed
-    draw_set_color(c_white);
-    draw_set_alpha(textbox_text_alpha);
-    draw_text_ext(text_x, text_y, display_string, 32, textbox_width - 2 * textbox_padding);
+            <string>if (tutorial_step == 7) {
+    tutorial_step = 8;
 }
 </string>
           </argument>
@@ -316,33 +339,53 @@ switch (tutorial_step) {
     case -1:
         break;
     case 0:
-        draw_text_ext(400, 400, "To select a unit, left click on it" +
+        draw_text_ext(400, 500, "To select a unit, left click on it" +
             "#Select UNSC Seven Seas by left clicking on it", 32, 600);
         break;
     case 1:
-        draw_text_ext(592, 400, "To move your screen, use the arrow keys" +
+        draw_text_ext(592, 500, "To move your screen, use the arrow keys" +
             "#or mouse over the edge of the screen" +
             "#Try moving the screen to the right to bring the Station into view", 32, 600);
         break;
     case 2:
-        draw_text_ext(836, 400, "Order UNSC Seven Seas to approach the Station by right clicking" +
+        draw_text_ext(836, 500, "Order UNSC Seven Seas to approach the Station by right clicking" +
             "#With UNSC Seven Seas selected, right click near the Station to move to it", 32, 600);
         break;
     case 3:
-        draw_text_ext(836, 400, "Launch UNSC Seven Seas' own fighter complement to intercept" +
+        draw_text_ext(836, 500, "Launch UNSC Seven Seas' own fighter complement to intercept" +
             "#with the Q key, or by clicking the Launch Fighter button in the bottom left" +
             "#and selecting a location or target for the fighters", 32, 600);
         break;
     case 4:
-        draw_text_ext(1036, 400, "With the fighters out of the way, board the Station" +
+        draw_text_ext(1036, 500, "With the fighters out of the way, board the Station" +
             "#with the W key, or by clicking the Launch Transports button in the bottom left" +
             "#and selecting the Station as the target", 32, 600);
         break;
     case 5: 
-        draw_text_ext(1036, 400, "The number on the left of the boarding bar indicates its" +
+        draw_text_ext(1036, 500, "The number on the left of the boarding bar indicates its" +
             "#security level, which you will have to overcome with transports" +
             "#try launching multiple transports within a short timeframe", 32, 600);
         break;
+    case 8:
+        draw_text_ext(768, 500, "Between missions, you will build and refit ships." +
+            "#Bring UNSC Seven Seas towards the refit station " +
+            "the cyan radius will turn into a line, indicating the current unit to upgrade", 32, 600);
+        break;
+    case 9:
+        draw_text_ext(768, 500, "Upgrade your starting Charon Frigate with a MAC " +
+            "by selecting the refit station and clicking on the MAC module, this will use up credits shown on the top right " +
+            "as well as take up a module slot, which are earned with XP", 32, 600);
+        break;
+    case 10:
+        draw_text_ext(384, 500, "With the remaining 5 Credits, build a Corvette from the Shipyard", 32, 600);
+        break;
+    case 11:
+        draw_text_ext(1152, 500, "The maximum fleet strength for the next mission is 5." + 
+        "#Since the total fleet strength of your Corvette and upgraded Frigate meet this, send both of them into the yellow deploy zone", 32, 600);
+        break;
+    case 12:
+        draw_text_ext(1152, 500, "To start the mission, select the Mission Control Station and press Start Mission", 32, 600);
+        break;        
 }
 </string>
           </argument>

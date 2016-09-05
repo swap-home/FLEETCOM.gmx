@@ -45,6 +45,8 @@ targetid = noone;
 parentid = noone;
 
 ai = false;
+
+exp_value = 0;
 </string>
           </argument>
         </arguments>
@@ -98,9 +100,9 @@ ai = false;
             <kind>1</kind>
             <string>if (side != other.side &amp;&amp; !invulnerable)
 {
-    if (shield &gt; 0) {
+    /*if (shield &gt; 0) {
         createShieldFlare(id);
-    }
+    }*/
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
     Damage_Unit(other.dmg_thermal, other.id, id, "thermal");

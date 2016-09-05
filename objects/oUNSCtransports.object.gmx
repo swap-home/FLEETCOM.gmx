@@ -26,6 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>event_inherited();
+
+boarding_strength = 1;
 </string>
           </argument>
         </arguments>

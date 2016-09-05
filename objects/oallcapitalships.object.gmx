@@ -50,6 +50,8 @@ singleship_rate = 1;
 singleship_speed = 1;
 singleship_range = 1;
 
+exp_value = 20;
+
 sight_range = 1500;
 strategy = "closest";
 findtarget_delay = 30;
@@ -79,6 +81,7 @@ boarding_timer = 0;
 boarding_timer_max = STEPS_PER_SECOND * 7;
 boarding_captures = false;
 boarding_side = NEUTRAL;
+boarding_originship = noone;
 
 // status denotes the duration of the status, -1 is infinite duration
 status_half_primarycharge = 0;
@@ -370,7 +373,10 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
     if (boarding_timer &lt;= -1 * boarding_timer_max) {
         // Boarding success
         
-        if (security_level == 0) {
+        if (security_level == 1) {
+            if (instance_exists(boarding_originship) &amp;&amp; ds_map_exists(global.exp_reward, object_index)) {
+                boarding_originship.ship_exp += global.exp_reward[? object_index];
+            }
             // Boarding neutralizes ship with no security
             if (boarding_captures) {
                 side = boarding_side;
@@ -415,7 +421,7 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (side != other.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
+            <string>if (side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -465,8 +471,9 @@ if (other.targetid == id &amp;&amp; other.state == BOARDING)
         if (boarding_level == 0) {
             apply_boarding_debuff(id, -1);
         }
-        boarding_level++;
+        boarding_level += other.boarding_strength;
         boarding_side = other.side;
+        boarding_originship = other.parentid;
     } else {
         security_level++;
     }

@@ -45,6 +45,7 @@ phantom = 0;
 phantom_max = 0;
 phantom_deploy_cd = 0;
 phantom_deploy_cd_max = 30;
+phantom_boarding_strength = 1;
 
 energyprojector = 0;
 energyprojector_cooldown = 0;
@@ -218,7 +219,8 @@ if (seraph_deploy_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var singleship_type = oCove_phantom_T52;
+            <string>var selfid = id;
+var singleship_type = oCove_phantom_T52;
 
 if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
 {
@@ -227,6 +229,7 @@ if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empt
     if (instance_exists(transport_targetid)) {
         var transport = createChild(x,y,singleship_type, irandom_range(0,359));
         with (transport) {
+            boarding_strength = selfid.phantom_boarding_strength;
             board(transport_targetid);
         }
         phantom_deploy_cd = phantom_deploy_cd_max;

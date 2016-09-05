@@ -25,17 +25,149 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>shipyardid = instance_create(room_width/2 - 200, room_height/2, oUNSC_station);
+            <string>shipyardid = instance_create(room_width/4, room_height/2, oShipyard);
 with (shipyardid) {
     side = UNSC;
-    name = "Shipyard";
 }
 
-refitid = instance_create(room_width/2 + 200, room_height/2, oUNSC_station);
+refitid = instance_create(room_width*2/4, room_height/2, oRefitStation);
 with (refitid) {
     side = UNSC;
-    name = "Refit Station";
 }
+
+warp_zone = 400; // Distance from right side that starts mission
+warp_zone_border = 4;
+
+missionid = instance_create(room_width - warp_zone, room_height/2, oMissionControl);
+with (refitid) {
+    side = UNSC;
+}
+
+creditCost = ds_map_create();
+
+ships_to_spawn = 0;
+spawn_timer = 0;
+spawn_timer_max = 10;
+spawn_border = 32;
+
+fleetStrengthCurrent = 0;
+fleetStrengthMax = 0;
+
+// SHIPS
+creditCost[? CORVETTE_FAST] = 5;
+creditCost[? CORVETTE_REPAIR] = 5;
+creditCost[? FRIGATE_CHARON] = 10;
+creditCost[? FRIGATE_PARIS] = 12;
+creditCost[? DESTROYER_DILIGENCE] = 20;
+creditCost[? DESTROYER_HALBERD] = 24;
+creditCost[? CRUISER_MARATHON] = 50;
+
+// MODULES
+creditCost[? UPGRADE_MAC] = 10;
+creditCost[? UPGRADE_HANGAR] = 5;
+
+fleetStrength = ds_map_create();
+
+// SHIPS
+fleetStrength[? CORVETTE_FAST] = 1;
+fleetStrength[? CORVETTE_REPAIR] = 1;
+fleetStrength[? FRIGATE_CHARON] = 2;
+fleetStrength[? FRIGATE_PARIS] = 2;
+fleetStrength[? DESTROYER_DILIGENCE] = 4;
+fleetStrength[? DESTROYER_HALBERD] = 4;
+fleetStrength[? CRUISER_MARATHON] = 8;
+
+// MODULES
+fleetStrength[? UPGRADE_MAC] = 2;
+fleetStrength[? UPGRADE_HANGAR] = 1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ds_map_destroy(creditCost);
+ds_map_destroy(fleetStrength);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (ships_to_spawn &lt; ds_list_size(global.save_manager.ship_name)) {
+    spawn_timer++;
+    if (spawn_timer &gt;= spawn_timer_max) {
+        spawn_timer = 0;
+        var shipid = createLoadShip(
+            global.save_manager.ship_name[| ships_to_spawn],
+            global.save_manager.ship_type[| ships_to_spawn],
+            global.save_manager.ship_exp[| ships_to_spawn],
+            global.save_manager.ship_modules[| ships_to_spawn],
+            irandom_range(spawn_border, room_width-spawn_border), 
+            irandom_range(spawn_border, room_height-spawn_border-warp_zone),
+            0);            
+        createShipWarpTrail(shipid, 5, 0.5, 0.5);
+        global.save_manager.ship_id[| ships_to_spawn] = shipid;
+        ships_to_spawn++;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_set_color(c_yellow);
+draw_set_alpha(GUI_ALPHA);
+draw_rectangle(room_width - warp_zone - warp_zone_border, warp_zone_border, room_width - warp_zone_border, room_height - warp_zone_border, true);
 </string>
           </argument>
         </arguments>

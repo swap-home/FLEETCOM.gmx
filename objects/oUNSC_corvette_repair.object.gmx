@@ -211,7 +211,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1</string>
+            <string>0</string>
           </argument>
         </arguments>
       </action>

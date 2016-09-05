@@ -45,14 +45,35 @@ global.Covefighters = ds_list_create();
 ds_list_add(global.Covefighters, oCove_banshee_T27XMF);
 ds_list_add(global.Covefighters, oCove_seraph_T31XMF);
 
-global.capitalShips[0] = ds_list_create();
-global.capitalShips[1] = ds_list_create();
+global.exp_reward = ds_map_create();
+global.exp_reward[? oUNSC_longsword_GATL1] = 1;
+global.exp_reward[? oUNSC_broadsword_F41] = 1;
+global.exp_reward[? oCove_banshee_T27XMF] = 1;
+global.exp_reward[? oCove_seraph_T31XMF] = 1;
+global.exp_reward[? oUNSC_corvette_fast] = 5;
+global.exp_reward[? oUNSC_corvette_repair] = 5;
+global.exp_reward[? oUNSC_frigate_charonL] = 10;
+global.exp_reward[? oUNSC_frigate_parisH] = 10;
+global.exp_reward[? oUNSC_destroyer_diligence] = 15;
+global.exp_reward[? oUNSC_destroyer_halberd] = 15;
+global.exp_reward[? oUNSC_cruiser_marathonH] = 20;
+global.exp_reward[? oUNSC_odp] = 20;
+global.exp_reward[? oUNSC_station] = 20;
+global.exp_reward[? oCove_corvette_SDVH] = 15;
+global.exp_reward[? oCove_destroyer_CPV] = 20;
+global.exp_reward[? oCove_cruiser_CRS] = 20;
+global.exp_reward[? oCove_battlecruiser_CCS] = 30;
+global.exp_reward[? oCove_assaultcarrier_CAS] = 150;
 
-global.singleShips[0] = ds_list_create();
-global.singleShips[1] = ds_list_create();
-
-global.destructableProjectiles[0] = ds_list_create();
-global.destructableProjectiles[1] = ds_list_create();
+global.exp_level = ds_list_create();
+global.exp_level[| 0] = 0;
+global.exp_level[| 1] = 15;
+global.exp_level[| 2] = 50;
+global.exp_level[| 3] = 90;
+global.exp_level[| 4] = 150;
+global.exp_level[| 5] = 220;
+global.exp_level[| 6] = 300;
+global.exp_level[| 7] = 400;
 
 global.hits = 0;
 global.shots = 0;

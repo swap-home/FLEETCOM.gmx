@@ -35,8 +35,8 @@ transition_kind = 0;
 global.debug = false;
 global.WARNING = false;
 global.gameName = "FLEETCOM";
-global.playerside = 0;
-global.selection_manager = noone; //TODO: find what is causing this be to be 0
+global.playerside = UNSC;
+global.selection_manager = noone;
 global.ui_controller = noone;
 global.save_manager = noone;
 global.fx_control = noone;
@@ -44,14 +44,17 @@ global.fx_control = noone;
 savebox_padding = 32;
 savebox_height = 64;
 savebox_width = 600;
-savebox_text_padding = 16;
+savebox_text_padding = 12;
 savebox_padding_from_title = 64;
+savebox_text_scale = 0.6;
+savebox_text_spacing = 12;
 
 mouseover_savebox = -1;
 
 ships_to_spawn = ds_list_create();
 spawn_timer = 0;
 spawn_timer_max = 10;
+spawn_border = 32;
 
 randomize();
 
@@ -154,7 +157,7 @@ alarm[1] = 150;
     spawn_timer++;
     if (spawn_timer &gt;= spawn_timer_max) {
         spawn_timer = 0;
-        var shipid = instance_create(irandom(room_width), irandom(room_height), shiptype_to_objectindex(ships_to_spawn[| 0]));
+        var shipid = instance_create(irandom_range(spawn_border,room_width-spawn_border), irandom_range(spawn_border,room_height-spawn_border), shiptype_to_objectindex(ships_to_spawn[| 0]));
         ds_list_delete(ships_to_spawn, 0);
         with (shipid) {
             side = UNSC;
@@ -177,6 +180,12 @@ for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
     }
         
     draw_y += savebox_padding + savebox_height;
+}
+
+with (oallcapitalships) {
+    if (x &gt; room_width) {
+        x = 0;
+    }
 }
 </string>
           </argument>
@@ -229,6 +238,14 @@ for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
         }
         if (global.save_manager.mission == 0) {
             room_goto(Tutorial);
+        } else if (global.save_manager.mission == 1) {
+            with (instance_create(0,0,oTutorialHelper)) {
+                tutorial_step = 7;
+            }
+            with (oscroll) {
+                screen_locked = false;
+            }
+            room_goto(MissionMenu);
         } else {
             room_goto(MissionMenu);
         }
@@ -330,25 +347,26 @@ switch (draw) {
             
             draw_set_color(c_white);
             var mission = global.save_manager.mission_preview[| i];
+            var credits = global.save_manager.credits_preview[| i];
             var ship_count = global.save_manager.ship_count_preview[| i];
             
             if (mission == -1) {
                 draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
-                    draw_y + savebox_padding + savebox_height/2,
+                    draw_y + savebox_padding + savebox_text_padding,
                     "EMPTY SLOT",
-                    savebox_text_padding,
-                    savebox_width - 2 * savebox_text_padding,
-                    0.5,
-                    0.5,
+                    savebox_text_spacing,
+                    (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
+                    savebox_text_scale,
+                    savebox_text_scale,
                     0);
             } else {
                 draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
-                    draw_y + savebox_padding + savebox_height/2,
-                    "MISSION: " + string(mission) + " FLEET SIZE: " + string(ship_count),
-                    savebox_text_padding,
-                    savebox_width - 2 * savebox_text_padding,
-                    0.5,
-                    0.5,
+                    draw_y + savebox_padding + savebox_text_padding,
+                    "MISSION: " + string(mission) + " CREDITS: " + string(credits) + " FLEET SIZE: " + string(ship_count),
+                    savebox_text_spacing,
+                    (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
+                    savebox_text_scale,
+                    savebox_text_scale,
                     0);
             }
                 

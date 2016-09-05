@@ -68,8 +68,8 @@
     <sprite>sprites\sUNSC_corvette_repair</sprite>
     <sprite>sprites\sUNSC_frigate_charonL</sprite>
     <sprite>sprites\sUNSC_frigate_parisH</sprite>
-    <sprite>sprites\sUNSC_destroyer_halberd</sprite>
     <sprite>sprites\sUNSC_destroyer_diligence</sprite>
+    <sprite>sprites\sUNSC_destroyer_halberd</sprite>
     <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
     <sprite>sprites\sUNSC_pheonix</sprite>
     <sprite>sprites\sUNSC_pelican</sprite>
@@ -92,6 +92,13 @@
       <sprite>sprites\sFighters</sprite>
       <sprite>sprites\sTransports</sprite>
       <sprite>sprites\sPrimaryFire</sprite>
+      <sprite>sprites\sBuildCorvetteFast</sprite>
+      <sprite>sprites\sBuildCorvetteRepair</sprite>
+      <sprite>sprites\sBuildFrigateCharon</sprite>
+      <sprite>sprites\sBuildFrigateParis</sprite>
+      <sprite>sprites\sBuildDestroyerDiligence</sprite>
+      <sprite>sprites\sBuildDestroyerHalberd</sprite>
+      <sprite>sprites\sBuildCruiserMarathon</sprite>
       <sprite>sprites\sStatusPrimary</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
@@ -100,6 +107,7 @@
     <sprite>sprites\sTargetBox</sprite>
     <sprite>sprites\sprite37</sprite>
     <sprite>sprites\sprite42</sprite>
+    <sprite>sprites\sHangar</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -120,6 +128,8 @@
       <script>scripts\enumDamageTypes.gml</script>
       <script>scripts\shiptype_to_objectindex.gml</script>
       <script>scripts\objectindex_to_shiptype.gml</script>
+      <script>scripts\moduleupgrade_to_modulebit.gml</script>
+      <script>scripts\modulebit_to_moduleupgrade.gml</script>
     </scripts>
     <scripts name="selection">
       <script>scripts\addSelection.gml</script>
@@ -154,6 +164,7 @@
         <script>scripts\groupHasFighters.gml</script>
         <script>scripts\groupHasTransports.gml</script>
         <script>scripts\groupHasPrimaryFire.gml</script>
+        <script>scripts\groupHasPrimaryFire_new.gml</script>
       </scripts>
     </scripts>
     <script>scripts\capitalShipInitialize.gml</script>
@@ -184,12 +195,19 @@
       <script>scripts\createShieldFlare.gml</script>
     </scripts>
     <scripts name="save">
+      <script>scripts\resetSave.gml</script>
       <script>scripts\loadPreview.gml</script>
       <script>scripts\loadSave.gml</script>
       <script>scripts\newSave.gml</script>
       <script>scripts\updateSave.gml</script>
       <script>scripts\writeSave.gml</script>
     </scripts>
+    <script>scripts\textbox_show.gml</script>
+    <script>scripts\mission_start.gml</script>
+    <script>scripts\mission_end.gml</script>
+    <script>scripts\createLoadShip.gml</script>
+    <script>scripts\getShipFleetStrength.gml</script>
+    <script>scripts\getShipModuleSlots.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_bloom.shader</shader>
@@ -200,6 +218,7 @@
     <font>fonts\Halo</font>
   </fonts>
   <objects name="objects">
+    <object>objects\onone</object>
     <object>objects\oallobjects</object>
     <object>objects\oalldestructables</object>
     <objects name="Ships">
@@ -239,6 +258,11 @@
           <object>objects\oUNSCstructures</object>
           <object>objects\oUNSC_odp</object>
           <object>objects\oUNSC_station</object>
+          <objects name="MenuBuildings">
+            <object>objects\oRefitStation</object>
+            <object>objects\oShipyard</object>
+            <object>objects\oMissionControl</object>
+          </objects>
         </objects>
       </objects>
       <objects name="Covenant">
@@ -300,6 +324,7 @@
       <object>objects\oSaveManager</object>
       <object>objects\oTutorialHelper</object>
       <object>objects\oGameMenucontroller</object>
+      <object>objects\oMissionHelper</object>
     </objects>
     <objects name="Effects">
       <object>objects\oshockring</object>
@@ -315,7 +340,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="33">
+  <constants number="41">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -338,6 +363,11 @@
     <constant name="DESTROYER_DILIGENCE">34</constant>
     <constant name="DESTROYER_HALBERD">35</constant>
     <constant name="CRUISER_MARATHON">36</constant>
+    <constant name="SHIP_END">37</constant>
+    <constant name="NO_UPGRADE">50</constant>
+    <constant name="UPGRADE_MAC">51</constant>
+    <constant name="UPGRADE_HANGAR">52</constant>
+    <constant name="UPGRADE_END">53</constant>
     <constant name="FORMATION_LINE">0</constant>
     <constant name="FORMATION_ARROWHEAD">1</constant>
     <constant name="FORMATION_TRIDENT">2</constant>
@@ -348,7 +378,10 @@
     <constant name="COVE">2</constant>
     <constant name="NEUTRAL">3</constant>
     <constant name="SAVE_SLOT_COUNT">2</constant>
+    <constant name="MAP_BORDER">32</constant>
     <constant name="MODULE_MAC">1</constant>
+    <constant name="MODULE_HANGAR">2</constant>
+    <constant name="MAX_LEVELUPS">7</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

@@ -31,23 +31,30 @@
 global.save_manager = id;
 
 mission_preview = ds_list_create();
+credits_preview = ds_list_create();
 ship_count_preview = ds_list_create();
 for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
     var result = ds_list_create();
     loadPreview(i, result);
     mission_preview[| i] = result[| 0];
-    ship_count_preview[| i] = result[| 1];
+    credits_preview[| i] = result[| 1];
+    ship_count_preview[| i] = result[| 2];
     ds_list_destroy(result);
 }
 
 saveslot = -1;
 
+// Serialize these vars into file
 mission = 0;
+credits = 0;
 ship_count = 0;
 ship_name = ds_list_create();
 ship_type = ds_list_create();
 ship_exp = ds_list_create();
 ship_modules = ds_list_create();
+
+// For use in game - id = ship was created, noone = ship not participating
+ship_id = ds_list_create();
 </string>
           </argument>
         </arguments>
@@ -79,6 +86,8 @@ ds_list_destroy(ship_name);
 ds_list_destroy(ship_type);
 ds_list_destroy(ship_exp);
 ds_list_destroy(ship_modules);
+
+ds_list_destroy(ship_id);
 </string>
           </argument>
         </arguments>

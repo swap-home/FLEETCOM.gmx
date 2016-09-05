@@ -111,7 +111,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac</string>
+            <string>mac_max</string>
           </argument>
           <argument>
             <kind>0</kind>

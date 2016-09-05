@@ -43,6 +43,20 @@ while (true) {
     screennum++;
 }
 
+text_show_count = 0;
+text_speed = 1;
+text_string = "";
+text_fade_begin = 100;
+text_fade_end = 120;
+text_fade_counter = 0;
+text_sep = 32;
+
+textbox_alpha = 0.90;
+textbox_width = 800;
+textbox_height = 400;
+textbox_padding = 16;
+textbox_text_alpha = 1;
+
 border = 32; // from edge of display
 minimap_width = 128;
 minimap_height = 64;
@@ -54,8 +68,25 @@ button_sprites = ds_list_create();
 button_actions = ds_list_create();
 button_keys = ds_list_create();
 button_mouseover = -1; // -1 means no mouse is not over any button
+
+button_tooltip_alpha = 0.95;
+button_tooltip_width = 350;
+button_tooltip_height = 200;
+button_tooltip_text_height = 24;
+button_tooltip_text_xscale = 0.75;
+button_tooltip_text_yscale = 0.75;
+button_tooltip_padding = 10;
+button_tooltip_distance_from_button = 8;
+
+
+infotext_padding = 16;
+infotext_xscale = 0.75;
+infotext_yscale = 0.75;
+infotext_module_icon_size = 32;
+infotext_module_icon_padding = 8;
+infotext_module_icon_size_ratio = infotext_module_icon_size/64;
+
 ui_click = false;
-objective_text_padding = 32;
 objective_string = "";
 
 ui_rotation_clock = 0;
@@ -67,6 +98,48 @@ ds_list_add(button_keys, ord("Q"));
 ds_list_add(button_keys, ord("W"));
 ds_list_add(button_keys, ord("E"));
 ds_list_add(button_keys, ord("R"));
+ds_list_add(button_keys, ord("T"));
+ds_list_add(button_keys, ord("Y"));
+ds_list_add(button_keys, ord("U"));
+ds_list_add(button_keys, ord("I"));
+ds_list_add(button_keys, ord("O"));
+ds_list_add(button_keys, ord("P"));
+
+shiptype_strings = ds_map_create();
+shiptype_strings[? oUNSC_corvette_fast] = "Scout Corvette";
+shiptype_strings[? oUNSC_corvette_repair] = "Support Corvette";
+shiptype_strings[? oUNSC_frigate_charonL] = "Charon-class Light Frigate";
+shiptype_strings[? oUNSC_frigate_parisH] = "Paris-class Heavy Frigate";
+shiptype_strings[? oUNSC_destroyer_diligence] = "Diligence-class Destroyer";
+shiptype_strings[? oUNSC_destroyer_halberd] = "Halberd-class Destroyer";
+shiptype_strings[? oUNSC_cruiser_marathonH] = "Marathon-class Heavy Cruiser";
+
+action_tooltip_strings = ds_map_create();
+action_tooltip_strings[? LAUNCH_FIGHTERS] = "LAUNCH FIGHTERS#Launches the ship's fighter complement##Self: return to hangars#Ally: escort ship#Enemy: attack ignoring enemy fighters#No target: intercept area";
+action_tooltip_strings[? LAUNCH_TRANSPORTS] = "LAUNCH PELICANS#Order transports to board a target##Ally: reinforce#Enemy: board ship";
+action_tooltip_strings[? FIRE_PRIMARY] = "MAC#Fire the Magnetic Accelerator Cannon in a direction, dealing massive damage to the first target hit##Ally ships block the shot but do not take damage";
+action_tooltip_strings[? MORAY_MINES] = "MORAY MINES#Deploys a field of anti-fighter mines, which deal area of effect damage##First activation places mines, second activation detonates mines. Mines also detonate on proximity";
+action_tooltip_strings[? SHIVA_TACNUKE] = "SHIVA TACNUKE#Launches a slow tactical nuke, which deals damage in a large area of effect##Detonates upon contact with an enemy or upon reaching its destination";
+
+// only available with oGameMenucontroller
+
+if (instance_exists(oGameMenucontroller)) {
+    var ctrlid = instance_find(oGameMenucontroller, 0);
+    
+    // Ships
+    action_tooltip_strings[? CORVETTE_FAST] = "SCOUT CORVETTE#Fast attack light capital ship, excellent at scouting enemy positions##cR: "+string(ctrlid.creditCost[? CORVETTE_FAST])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CORVETTE_FAST]);
+    action_tooltip_strings[? CORVETTE_REPAIR] = "SUPPORT CORVETTE#Support light capital ship, capable of performing emergency repairs##cR: "+string(ctrlid.creditCost[? CORVETTE_REPAIR])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CORVETTE_REPAIR]);
+    action_tooltip_strings[? FRIGATE_CHARON] = "CHARON-CLASS LIGHT FRIGATE#Frigate class with the largest troop complement and number of fighters, suited for troop support##cR: "+string(ctrlid.creditCost[? FRIGATE_CHARON])+"#Fleet strength: "+string(ctrlid.fleetStrength[? FRIGATE_CHARON]);
+    action_tooltip_strings[? FRIGATE_PARIS] = "PARIS-CLASS HEAVY FRIGATE#Frigate class with heavy armor and armaments, used to screen formations from fighters and transports##cR: "+string(ctrlid.creditCost[? FRIGATE_PARIS])+"#Fleet strength: "+string(ctrlid.fleetStrength[? FRIGATE_PARIS]);
+    action_tooltip_strings[? DESTROYER_DILIGENCE] = "DILIGENCE-CLASS DESTROYER#Destroyer class with a sizable troop complement, allows for the deployment of troops from the frontline##cR: "+string(ctrlid.creditCost[? DESTROYER_DILIGENCE])+"#Fleet strength: "+string(ctrlid.fleetStrength[? DESTROYER_DILIGENCE]);
+    action_tooltip_strings[? DESTROYER_HALBERD] = "HALBERD-CLASS DESTROYER#Offensive Destroyer class armed with tactical nukes, heavily armed frontline combatant##cR: "+string(ctrlid.creditCost[? DESTROYER_HALBERD])+"#Fleet strength: "+string(ctrlid.fleetStrength[? DESTROYER_HALBERD]);
+    action_tooltip_strings[? CRUISER_MARATHON] = "MARATHON-CLASS HEAVY CRUISER#Heavy Cruiser class excelling in both offense and defense, primarily used as a flagship##cR: "+string(ctrlid.creditCost[? CRUISER_MARATHON])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CRUISER_MARATHON]);
+    
+    // Modules
+    action_tooltip_strings[? UPGRADE_MAC] = "MAGNETIC ACCELERATOR CANNON#Heavy capital ship armament, less effective on Frigates, cannot be built on Corvettes##cR: "+string(ctrlid.creditCost[? UPGRADE_MAC])+"#Fleet strength: "+string(ctrlid.fleetStrength[? UPGRADE_MAC]);   
+    action_tooltip_strings[? UPGRADE_HANGAR] = "HARGAR BAYS#Adds additional fighter and transport capacity, cannot be built on Corvettes or Destroyers##cR: "+string(ctrlid.creditCost[? UPGRADE_HANGAR])+"#Fleet strength: "+string(ctrlid.fleetStrength[? UPGRADE_HANGAR]);   
+}
+
 </string>
           </argument>
         </arguments>
@@ -92,6 +165,8 @@ ds_list_add(button_keys, ord("R"));
             <string>ds_list_destroy(button_sprites);
 ds_list_destroy(button_actions);
 ds_list_destroy(button_keys);
+ds_map_destroy(shiptype_strings);
+ds_map_destroy(action_tooltip_strings);
 
 global.ui_controller = noone;
 </string>
@@ -139,7 +214,9 @@ global.ui_controller = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// Check if buttons should be pressed
+            <string>button_mouseover = -1;
+
+// Check if buttons should be pressed
 if (global.selection_manager != 0) {
     for (var i = 0; i &lt; ds_list_size(button_actions); i++) {
     
@@ -152,18 +229,22 @@ if (global.selection_manager != 0) {
             }
         }
         
-        // Check if buttons pressed by mouse
-        if (mouse_check_button_pressed(mb_left) 
-            &amp;&amp; mouse_x &gt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * i)
+        // Check if mouse over buttons
+        if (mouse_x &gt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * i)
             &amp;&amp; mouse_x &lt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * (i+1))
             &amp;&amp; mouse_y &gt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height
             &amp;&amp; mouse_y &lt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height + button_size) {
             
-            ui_click = true;
-            if (global.selection_manager.current_command == button_actions[| i]) {
-                global.selection_manager.current_command = NO_COMMAND;
-            } else {
-                global.selection_manager.current_command = button_actions[| i];
+            button_mouseover = i;
+            
+            if (mouse_check_button_pressed(mb_left)) {
+                ui_click = true;
+                // toggles command
+                if (global.selection_manager.current_command == button_actions[| i]) {
+                    global.selection_manager.current_command = NO_COMMAND;
+                } else {
+                    global.selection_manager.current_command = button_actions[| i];
+                }
             }
         }
     }
@@ -190,13 +271,73 @@ if (global.selection_manager != 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// Populate UI buttons depending on current selected ships
+            <string>if (text_string != "" &amp;&amp; text_show_count &lt; string_length(text_string)) {
+    if (mouse_check_button(mb_left)) {
+        text_show_count += text_speed * 2;
+    }
+    text_show_count += text_speed;
+    
+    if (text_show_count &gt; string_length(text_string)) {
+        text_show_count = string_length(text_string);
+    }
+} else if (text_show_count == string_length(text_string)) {
+    if (mouse_check_button(mb_left)) {
+        text_fade_counter += 2;
+    }
+    text_fade_counter++;
+    if (text_fade_counter &gt;= text_fade_begin) {
+        textbox_text_alpha = (text_fade_end - text_fade_counter)/(text_fade_end - text_fade_begin);
+    }
+    if (text_fade_counter &gt;= text_fade_end) {
+        text_string = "";
+    }
+}
+
+// Populate UI buttons depending on current selected ships
 ds_list_clear(button_sprites);
 ds_list_clear(button_actions);
 
 if (instance_exists(global.selection_manager)) {
     var selection = global.selection_manager.selection;
     if (!ds_list_empty(selection)) {
+    
+        // Hack for Refit Station
+        if (ds_list_size(selection) == 1 &amp;&amp; 
+            selection[| 0].object_index == oRefitStation) {
+            
+            ds_list_add(button_sprites, sPrimaryFire);
+            ds_list_add(button_actions, UPGRADE_MAC);
+            
+            ds_list_add(button_sprites, sHangar);
+            ds_list_add(button_actions, UPGRADE_HANGAR);
+        }
+        
+        // Hack for Shipyard
+        if (ds_list_size(selection) == 1 &amp;&amp;
+            selection[| 0].object_index == oShipyard) {
+            
+            ds_list_add(button_sprites, sBuildCorvetteFast);
+            ds_list_add(button_actions, CORVETTE_FAST);
+            
+            ds_list_add(button_sprites, sBuildCorvetteRepair);
+            ds_list_add(button_actions, CORVETTE_REPAIR);
+            
+            ds_list_add(button_sprites, sBuildFrigateCharon);
+            ds_list_add(button_actions, FRIGATE_CHARON);
+            
+            ds_list_add(button_sprites, sBuildFrigateParis);
+            ds_list_add(button_actions, FRIGATE_PARIS);
+            
+            ds_list_add(button_sprites, sBuildDestroyerDiligence);
+            ds_list_add(button_actions, DESTROYER_DILIGENCE);
+            
+            ds_list_add(button_sprites, sBuildDestroyerHalberd);
+            ds_list_add(button_actions, DESTROYER_HALBERD);
+            
+            ds_list_add(button_sprites, sBuildCruiserMarathon);
+            ds_list_add(button_actions, CRUISER_MARATHON);
+        }
+            
         if (groupHasFighters(selection)) {
             ds_list_add(button_sprites, sFighters);
             ds_list_add(button_actions, LAUNCH_FIGHTERS);
@@ -247,7 +388,8 @@ if (ui_size_clock == ui_size_clock_max) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var button_count = ds_list_size(button_actions);
+            <string>// draw UI elements
+var button_count = ds_list_size(button_actions);
 var draw_x = 0 + border;
 var draw_y = view_hview[PRIMARY_VIEW] - border - minimap_height;
 
@@ -300,33 +442,184 @@ for (var i = 0; i &lt; button_count; i++) {
         false);
     
     // draw border
-    /*
-    if (i == 0) {
+    if (global.selection_manager.current_command == button_actions[| i]) {
         draw_set_color(c_red);
         draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height);
         draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size);
-        draw_set_color(c_gray);
-    }*/
-    
-    if (!sprite_exists(button_sprites[| i])) {
-        show_error("sprite does not exist for " + string(button_sprites[| i]) + " on " + string(i) + "th position of ui buttons", true);
     }
     
-    draw_sprite(button_sprites[| i], 0, draw_x * display_scale, draw_y * display_scale);
+    // draw button tooltips
+    draw_set_alpha(button_tooltip_alpha);
+    if (button_mouseover == i) {
+        if (ds_map_exists(action_tooltip_strings, button_actions[| button_mouseover])
+            &amp;&amp; action_tooltip_strings[? button_actions[| button_mouseover]] != "") {
+            
+            button_tooltip_height = string_height_ext(action_tooltip_strings[? button_actions[| button_mouseover]], 
+                button_tooltip_text_height, 
+                button_tooltip_width/button_tooltip_text_xscale)*button_tooltip_text_yscale + 2*button_tooltip_padding;
+                
+            draw_set_color(c_gray);
+            draw_rectangle(draw_x + button_size/2 - button_tooltip_width/2,
+                draw_y - button_tooltip_height - button_tooltip_distance_from_button,
+                draw_x + button_size/2 + button_tooltip_width/2,
+                draw_y - button_tooltip_distance_from_button,
+                true);
+            
+            draw_set_color(c_black);
+            draw_rectangle(draw_x + button_size/2 - button_tooltip_width/2,
+                draw_y - button_tooltip_height - button_tooltip_distance_from_button,
+                draw_x + button_size/2 + button_tooltip_width/2,
+                draw_y - button_tooltip_distance_from_button,
+                false);
+                
+            draw_set_font(Halo);
+            draw_set_halign(fa_left);
+            draw_set_color(c_gray);
+            draw_text_ext_transformed(draw_x + button_size/2 - button_tooltip_width/2 + button_tooltip_padding,
+                draw_y - button_tooltip_height + button_tooltip_padding - button_tooltip_distance_from_button,
+                action_tooltip_strings[? button_actions[| button_mouseover]],
+                button_tooltip_text_height,
+                (button_tooltip_width - 2*button_tooltip_padding) * 1/button_tooltip_text_xscale,
+                button_tooltip_text_xscale,
+                button_tooltip_text_yscale,
+                0);
+        }
+    }
     
+    if (!sprite_exists(button_sprites[| i])) {
+        show_debug_message("sprite does not exist for " + string(button_sprites[| i]) + " on " + string(i) + "th position of ui buttons");
+    } else {
+        draw_sprite(button_sprites[| i], 0, draw_x * display_scale, draw_y * display_scale);
+    }
+
+    draw_set_alpha(GUI_ALPHA);
+    
+    // draw key shortcut
     draw_set_font(Halo);
     draw_set_halign(fa_center);
+    draw_set_color(c_gray);
     draw_text((draw_x + button_size/2) * display_scale, (draw_y + button_size + text_padding) * display_scale, string(chr(button_keys[| i])));
     draw_x += button_size;
 }
 
 
-// draw current objectives
-if (objective_string != "") {
+// draw current objectives if not in menu
+var ctrlid = instance_find(oGameMenucontroller,0);
+if (ctrlid == noone) {
+    if (objective_string != "") {
+        draw_set_color(c_gray);
+        draw_set_font(Halo);
+        draw_set_halign(fa_left);
+        draw_text_ext(border, border, "Current Objective: #" + objective_string, -1, view_wview[PRIMARY_VIEW]);
+    }
+} else {
     draw_set_color(c_gray);
     draw_set_font(Halo);
-    draw_set_halign(fa_center);
-    draw_text_ext(view_wview[PRIMARY_VIEW]/2, objective_text_padding, "Current Objective: #" + objective_string, -1, view_wview[PRIMARY_VIEW]);
+    draw_set_halign(fa_left);
+    draw_text_ext(border, border, "Credits: " + string(global.save_manager.credits) + "#Fleet Strength: " + string(ctrlid.fleetStrengthCurrent) + "/" + string(ctrlid.fleetStrengthMax), -1, view_wview[PRIMARY_VIEW]);
+}
+
+// if only 1 ship selected, draw unitinfo
+if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.selection_manager.selection) == 1) {
+    draw_set_color(c_gray);
+    draw_set_font(Halo);
+    draw_set_halign(fa_right);
+    var unitid = global.selection_manager.selection[| 0];
+    var info_x = view_wview[PRIMARY_VIEW] - border;
+    var info_y = border;
+    if (unitid.race == "unsc") {
+        draw_text_transformed(info_x, info_y, unitid.ship_name, 1, 1, 0);
+        info_y += 28;
+        if (ds_map_exists(shiptype_strings, unitid.object_index)) {
+            draw_text_transformed(info_x, info_y, shiptype_strings[? unitid.object_index], infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.archerpod &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Archer Pods: " + string(unitid.archerpod), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.pdt &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Point-defense Guns: " + string(unitid.pdt), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.broadsword_max &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Broadsword Fighters: " + string(unitid.broadsword) + "/" + string(unitid.broadsword_max) + "(" + string(broadsword_deploy_max) + ")", infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.longsword_max &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Longsword Interceptors: " + string(unitid.longsword) + "/" + string(unitid.longsword_max) + "(" + string(unitid.longsword_deploy_max) + ")", infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.pelican_max &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Pelican Transports: " + string(unitid.pelican) + "/" + string(unitid.pelican_max) + "(" + string(unitid.pelican_boarding_strength) + ")", infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.mac &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Mark II MACs: " + string(unitid.mac) + "(" + string(floor((unitid.mac_cooldown_max-unitid.mac_cooldown)/unitid.mac_cooldown_max*100)) + "%)", infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        
+        draw_text_transformed(info_x, info_y, string(unitid.ship_exp)+" XP", infotext_xscale, infotext_yscale, 0);
+        info_y += infotext_padding;
+        
+        var module_capacity = ds_list_create();
+        module_capacity = getShipModuleSlots(unitid, module_capacity);
+        draw_text_transformed(info_x, info_y, "Module Capacity: " + string(module_capacity[| 0]) + "/" + string(module_capacity[| 1]), infotext_xscale, infotext_yscale, 0);
+        ds_list_destroy(module_capacity);
+        info_y += infotext_padding;
+        
+        // Draw module icons
+        info_x -= infotext_module_icon_size;
+        var modules = unitid.ship_modules;
+        var checkbit = 1;
+        while (modules != 0) {
+            if (modules &amp; checkbit) {
+                modules -= checkbit;
+                var module_icon = -1;
+                switch (checkbit) {
+                    case MODULE_MAC:
+                        module_icon = sPrimaryFire;
+                        break;
+                    case MODULE_HANGAR:
+                        module_icon = sHangar;
+                        break;
+                }
+                if (sprite_exists(module_icon)) {
+                    draw_sprite_ext(module_icon, 0, info_x, info_y, infotext_module_icon_size_ratio, infotext_module_icon_size_ratio, 0, c_white, GUI_ALPHA);
+                    info_x -= infotext_module_icon_size + infotext_module_icon_padding;
+                }
+            }
+            checkbit *= 2;
+        }
+    }
+}
+
+// draw overlay textbox
+if (text_string != "") {
+    draw_set_alpha(1);
+    draw_set_color(c_gray);
+    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
+        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
+        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
+        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
+        true);
+
+    draw_set_alpha(textbox_alpha);        
+    draw_set_color(c_black);
+    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
+        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
+        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
+        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
+        false);
+        
+    var text_x = view_wview[PRIMARY_VIEW]/2 - textbox_width/2 + textbox_padding;
+    var text_y = view_hview[PRIMARY_VIEW]/2 - textbox_height/2 + textbox_padding;
+    draw_set_font(Halo);
+    draw_set_halign(fa_left);
+    var display_string = string_copy(text_string, 1, floor(text_show_count)); // 1-indexed instead of 0-indexed
+    draw_set_color(c_white);
+    draw_set_alpha(textbox_text_alpha);
+    draw_text_ext(text_x, text_y, display_string, text_sep, textbox_width - 2 * textbox_padding);
 }
 </string>
           </argument>

@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(global.selection_manager) &amp;&amp; global.selection_manager != 0) { // != 0 is a hack
+            <string>if (instance_exists(global.selection_manager)) {
     show_error("Multiple Selection Managers detected! " +
         "old: " + string(global.selection_manager) + ", new: " + string(id),
         global.WARNING);
@@ -129,7 +129,50 @@ global.selection_manager = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
+            <string>var selmgrid = id;
+
+// REFIT + SHIPYARD SPECIFIC ABILITIES
+// Build a Ship
+if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
+    with (oGameMenucontroller) {
+        if (global.save_manager.credits &gt;= creditCost[? selmgrid.current_command]) {
+            global.save_manager.credits -= creditCost[? selmgrid.current_command];
+            var random_dir = irandom(359);
+            var random_dist = irandom_range(100,300);
+            with (instance_create(shipyardid.x, shipyardid.y, shiptype_to_objectindex(selmgrid.current_command))) {
+                side = UNSC;
+                direction = random_dir;
+                moveTo(id, x+lengthdir_x(random_dist, random_dir), y+lengthdir_y(random_dist, random_dir));
+            }
+        } else {
+            // display not enough credits
+            textbox_show("Not enough credits", 60, 60, 350, 58);
+        }
+    }
+    current_command = NO_COMMAND;
+// Upgrade a ship with a module
+} else if (current_command &gt; NO_UPGRADE &amp;&amp; current_command &lt; UPGRADE_END) {
+    with (oGameMenucontroller) {
+        if (global.save_manager.credits &gt;= creditCost[? selmgrid.current_command]) {
+            var mod_bit = moduleupgrade_to_modulebit(selmgrid.current_command);
+            var shipid = selmgrid.selection[| 0].upgradeid;
+            if (mod_bit != NO_UPGRADE &amp;&amp; !(shipid.ship_modules &amp; mod_bit)) {
+                global.save_manager.credits -= creditCost[? selmgrid.current_command];
+                shipid.ship_modules |= mod_bit;
+                with (shipid) {
+                    capitalShipInitialize();
+                }
+            } else {
+                // display module already installed
+                textbox_show("Module already installed", 60, 60, 450, 58);
+            }
+        } else {
+            // display not enough credits
+            textbox_show("Not enough credits", 60, 60, 350, 58);
+        }
+    }
+    current_command = NO_COMMAND;
+}
 
 // Global left pressed
 if (mouse_check_button_pressed(mb_left)) {

@@ -23,7 +23,7 @@ if (targetid.shield > 0)  //damage shields
         targetid.shield -= tmpdmg;
     }
 }
-else                                                    //damage hull (titianiumA or battleplating
+else    //damage hull (titianiumA or battleplating
 {
     var tmpdmg, tmpratio;
     if (targetid.race == "unsc"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),0];}
@@ -33,10 +33,18 @@ else                                                    //damage hull (titianium
     targetid.hull -= tmpdmg;
     with (targetid){
         if (hull <= 0 && targetid != 0) {
-            //show_message(string(targetid) + " " + object_get_name(object_index));
+            var parent = attackerid;
+            while (parent.parentid != noone) {
+                parent = parent.parentid;
+            }
+            with (parent) {
+                if (ds_map_exists(global.exp_reward, targetid.object_index)) {
+                    ship_exp += global.exp_reward[? targetid.object_index];
+                }
+            }
+            
             instance_destroy();
             
-            //TODO: Update the killboard
         }
     }
 

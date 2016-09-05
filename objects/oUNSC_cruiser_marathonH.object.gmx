@@ -221,7 +221,7 @@ pointdefenseturret_A[29] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac</string>
+            <string>mac_max</string>
           </argument>
           <argument>
             <kind>0</kind>

@@ -33,25 +33,27 @@ broadsword = 0;
 broadsword_max = 0;
 broadsword_deploy_max = 0;
 broadsword_deploy_cd = 0;
-broadsword_deploy_cd_max = 0;
+broadsword_deploy_cd_max = 60;
 
 longsword = 0;
 longsword_max = 0;
 longsword_deploy_max = 0;
 longsword_deploy_cd = 0;
-longsword_deploy_cd_max = 0;
+longsword_deploy_cd_max = 60;
 
 pelican = 0;
 pelican_max = 0;
 pelican_deploy_max = 0;
 pelican_deploy_cd = 0;
-pelican_deploy_cd_max = 0;
+pelican_deploy_cd_max = 30;
+pelican_boarding_strength = 1;
 
 race = "unsc";
 side = 0;
 
 //INITIALIZATION of UNSC ship vars
 mac = 0;
+mac_max = 0;
 mac_cooldown = 0;
 mac_cooldown_max = 1800;
 mac_range = 1000;
@@ -218,7 +220,8 @@ if (longsword_deploy_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var singleship_type = oUNSC_pelican;
+            <string>var selfid = id;
+var singleship_type = oUNSC_pelican;
 
 if (pelican_deploy_cd &lt;= 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
 {
@@ -227,6 +230,7 @@ if (pelican_deploy_cd &lt;= 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empt
     if (instance_exists(transport_targetid)) {
         var transport = createChild(x,y,singleship_type, irandom_range(0,359));
         with (transport) {
+            boarding_strength = selfid.pelican_boarding_strength;
             board(transport_targetid);
         }
         pelican_deploy_cd = pelican_deploy_cd_max;

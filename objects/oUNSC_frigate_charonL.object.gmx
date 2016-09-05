@@ -183,7 +183,7 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac</string>
+            <string>mac_max</string>
           </argument>
           <argument>
             <kind>0</kind>
@@ -235,7 +235,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>12</string>
+            <string>8</string>
           </argument>
         </arguments>
       </action>
@@ -279,59 +279,11 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>longsword_deploy_cd_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>60</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>pelican_max</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>6</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>pelican_deploy_cd_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>30</string>
+            <string>3</string>
           </argument>
         </arguments>
       </action>
@@ -380,6 +332,30 @@ pointdefenseturret_A[11] = -17.7;
           <argument>
             <kind>0</kind>
             <string>69</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ship_modules</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>MODULE_HANGAR</string>
           </argument>
         </arguments>
       </action>

@@ -32,6 +32,8 @@ singleship_rate = 1;
 singleship_speed = 1;
 singleship_range = 1;
 
+exp_value = 1;
+
 singleship_trail_color = c_white;
 
 sight_range = 600; //range to detect targets
@@ -55,7 +57,7 @@ parentid = 0;
 
 state = MOVING;
 
-targetid = 0;
+targetid = noone;
 escortid = noone;
 target_x = 0;
 target_y = 0;

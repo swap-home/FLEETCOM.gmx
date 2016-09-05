@@ -10,6 +10,11 @@ security_level = security_level_initial;
 
 if (race == "unsc")
 {
+    // Bonus fighters and transports if Hangar module
+    if (ship_modules & MODULE_HANGAR) {
+        longsword_max += 4;
+        pelican_max += 2;
+    }
     broadsword = broadsword_max;
     broadsword_deploy_cd = broadsword_deploy_cd_max;
     longsword = longsword_max;
@@ -17,9 +22,11 @@ if (race == "unsc")
     pelican = pelican_max;
     pelican_deploy_cd = pelican_deploy_cd_max;
     mac_cooldown = mac_cooldown_max;
-    if (ship_modules | MODULE_MAC == 0) {
-        mac = 0;
+    // MAC module
+    if (ship_modules & MODULE_MAC) {
+        mac = mac_max;
     }
+    
 }
 else
 {

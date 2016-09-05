@@ -115,7 +115,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>6</string>
+            <string>4</string>
           </argument>
         </arguments>
       </action>
@@ -135,7 +135,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac</string>
+            <string>mac_max</string>
           </argument>
           <argument>
             <kind>0</kind>
@@ -163,7 +163,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>18*2</string>
+            <string>20*2</string>
           </argument>
         </arguments>
       </action>
@@ -283,7 +283,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>4</string>
+            <string>2</string>
           </argument>
         </arguments>
       </action>

@@ -31,8 +31,8 @@ dmg_kinetic = 0;
 dmg_explosive = 0;
 dmg_thermal = 0;
 
-parentid = 0;
-targetid = 0;
+parentid = noone;
+targetid = noone;
 </string>
           </argument>
         </arguments>
