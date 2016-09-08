@@ -144,6 +144,7 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
                 direction = random_dir;
                 moveTo(id, x+lengthdir_x(random_dist, random_dir), y+lengthdir_y(random_dist, random_dir));
             }
+            textbox_show("Ship constructed", 60, 60, 320, 58);
         } else {
             // display not enough credits
             textbox_show("Not enough credits", 60, 60, 350, 58);
@@ -153,22 +154,46 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
 // Upgrade a ship with a module
 } else if (current_command &gt; NO_UPGRADE &amp;&amp; current_command &lt; UPGRADE_END) {
     with (oGameMenucontroller) {
-        if (global.save_manager.credits &gt;= creditCost[? selmgrid.current_command]) {
-            var mod_bit = moduleupgrade_to_modulebit(selmgrid.current_command);
-            var shipid = selmgrid.selection[| 0].upgradeid;
-            if (mod_bit != NO_UPGRADE &amp;&amp; !(shipid.ship_modules &amp; mod_bit)) {
-                global.save_manager.credits -= creditCost[? selmgrid.current_command];
-                shipid.ship_modules |= mod_bit;
-                with (shipid) {
-                    capitalShipInitialize();
+        var mod_bit = moduleupgrade_to_modulebit(selmgrid.current_command);
+        var shipid = selmgrid.selection[| 0].upgradeid;
+        if (instance_exists(shipid)) { 
+            // ship exists
+            
+            var module_slots = ds_list_create();
+            getShipModuleSlots(shipid, module_slots);
+            if (module_slots[| 0] &lt; module_slots[| 1]) {
+                // ship has open module slots
+            
+                if (mod_bit != NO_UPGRADE &amp;&amp; !(shipid.ship_modules &amp; mod_bit)) { 
+                    // ship does not already have module
+                    
+                    if (global.save_manager.credits &gt;= creditCost[? selmgrid.current_command]) {
+                        // player has enough credits
+                        
+                        global.save_manager.credits -= creditCost[? selmgrid.current_command];
+                        shipid.ship_modules |= mod_bit;
+                        with (shipid) {
+                            capitalShipInitialize();
+                        }
+                        
+                        // display module upgrade confirmation
+                        textbox_show("Module installed", 60, 60, 310, 58);
+                    } else {
+                        // display not enough credits
+                        textbox_show("Not enough credits", 60, 60, 350, 58);
+                    }
+                } else {
+                    // display module already installed
+                    textbox_show("Module already installed", 60, 60, 450, 58);
                 }
             } else {
-                // display module already installed
-                textbox_show("Module already installed", 60, 60, 450, 58);
+                // display ship lacks module slots
+                textbox_show("Insufficient module slots", 60, 60, 410, 58);
             }
+            ds_list_destroy(module_slots);
         } else {
-            // display not enough credits
-            textbox_show("Not enough credits", 60, 60, 350, 58);
+            // display no upgrade target
+            textbox_show("No ship in range for refit", 60, 60, 450, 58);
         }
     }
     current_command = NO_COMMAND;

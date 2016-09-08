@@ -266,7 +266,11 @@ if (phantom_deploy_cd &gt; 0) {
     var selfid = id;
         
     energyprojector_cooldown = energyprojector_cooldown_max;
-    sound_play(energyProjectorFire);
+    
+    if (global.sfx) {
+        sound_play(energyProjectorFire);
+    }
+    
     for (var i = 0; i &lt; energyprojector; i++)
     {
         var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);

@@ -32,9 +32,9 @@ else    //damage hull (titianiumA or battleplating
     
     targetid.hull -= tmpdmg;
     with (targetid){
-        if (hull <= 0 && targetid != 0) {
+        if (hull <= 0 && targetid != 0) { // TODO: what is this targetid != 0 doing?
             var parent = attackerid;
-            while (parent.parentid != noone) {
+            while (instance_exists(parent) && parent.parentid != noone) {
                 parent = parent.parentid;
             }
             with (parent) {
@@ -42,9 +42,7 @@ else    //damage hull (titianiumA or battleplating
                     ship_exp += global.exp_reward[? targetid.object_index];
                 }
             }
-            
             instance_destroy();
-            
         }
     }
 

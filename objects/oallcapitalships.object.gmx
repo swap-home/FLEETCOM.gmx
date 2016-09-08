@@ -326,6 +326,12 @@ var dist_tolerance = maxspeed;
 var angle_tolerance = 0.5;
 var turn_heuristic = 0.5; //compensate for time to turn
 
+if (maxspeed == 0) {
+    move_x = x;
+    move_y = y;
+    movespeed = 0;
+}
+
 if (abs(move_x - x) &lt;= dist_tolerance &amp;&amp; abs(move_y - y) &lt;= dist_tolerance)
 {
     x = move_x;
@@ -512,11 +518,14 @@ var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
 // draw a health bar
-draw_bar(x-sprite_width/2,y-(sprite_height/2)-9,sprite_width,5,hull,hull_max,c_red,c_green);
+if (!invulnerable) {
+    draw_bar(x-sprite_width/2,y-(sprite_height/2)-9,sprite_width,5,hull,hull_max,c_red,c_green);
+}
 
 // draw a shield bar
-if (shield_max &gt; 0)
-{draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);}
+if (!invulnerable &amp;&amp; shield_max &gt; 0){
+    draw_bar(x-sprite_width/2,y-(sprite_height/2)-15,sprite_width,5,shield,shield_max,c_blue,c_blue);
+}
 
 // draw a boarding bar
 if (boarding_level &gt; 0 || global.debug) { //|| security_level != security_level_initial) {

@@ -68,6 +68,8 @@ button_sprites = ds_list_create();
 button_actions = ds_list_create();
 button_keys = ds_list_create();
 button_mouseover = -1; // -1 means no mouse is not over any button
+button_required = -1; // During the tutorial, sometimes other options are all disabled
+button_border_width = 4;
 
 button_tooltip_alpha = 0.95;
 button_tooltip_width = 350;
@@ -92,7 +94,7 @@ objective_string = "";
 ui_rotation_clock = 0;
 ui_rotation_clock_max = 100;
 ui_size_clock = 0;
-ui_size_clock_max = 100;
+ui_size_clock_max = 45;
 
 ds_list_add(button_keys, ord("Q"));
 ds_list_add(button_keys, ord("W"));
@@ -222,10 +224,16 @@ if (global.selection_manager != 0) {
     
         // Check for keys pressed
         if (keyboard_check_pressed(button_keys[| i])) {
-            if (global.selection_manager.current_command == button_actions[| i]) {
-                global.selection_manager.current_command = NO_COMMAND;
-            } else {
-                global.selection_manager.current_command = button_actions[| i];
+            
+            // if button is enabled/disabled
+            if (button_required == -1 || button_required == i) {
+                
+                // toggles command
+                if (global.selection_manager.current_command == button_actions[| i]) {
+                    global.selection_manager.current_command = NO_COMMAND;
+                } else {
+                    global.selection_manager.current_command = button_actions[| i];
+                }
             }
         }
         
@@ -239,11 +247,16 @@ if (global.selection_manager != 0) {
             
             if (mouse_check_button_pressed(mb_left)) {
                 ui_click = true;
-                // toggles command
-                if (global.selection_manager.current_command == button_actions[| i]) {
-                    global.selection_manager.current_command = NO_COMMAND;
-                } else {
-                    global.selection_manager.current_command = button_actions[| i];
+                
+                // if button is enabled/disabled
+                if (button_required == -1 || button_required == i) {
+                
+                    // toggles command
+                    if (global.selection_manager.current_command == button_actions[| i]) {
+                        global.selection_manager.current_command = NO_COMMAND;
+                    } else {
+                        global.selection_manager.current_command = button_actions[| i];
+                    }
                 }
             }
         }
@@ -444,8 +457,56 @@ for (var i = 0; i &lt; button_count; i++) {
     // draw border
     if (global.selection_manager.current_command == button_actions[| i]) {
         draw_set_color(c_red);
-        draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height);
-        draw_line(border + minimap_width + (padding * (i+1)) + (button_size * i), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), view_hview[PRIMARY_VIEW] - border - minimap_height + button_size);
+        if (ui_rotation_clock / ui_rotation_clock_max &lt; 1/2) {
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height, 
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                button_border_width);
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+        } else {
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+        }
+    }
+    
+    if (i == button_required) {
+        draw_set_color(c_yellow);
+        if (ui_rotation_clock / ui_rotation_clock_max &lt; 1/2) {
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height, 
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                button_border_width);
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+        } else {
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+        }
     }
     
     // draw button tooltips
@@ -502,7 +563,6 @@ for (var i = 0; i &lt; button_count; i++) {
     draw_x += button_size;
 }
 
-
 // draw current objectives if not in menu
 var ctrlid = instance_find(oGameMenucontroller,0);
 if (ctrlid == noone) {
@@ -525,6 +585,12 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
     draw_set_font(Halo);
     draw_set_halign(fa_right);
     var unitid = global.selection_manager.selection[| 0];
+    
+    // Display selected unit if upgrading
+    if (unitid.object_index == oRefitStation &amp;&amp; instance_exists(unitid.upgradeid)) {
+        unitid = unitid.upgradeid;
+    }
+    
     var info_x = view_wview[PRIMARY_VIEW] - border;
     var info_y = border;
     if (unitid.race == "unsc") {

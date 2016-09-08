@@ -48,29 +48,32 @@ fighters_to_spawn = 5;
 fighters_spawn_delay = 30;
 
 station_boarded = false;
+stationid = noone;
 
 // Setup Tutorial mission
-var tutorial_string = "At 1400 hours, March 14, contact was lost with a remote station" +
-    " in the system Theta Tauri. " +
-    "##UNSC Seven Seas was dispatched to the area by local FLEETCOM." +
-    "##Your first field mission is to retake the station." +
-    "###Insurrectionist activity is suspected in the system.";
-textbox_show(tutorial_string, 100, 120, 800, 400);
-
-stationid = instance_create(1280, 320, oUNSC_station);
-with (stationid) {
-    side = NEUTRAL;
-    pdt = 2;
-    broadsword_max = 0;
-    longsword_max = 0;
-    pelican_max = 0;
-    ship_name = "Remote Station";
-    unselectable = true;
-    boarding_captures = true;
-}
-
-with (oscroll) {
-    screen_locked = true;
+if (room == Tutorial) {
+    var tutorial_string = "At 1400 hours, March 14, contact was lost with a remote station" +
+        " in the system Theta Tauri. " +
+        "##UNSC Seven Seas was dispatched to the area by local FLEETCOM." +
+        "##Your first field mission is to retake the station." +
+        "###Insurrectionist activity is suspected in the system.";
+    textbox_show(tutorial_string, 100, 120, 800, 400);
+    
+    stationid = instance_create(1280, 320, oUNSC_station);
+    with (stationid) {
+        side = NEUTRAL;
+        pdt = 2;
+        broadsword_max = 0;
+        longsword_max = 0;
+        pelican_max = 0;
+        ship_name = "Remote Station";
+        unselectable = true;
+        boarding_captures = true;
+    }
+    
+    with (oscroll) {
+        screen_locked = true;
+    }
 }
 
 shipid = noone;
@@ -216,6 +219,7 @@ with (shipid) {
         selfid.stationid.side = REBEL;
         selfid.stationid.invulnerable = true;
         selfid.alarm[1] = selfid.fighters_spawn_delay;
+        global.ui_controller.button_required = 0;
     }
     if (selfid.tutorial_step &lt; 10 &amp;&amp; ship_modules | MODULE_MAC) {
         tutorial_step = 10;
@@ -234,12 +238,14 @@ with (oUNSC_longsword_GATL1) {
 }
 if (tutorial_step &lt; 4 &amp;&amp; fighters_to_spawn == 0 &amp;&amp; rebel_fighter_count == 0) {
     tutorial_step = 4;
+    global.ui_controller.button_required = 1;
 }
 
 with (stationid) {
     if (selfid.tutorial_step &lt; 6 &amp;&amp; side == UNSC) {
         mission_end(15,true);
         selfid.tutorial_step = 6;
+        global.ui_controller.button_required = -1;
     }
     
     if (!selfid.station_boarded) {

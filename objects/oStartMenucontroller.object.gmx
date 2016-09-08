@@ -28,14 +28,15 @@
             <string>draw = 0;
 alarm[0] = 150;
 titlealpha = 0.8;
-sound_volume(FarthestOutpost, 0.25);
-sound_loop(FarthestOutpost);
+//sound_volume(FarthestOutpost, 0.25);
+//sound_loop(FarthestOutpost);
 transition_kind = 0;
 
 global.debug = false;
 global.WARNING = false;
 global.gameName = "FLEETCOM";
 global.playerside = UNSC;
+global.sfx = false;
 global.selection_manager = noone;
 global.ui_controller = noone;
 global.save_manager = noone;
@@ -50,6 +51,7 @@ savebox_text_scale = 0.6;
 savebox_text_spacing = 12;
 
 mouseover_savebox = -1;
+delete_savebox = -1;
 
 ships_to_spawn = ds_list_create();
 spawn_timer = 0;
@@ -82,6 +84,32 @@ randomize();
           <argument>
             <kind>1</kind>
             <string>ds_list_destroy(ships_to_spawn);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// when active, disable changing game slot selection
+// and if delete is confirmed delete the game slot
+
+// if the timer runs out, reset
 </string>
           </argument>
         </arguments>
@@ -169,19 +197,21 @@ alarm[1] = 150;
 }
 
 var draw_y = room_height/2 + savebox_padding_from_title;
-for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
-
-    if (mouse_x &lt;= room_width/2 + savebox_width/2 &amp;&amp;
-        mouse_x &gt;= room_width/2 - savebox_width/2 &amp;&amp;
-        mouse_y &gt;= draw_y + savebox_padding &amp;&amp;
-        mouse_y &lt;= draw_y + savebox_padding + savebox_height) {
-
-        mouseover_savebox = i;
+if (alarm[2] == -1) {
+    for (var i = 0; i &lt; SAVE_SLOT_COUNT; i++) {
+    
+        if (mouse_x &lt;= room_width/2 + savebox_width/2 &amp;&amp;
+            mouse_x &gt;= room_width/2 - savebox_width/2 &amp;&amp;
+            mouse_y &gt;= draw_y + savebox_padding &amp;&amp;
+            mouse_y &lt;= draw_y + savebox_padding + savebox_height) {
+    
+            mouseover_savebox = i;
+        }
+            
+        draw_y += savebox_padding + savebox_height;
     }
-        
-    draw_y += savebox_padding + savebox_height;
 }
-
+    
 with (oallcapitalships) {
     if (x &gt; room_width) {
         x = 0;
@@ -349,25 +379,35 @@ switch (draw) {
             var mission = global.save_manager.mission_preview[| i];
             var credits = global.save_manager.credits_preview[| i];
             var ship_count = global.save_manager.ship_count_preview[| i];
-            
-            if (mission == -1) {
+            if (alarm[2] &gt; -1 &amp;&amp; delete_savebox == i) {
                 draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
                     draw_y + savebox_padding + savebox_text_padding,
-                    "EMPTY SLOT",
+                    "CONFIRM DELETE? - Reverting in ... " + string(ceil(alarm[2]/STEPS_PER_SECOND)),
                     savebox_text_spacing,
                     (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
                     savebox_text_scale,
                     savebox_text_scale,
                     0);
-            } else {
-                draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
-                    draw_y + savebox_padding + savebox_text_padding,
-                    "MISSION: " + string(mission) + " CREDITS: " + string(credits) + " FLEET SIZE: " + string(ship_count),
-                    savebox_text_spacing,
-                    (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
-                    savebox_text_scale,
-                    savebox_text_scale,
-                    0);
+            } else {            
+                if (mission == -1) {
+                    draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
+                        draw_y + savebox_padding + savebox_text_padding,
+                        "EMPTY SLOT",
+                        savebox_text_spacing,
+                        (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
+                        savebox_text_scale,
+                        savebox_text_scale,
+                        0);
+                } else {
+                    draw_text_ext_transformed(room_width/2 - savebox_width/2 + savebox_text_padding,
+                        draw_y + savebox_padding + savebox_text_padding,
+                        "MISSION: " + string(mission) + " CREDITS: " + string(credits) + " FLEET SIZE: " + string(ship_count),
+                        savebox_text_spacing,
+                        (savebox_width - 2*savebox_text_padding) * 1/savebox_text_scale,
+                        savebox_text_scale,
+                        savebox_text_scale,
+                        0);
+                }
             }
                 
             draw_set_alpha(1);
@@ -421,6 +461,39 @@ draw_set_font(-1);
         </arguments>
       </action>
     </event>
+    <event eventtype="9" enumb="46">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (alarm[2] &gt; -1) {
+    global.save_manager.mission_preview[| mouseover_savebox] = -1;
+    delete_savebox = -1;
+    alarm[2] = -1;
+    deleteSave(mouseover_savebox);
+} else {
+    if (mouseover_savebox != -1 &amp;&amp; global.save_manager.mission_preview[| mouseover_savebox] != -1) {
+        alarm[2] = 3 * STEPS_PER_SECOND;
+        delete_savebox = mouseover_savebox;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="9" enumb="40">
       <action>
         <libid>1</libid>
@@ -438,9 +511,11 @@ draw_set_font(-1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mouseover_savebox++;
-if (mouseover_savebox &gt;= SAVE_SLOT_COUNT) {
-    mouseover_savebox = 0;
+            <string>if (alarm[2] == -1) {
+    mouseover_savebox++;
+    if (mouseover_savebox &gt;= SAVE_SLOT_COUNT) {
+        mouseover_savebox = 0;
+    }
 }
 </string>
           </argument>
@@ -464,9 +539,11 @@ if (mouseover_savebox &gt;= SAVE_SLOT_COUNT) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mouseover_savebox--;
-if (mouseover_savebox &lt; 0) {
-    mouseover_savebox = SAVE_SLOT_COUNT-1;
+            <string>if (alarm[2] == -1) {
+    mouseover_savebox--;
+    if (mouseover_savebox &lt; 0) {
+        mouseover_savebox = SAVE_SLOT_COUNT-1;
+    }
 }
 </string>
           </argument>

@@ -1,7 +1,10 @@
+if (!global.sfx) {
+    exit;
+}
+
 var MAX_SOUND = 16;
 var toplay = irandom_range(1,MAX_SOUND);
 
-//sound_play("ack"+string(toplay));
 switch(toplay)
 {
     case 1: sound_play(ack1);break;

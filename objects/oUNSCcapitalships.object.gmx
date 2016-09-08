@@ -270,7 +270,11 @@ if (pelican_deploy_cd &gt; 0) {
         var selfid = id;
         
         mac_cooldown = mac_cooldown_max;
-        sound_play(macFire);
+        
+        if (global.sfx) {
+            sound_play(macFire);
+        }
+        
         for (var i = 0; i &lt; mac; i++)
         {
             var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);

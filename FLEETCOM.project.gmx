@@ -201,6 +201,7 @@
       <script>scripts\newSave.gml</script>
       <script>scripts\updateSave.gml</script>
       <script>scripts\writeSave.gml</script>
+      <script>scripts\deleteSave.gml</script>
     </scripts>
     <script>scripts\textbox_show.gml</script>
     <script>scripts\mission_start.gml</script>
