@@ -140,6 +140,11 @@ if (instance_exists(oGameMenucontroller)) {
     // Modules
     action_tooltip_strings[? UPGRADE_MAC] = "MAGNETIC ACCELERATOR CANNON#Heavy capital ship armament, less effective on Frigates, cannot be built on Corvettes##cR: "+string(ctrlid.creditCost[? UPGRADE_MAC])+"#Fleet strength: "+string(ctrlid.fleetStrength[? UPGRADE_MAC]);   
     action_tooltip_strings[? UPGRADE_HANGAR] = "HARGAR BAYS#Adds additional fighter and transport capacity, cannot be built on Corvettes or Destroyers##cR: "+string(ctrlid.creditCost[? UPGRADE_HANGAR])+"#Fleet strength: "+string(ctrlid.fleetStrength[? UPGRADE_HANGAR]);   
+    
+    // Mission Control
+    action_tooltip_strings[? MISSION_START] = "Start mission, dispatching ships in the yellow deploy zone";
+    action_tooltip_strings[? MISSION_RIGHT] = "END OF THE DEMO#Click for battle simulation";
+    
 }
 
 </string>
@@ -226,7 +231,7 @@ if (global.selection_manager != 0) {
         if (keyboard_check_pressed(button_keys[| i])) {
             
             // if button is enabled/disabled
-            if (button_required == -1 || button_required == i) {
+            //if (button_required == -1 || button_required == i) {
                 
                 // toggles command
                 if (global.selection_manager.current_command == button_actions[| i]) {
@@ -234,7 +239,7 @@ if (global.selection_manager != 0) {
                 } else {
                     global.selection_manager.current_command = button_actions[| i];
                 }
-            }
+            //}
         }
         
         // Check if mouse over buttons
@@ -249,7 +254,7 @@ if (global.selection_manager != 0) {
                 ui_click = true;
                 
                 // if button is enabled/disabled
-                if (button_required == -1 || button_required == i) {
+                //if (button_required == -1 || button_required == i) {
                 
                     // toggles command
                     if (global.selection_manager.current_command == button_actions[| i]) {
@@ -257,7 +262,7 @@ if (global.selection_manager != 0) {
                     } else {
                         global.selection_manager.current_command = button_actions[| i];
                     }
-                }
+                //}
             }
         }
     }
@@ -321,36 +326,57 @@ if (instance_exists(global.selection_manager)) {
             ds_list_add(button_sprites, sPrimaryFire);
             ds_list_add(button_actions, UPGRADE_MAC);
             
-            ds_list_add(button_sprites, sHangar);
-            ds_list_add(button_actions, UPGRADE_HANGAR);
+            // Disabled in tutorial
+            if (!instance_exists(oTutorialHelper)) {
+                ds_list_add(button_sprites, sHangar);
+                ds_list_add(button_actions, UPGRADE_HANGAR);
+            }
         }
         
         // Hack for Shipyard
         if (ds_list_size(selection) == 1 &amp;&amp;
             selection[| 0].object_index == oShipyard) {
             
-            ds_list_add(button_sprites, sBuildCorvetteFast);
-            ds_list_add(button_actions, CORVETTE_FAST);
-            
-            ds_list_add(button_sprites, sBuildCorvetteRepair);
-            ds_list_add(button_actions, CORVETTE_REPAIR);
-            
-            ds_list_add(button_sprites, sBuildFrigateCharon);
-            ds_list_add(button_actions, FRIGATE_CHARON);
-            
-            ds_list_add(button_sprites, sBuildFrigateParis);
-            ds_list_add(button_actions, FRIGATE_PARIS);
-            
-            ds_list_add(button_sprites, sBuildDestroyerDiligence);
-            ds_list_add(button_actions, DESTROYER_DILIGENCE);
-            
-            ds_list_add(button_sprites, sBuildDestroyerHalberd);
-            ds_list_add(button_actions, DESTROYER_HALBERD);
-            
-            ds_list_add(button_sprites, sBuildCruiserMarathon);
-            ds_list_add(button_actions, CRUISER_MARATHON);
+            // Disabled in tutorial until step 10
+            if (!instance_exists(oTutorialHelper) || instance_find(oTutorialHelper, 0).tutorial_step &gt;= 10) {
+                ds_list_add(button_sprites, sBuildCorvetteFast);
+                ds_list_add(button_actions, CORVETTE_FAST);
+                
+                ds_list_add(button_sprites, sBuildCorvetteRepair);
+                ds_list_add(button_actions, CORVETTE_REPAIR);
+            }
+                        
+            // Disabled in tutorial
+            if (!instance_exists(oTutorialHelper)) {
+                ds_list_add(button_sprites, sBuildFrigateCharon);
+                ds_list_add(button_actions, FRIGATE_CHARON);
+                
+                ds_list_add(button_sprites, sBuildFrigateParis);
+                ds_list_add(button_actions, FRIGATE_PARIS);
+                
+                ds_list_add(button_sprites, sBuildDestroyerDiligence);
+                ds_list_add(button_actions, DESTROYER_DILIGENCE);
+                
+                ds_list_add(button_sprites, sBuildDestroyerHalberd);
+                ds_list_add(button_actions, DESTROYER_HALBERD);
+                
+                ds_list_add(button_sprites, sBuildCruiserMarathon);
+                ds_list_add(button_actions, CRUISER_MARATHON);
+            }
         }
+        
+        // Hack for Mission Control
+        if (ds_list_size(selection) == 1 &amp;&amp; 
+            selection[| 0].object_index == oMissionControl) {
             
+            //ds_list_add(button_sprites, sUNSCicon);
+            //ds_list_add(button_actions, MISSION_START);
+            
+            ds_list_add(button_sprites, sUNSCicon);
+            ds_list_add(button_actions, MISSION_RIGHT);
+        }
+         
+        // Regular abilities   
         if (groupHasFighters(selection)) {
             ds_list_add(button_sprites, sFighters);
             ds_list_add(button_actions, LAUNCH_FIGHTERS);
@@ -486,23 +512,23 @@ for (var i = 0; i &lt; button_count; i++) {
         draw_set_color(c_yellow);
         if (ui_rotation_clock / ui_rotation_clock_max &lt; 1/2) {
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height, 
-                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
-                button_border_width);
-            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
-                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
-                button_border_width);
-        } else {
-            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
                 view_hview[PRIMARY_VIEW] - border - minimap_height,
                 border + minimap_width + (padding * (i+1)) + (button_size * i), 
                 view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
                 button_border_width);
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
                 view_hview[PRIMARY_VIEW] - border - minimap_height,
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                button_border_width);
+        } else {
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height, 
+                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                button_border_width);
+            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
+                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
                 border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
                 view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
                 button_border_width);

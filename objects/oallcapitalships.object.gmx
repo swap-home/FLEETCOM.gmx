@@ -457,7 +457,7 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
           <argument>
             <kind>1</kind>
             <string>// Refuel
-if (side == other.side &amp;&amp;  id == other.targetid &amp;&amp; other.state == REFUEL)
+if (side == other.side &amp;&amp; id == other.targetid &amp;&amp; other.state == REFUEL)
 {
     //show_message(object_get_name(object_index));
     if (object_get_name(other.object_index) == "oUNSC_longsword_GATL1"){longsword += 1;}
@@ -532,6 +532,7 @@ if (boarding_level &gt; 0 || global.debug) { //|| security_level != security_lev
     draw_bar_split(x-sprite_width/2,y-(sprite_height/2)-21,sprite_width,5,boarding_timer+boarding_timer_max,2*boarding_timer_max,c_green,c_red);
     draw_set_font(Halo);
     draw_set_color(c_gray);
+    draw_set_halign(fa_center);
     draw_text(x-sprite_width/2 - 22,y-(sprite_height/2)-21-4,string(security_level));
     draw_text(x-sprite_width/2 + sprite_width + 22,y-(sprite_height/2)-21-4,string(boarding_level));
 }

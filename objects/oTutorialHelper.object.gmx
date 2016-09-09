@@ -49,6 +49,7 @@ fighters_spawn_delay = 30;
 
 station_boarded = false;
 stationid = noone;
+shipid = noone;
 
 // Setup Tutorial mission
 if (room == Tutorial) {
@@ -75,8 +76,6 @@ if (room == Tutorial) {
         screen_locked = true;
     }
 }
-
-shipid = noone;
 </string>
           </argument>
         </arguments>
@@ -198,6 +197,10 @@ with (oscroll) {
             <kind>1</kind>
             <string>var selfid = id;
 
+if (shipid == noone) {
+    shipid = instance_find(oUNSC_frigate_charonL, 0);
+}
+
 if (global.ui_controller.text_string == "" &amp;&amp; tutorial_step == -1) {
     tutorial_step = 0;
     alarm[0] = 45;
@@ -206,6 +209,17 @@ if (global.ui_controller.text_string == "" &amp;&amp; tutorial_step == -1) {
 if (global.ui_controller.text_string == "" &amp;&amp; tutorial_step == 6) {
     tutorial_step = 7;
     alarm[2] = 5;
+}
+
+if (tutorial_step == 9) {
+    if (!ds_list_empty(global.selection_manager.selection)
+        &amp;&amp; instance_exists(global.selection_manager.selection[| 0])
+        &amp;&amp; global.selection_manager.selection[| 0].object_index == oRefitStation) {
+    
+        global.ui_controller.button_required = 0;
+    } else {
+        global.ui_controller.button_required = -1;    
+    }
 }
 
 with (shipid) {
@@ -221,8 +235,10 @@ with (shipid) {
         selfid.alarm[1] = selfid.fighters_spawn_delay;
         global.ui_controller.button_required = 0;
     }
-    if (selfid.tutorial_step &lt; 10 &amp;&amp; ship_modules | MODULE_MAC) {
-        tutorial_step = 10;
+    
+    if (selfid.tutorial_step &lt; 10 &amp;&amp; (ship_modules &amp; MODULE_MAC)) {
+        selfid.tutorial_step = 10;
+        global.ui_controller.button_required = -1;
     }
 }
 
@@ -262,11 +278,10 @@ with (stationid) {
 if (tutorial_step == 8) {
     var ctrlid = instance_find(oGameMenucontroller, 0);
     // Starting ship is the ship being upgraded
-    if (instance_exists(ctrlid) &amp;&amp; instance_exists(ctrlid.refitid) &amp;&amp; instance_exists(ctrlid.refitid.upgradeid) &amp;&amp; ctrlid.refitid.upgradeid == global.save_manager.ship_id[| 0]) {
-        // Selected refitid
-        //if (!ds_list_empty(global.selection_manager.selection) &amp;&amp; global.selection_manager.selection[| 0] == ctrlid.refitid) {
+    if (instance_exists(ctrlid) &amp;&amp; instance_exists(ctrlid.refitid) 
+        &amp;&amp; instance_exists(ctrlid.refitid.upgradeid) 
+        &amp;&amp; ctrlid.refitid.upgradeid == global.save_manager.ship_id[| 0]) {
             tutorial_step = 9;
-        //}
     }
 }
 
@@ -312,6 +327,7 @@ if (tutorial_step == 11) {
             <kind>1</kind>
             <string>if (tutorial_step == 7) {
     tutorial_step = 8;
+    shipid = noone;
 }
 </string>
           </argument>
@@ -379,7 +395,7 @@ switch (tutorial_step) {
         break;
     case 9:
         draw_text_ext(768, 500, "Upgrade your starting Charon Frigate with a MAC " +
-            "by selecting the refit station and clicking on the MAC module, this will use up credits shown on the top right " +
+            "by selecting the refit station and clicking on the MAC module, this will use up credits shown on the top left " +
             "as well as take up a module slot, which are earned with XP", 32, 600);
         break;
     case 10:
@@ -390,8 +406,11 @@ switch (tutorial_step) {
         "#Since the total fleet strength of your Corvette and upgraded Frigate meet this, send both of them into the yellow deploy zone", 32, 600);
         break;
     case 12:
-        draw_text_ext(1152, 500, "To start the mission, select the Mission Control Station and press Start Mission", 32, 600);
-        break;        
+        draw_text_ext(1152, 500, "To start the mission, select the Mission Control Station and press Start Mission##This concludes the tutorial", 32, 600);
+        break;
+    case 13:
+        draw_text_ext(1152, 500, "This is a randomized large scale battle, displaying how later missions could possibly play out##A toggles AI for the left side#D toggles debug info#F toggles effects", 32, 600);
+        break;      
 }
 </string>
           </argument>

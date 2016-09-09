@@ -79,7 +79,7 @@ fleetStrength[? CRUISER_MARATHON] = 8;
 
 // MODULES
 fleetStrength[? UPGRADE_MAC] = 2;
-fleetStrength[? UPGRADE_HANGAR] = 1;
+fleetStrength[? UPGRADE_HANGAR] = 0;
 </string>
           </argument>
         </arguments>
@@ -126,7 +126,8 @@ ds_map_destroy(fleetStrength);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (ships_to_spawn &lt; ds_list_size(global.save_manager.ship_name)) {
+            <string>// Spawn saved ships
+if (ships_to_spawn &lt; ds_list_size(global.save_manager.ship_name)) {
     spawn_timer++;
     if (spawn_timer &gt;= spawn_timer_max) {
         spawn_timer = 0;
@@ -135,12 +136,24 @@ ds_map_destroy(fleetStrength);
             global.save_manager.ship_type[| ships_to_spawn],
             global.save_manager.ship_exp[| ships_to_spawn],
             global.save_manager.ship_modules[| ships_to_spawn],
-            irandom_range(spawn_border, room_width-spawn_border), 
-            irandom_range(spawn_border, room_height-spawn_border-warp_zone),
+            irandom_range(spawn_border, room_width-spawn_border-warp_zone), 
+            irandom_range(spawn_border, room_height-spawn_border),
             0);            
         createShipWarpTrail(shipid, 5, 0.5, 0.5);
         global.save_manager.ship_id[| ships_to_spawn] = shipid;
         ships_to_spawn++;
+    }
+}
+
+var selfid = id;
+
+fleetStrengthCurrent = 0;
+// Calculate fleet strength
+with (oallcapitalships) {
+    if (x &gt; room_width - selfid.warp_zone + selfid.warp_zone_border) {
+        if (ds_map_exists(selfid.fleetStrength, objectindex_to_shiptype(object_index))) {
+            selfid.fleetStrengthCurrent += getShipFleetStrength(id);
+        }
     }
 }
 </string>

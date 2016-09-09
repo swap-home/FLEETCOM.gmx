@@ -113,7 +113,7 @@
         <arguments>
           <argument>
             <kind>0</kind>
-            <string>global.fx</string>
+            <string>global.fx_control.fx</string>
           </argument>
         </arguments>
       </action>

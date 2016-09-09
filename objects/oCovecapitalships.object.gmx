@@ -328,6 +328,7 @@ if (energyprojector_cooldown &gt; 0) {
             ID.side = side;
             ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-15,15);
             ID.targetid = targetid;
+            ID.parentid = id;
         }
     }
 }

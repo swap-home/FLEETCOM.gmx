@@ -172,9 +172,9 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
                         
                         global.save_manager.credits -= creditCost[? selmgrid.current_command];
                         shipid.ship_modules |= mod_bit;
-                        with (shipid) {
-                            capitalShipInitialize();
-                        }
+                        
+                        // update ship with module bonus
+                        applyModule(shipid, mod_bit);
                         
                         // display module upgrade confirmation
                         textbox_show("Module installed", 60, 60, 310, 58);
@@ -197,8 +197,16 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
         }
     }
     current_command = NO_COMMAND;
+// Mission Control
+} else if (current_command == MISSION_START || current_command == MISSION_LEFT || current_command == MISSION_RIGHT) {
+    // Quick hack to tech demo the large scale random ship battle
+    if (current_command == MISSION_RIGHT) {
+        with (oTutorialHelper) {
+            tutorial_step = 13;
+        }
+        room_goto(RandomBattle);
+    }
 }
-
 // Global left pressed
 if (mouse_check_button_pressed(mb_left)) {
     
@@ -437,17 +445,13 @@ if (mouse_check_button_pressed(mb_right)) {
     }
 }
     
-// Modify cursor sprite to match current command
+// Add cursor sprite to match current command
 switch (current_command) {
     case NO_COMMAND:
         cursor_sprite = smouse;
         break;
     case LAUNCH_FIGHTERS:
-        cursor_sprite = sUNSC_longsword;
-        break;
     case LAUNCH_TRANSPORTS:
-        cursor_sprite = sUNSC_pelican;
-        break;
     case FIRE_PRIMARY:
         cursor_sprite = smouseglow;
         break;
@@ -570,6 +574,43 @@ if (click_down)
 
 draw_set_color(oldColor);
 draw_set_alpha(oldAlpha);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var xoffset = 32;
+var yoffset = -10;
+
+// Modify cursor sprite to match current command
+switch (current_command) {
+    case NO_COMMAND:
+        break;
+    case LAUNCH_FIGHTERS:
+        draw_sprite_ext(sFighters, -1, mouse_x+xoffset, mouse_y+yoffset, 1/4, 1/4, 0, c_white, 1);
+        break;
+    case LAUNCH_TRANSPORTS:
+        draw_sprite_ext(sTransports, -1, mouse_x+xoffset, mouse_y+yoffset, 1/4, 1/4, 0, c_white, 1);
+        break;
+    case FIRE_PRIMARY:
+        draw_sprite_ext(sPrimaryFire, -1, mouse_x+xoffset, mouse_y+yoffset, 1/4, 1/4, 0, c_white, 1);
+        break;
+}
 </string>
           </argument>
         </arguments>

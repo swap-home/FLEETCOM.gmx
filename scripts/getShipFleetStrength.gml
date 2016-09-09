@@ -6,7 +6,7 @@ if (ctrlid == noone) {
     return 0;
 }
 
-if (!object_is_ancestor(shipid, oallcapitalships)) {
+if (!object_is_ancestor(shipid.object_index, oallcapitalships)) {
     return 0;
 }
 

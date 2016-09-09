@@ -216,12 +216,13 @@ global.fx_control = noone;
 if (global.debug) {
     var displayfx;
     if (fx) {
-        displayfx = "ON";
+        displayfx = "FX: ON";
     } else {
-        displayfx = "OFF";
+        displayfx = "FX: OFF";
     }
+    draw_set_halign(fa_right);
     draw_set_color(c_gray);
-    draw_text(view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - 100, 100, displayfx);
+    draw_text(view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - 40, view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - 40, displayfx);
 }
 </string>
           </argument>

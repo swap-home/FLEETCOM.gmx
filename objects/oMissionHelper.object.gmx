@@ -8,6 +8,62 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Capture
+//  Victory Condition: Capture the station
+//  Defeat Condition: Available boarding strength &lt; Station security - boarded strength
+
+// Elimination
+//  Victory Condition: Eliminate all enemy ships
+//  Defeat Condition: All allied ships are destroyed
+
+// Escort
+//  Victory Condition: Escort arrives at destination
+//  Defeat Condition: Escort is destroyed
+
+// Defense
+//  Victory Condition: Timer runs out
+//  Defeat Condition: Station is destroyed or captured 
+
+
+
+
+// Mission 0 - Tutorial - Capture
+//  Lost contact with Shipyard, recapture it.
+
+// Mission 1 - Minefield - Capture
+//  Rebels have mined the path to this Shipyard, and the minelayer may still be nearby.
+//  Proceed with caution.
+
+// Mission 2 - Distress Beacon - Elimination
+//  A distress beacon was activated in deep space, arrive and provide assistance
+
+// Mission 3 - Arms Shipment - Escort
+//  Defend the prototype shipment from possible attack
+
+// Mission 4 - SMAC - Defense
+//  Defend the prototype smac station from capture
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="7" enumb="4">
       <action>
         <libid>1</libid>

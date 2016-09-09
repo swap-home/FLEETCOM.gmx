@@ -37,9 +37,11 @@ else    //damage hull (titianiumA or battleplating
             while (instance_exists(parent) && parent.parentid != noone) {
                 parent = parent.parentid;
             }
-            with (parent) {
-                if (ds_map_exists(global.exp_reward, targetid.object_index)) {
-                    ship_exp += global.exp_reward[? targetid.object_index];
+            if (instance_exists(parent) && object_is_ancestor(parent.object_index, oallcapitalships)) {
+                with (parent) {
+                    if (ds_map_exists(global.exp_reward, targetid.object_index)) {
+                        ship_exp += global.exp_reward[? targetid.object_index];
+                    }
                 }
             }
             instance_destroy();

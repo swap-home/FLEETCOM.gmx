@@ -100,6 +100,7 @@
       <sprite>sprites\sBuildDestroyerHalberd</sprite>
       <sprite>sprites\sBuildCruiserMarathon</sprite>
       <sprite>sprites\sStatusPrimary</sprite>
+      <sprite>sprites\sUNSCicon</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
@@ -209,6 +210,9 @@
     <script>scripts\createLoadShip.gml</script>
     <script>scripts\getShipFleetStrength.gml</script>
     <script>scripts\getShipModuleSlots.gml</script>
+    <scripts name="moduleBonuses">
+      <script>scripts\applyModule.gml</script>
+    </scripts>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_bloom.shader</shader>
@@ -336,12 +340,13 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\StartMenu</room>
-    <room>rooms\Tutorial</room>
     <room>rooms\MissionMenu</room>
+    <room>rooms\Tutorial</room>
+    <room>rooms\Minefield</room>
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="41">
+  <constants number="44">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -369,6 +374,9 @@
     <constant name="UPGRADE_MAC">51</constant>
     <constant name="UPGRADE_HANGAR">52</constant>
     <constant name="UPGRADE_END">53</constant>
+    <constant name="MISSION_LEFT">100</constant>
+    <constant name="MISSION_START">101</constant>
+    <constant name="MISSION_RIGHT">102</constant>
     <constant name="FORMATION_LINE">0</constant>
     <constant name="FORMATION_ARROWHEAD">1</constant>
     <constant name="FORMATION_TRIDENT">2</constant>

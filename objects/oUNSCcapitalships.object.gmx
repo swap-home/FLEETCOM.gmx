@@ -55,13 +55,13 @@ side = 0;
 mac = 0;
 mac_max = 0;
 mac_cooldown = 0;
-mac_cooldown_max = 1800;
+mac_cooldown_max = 900;
 mac_range = 1000;
 
 archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 150;
-archerpod_range = 900;
+archerpod_range = 800;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;

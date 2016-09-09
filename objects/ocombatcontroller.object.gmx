@@ -98,6 +98,8 @@ rightside = 0.95*room_width;
 rightmid = 0.65*room_width;
 leftdir = 180;
 rightdir = 0;
+
+ai = false;
 </string>
           </argument>
         </arguments>
@@ -295,6 +297,31 @@ if (coveShipCount*2 &lt; unscShipCount)
 
 if (coveShipCount*3 &gt; unscShipCount)
 {
+
+    repeat (irandom(2)) {
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_corvette_fast);
+        with (createId)
+        {
+            moveTo(id, ctrl.rightmid, y);
+            side = UNSC;
+            if (ctrl.ai) {
+                apply_ai(createId, -1);
+            }
+        }
+    }
+    
+    repeat (irandom(2)) {
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_corvette_repair);
+        with (createId)
+        {
+            moveTo(id, ctrl.rightmid, y);
+            side = UNSC;
+            if (ctrl.ai) {
+                apply_ai(createId, -1);
+            }
+        }
+    }
+
     if (irandom(1) == 0) 
     {
         createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_frigate_charonL);
@@ -302,9 +329,10 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            if (global.debug) {
+            if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
+            applyModule(id, MODULE_MAC);
         }
     }
 
@@ -315,9 +343,24 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            if (global.debug) {
+            if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
+            applyModule(id, MODULE_MAC);
+        }
+    }
+    
+    if (irandom(2) == 0) 
+    {
+        createId = instance_create(ctrl.leftside,random_range(0.2*room_height, 0.8*room_height), oUNSC_destroyer_diligence);
+        with (createId)
+        {
+            moveTo(id, ctrl.rightmid, y);
+            side = UNSC;
+            if (ctrl.ai) {
+                apply_ai(createId, -1);
+            }
+            applyModule(id, MODULE_MAC);
         }
     }
     
@@ -328,9 +371,10 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            if (global.debug) {
+            if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
+            applyModule(id, MODULE_MAC);
         }
     }
     
@@ -341,9 +385,10 @@ if (coveShipCount*3 &gt; unscShipCount)
         {
             moveTo(id, ctrl.rightmid, y);
             side = UNSC;
-            if (global.debug) {
+            if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
+            applyModule(id, MODULE_MAC);
         }
     }
 }
@@ -372,6 +417,72 @@ alarm[0] = irandom(15*30)+ 10*30;
           <argument>
             <kind>1</kind>
             <string>show_message(string(global.hits) + "/" + string(global.shots) + " : " + string(global.hits/global.shots));
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (global.debug) {
+    var displayai;
+    if (ai) {
+        displayai = "AI: ON";
+    } else {
+        displayai = "AI: OFF";
+    }
+    draw_set_halign(fa_right);
+    draw_set_color(c_gray);
+    draw_text(view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] - 40, view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - 80, displayai);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="65">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ai = !ai;
+
+if (!ai) {
+    with (oUNSCcapitalships) {
+        ai = false;
+    }
+} else {
+    with (oUNSCcapitalships) {
+       apply_ai(id, -1);
+    }
+}
 </string>
           </argument>
         </arguments>
