@@ -36,8 +36,11 @@ exp_value = 1;
 
 singleship_trail_color = c_white;
 
-sight_range = 600; //range to detect targets
-leash_range = 400; //range to return to initial point
+sight_range = 300; //range to detect targets and begin interception/attack/escort
+escort_leash_range = 500; //range to return to initial point
+intercept_leash_range = 400; 
+
+
 refuel_range = 9001;
 
 findtarget_delay = 15;
@@ -211,25 +214,37 @@ event_inherited();
 
 switch(state) {
     case MOVING: 
-        // Move to target capital for escort or attack, ignoring everything
+        // Move to target capital/area for escort, attack / interception, ignoring everything
         // Change to escort or attack when close enough to target
         // return to escort parent if original target is down
         // intercept current position if parent is also gone
-        if (!instance_exists(targetid)) {
+        
+        if (targetid == noone) { // MOVING to INTERCEPT
+            if (distance_to_point(target_x, target_y) &lt;= sight_range) { 
+                state = INTERCEPT;
+            }
+        } else if (!instance_exists(targetid)) { // TARGET MISSING
             if (instance_exists(parentid)) {
                 escort(parentid);
             } else {
                 intercept(x,y);
             }
-        }
-        else if (distance_to_object(targetid) &lt;= sight_range) {
+        } else { // MOVING to ESCORT / ATTACK
             if (targetid.side == side || targetid.side == NEUTRAL || targetid.invulnerable) {
-                state = ESCORT;
+                if (distance_to_object(targetid) &lt;= sight_range) {
+                    state = ESCORT;
+                }
             } else {
-                state = ATTACK;
+                if (distance_to_object(targetid) &lt;= sight_range) {
+                    state = ATTACK;
+                }
             }
         }
-        homing_obj(targetid);
+        if (instance_exists(targetid)) {
+            homing_obj(targetid);
+        } else {
+            homing_point(target_x, target_y);
+        }
         break;
         
     case ATTACK:
@@ -246,9 +261,11 @@ switch(state) {
         break;
 
     case INTERCEPT:
-        // intercept any enemy ship on route to area
-        if (!instance_exists(targetid)) {
-                homing_point(target_x, target_y);
+        // intercept any enemy ship within range of area
+        if (distance_to_point(target_x, target_y) &gt; intercept_leash_range) {
+            intercept(target_x, target_y);
+        } else if (!instance_exists(targetid)) {
+            homing_point(target_x, target_y);
         } else {
             homing_obj(targetid);
         }
@@ -258,7 +275,7 @@ switch(state) {
         // move to allied capital ship, and intercept enemy ships near that
         // return to escort parent if original escort is down
         // intercept current position if parent is also gone
-        if (distance_to_object(escortid) &gt; leash_range) {
+        if (distance_to_object(escortid) &gt; escort_leash_range) {
             escort(escortid);
         } else if (!instance_exists(targetid)) {
             if (instance_exists(escortid)) {

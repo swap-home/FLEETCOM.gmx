@@ -44,9 +44,9 @@ with (commandUnit) {
                 }
             }
             scramble_fighters = false;
-            fighter_targetid = noone;
-            fighter_target_x = commandUnit.x;
-            fighter_target_y = commandUnit.y;
+            fighter_targetid = id;
+            fighter_target_x = 0;
+            fighter_target_y = 0;
         // ESCORT
         } else {
             // Order fighters to intercept enemies near target ally
@@ -64,13 +64,13 @@ with (commandUnit) {
     } else {
         //INTERCEPT
         for (var i = 0; i < ds_list_size(fighter_race); i++) {
-                with (fighter_race[| i]) {
-                    if (parentid == commandUnit)
-                    {
-                        intercept(command_x, command_y);
-                    }
+            with (fighter_race[| i]) {
+                if (parentid == commandUnit)
+                {
+                    intercept(command_x, command_y);
                 }
             }
+        }
         scramble_fighters = true;
         fighter_targetid = noone;
         fighter_target_x = command_x;

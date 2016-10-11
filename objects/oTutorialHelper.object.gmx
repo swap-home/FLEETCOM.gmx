@@ -126,11 +126,10 @@ if (room == Tutorial) {
 if (fighters_to_spawn &gt; 0) {
     fighters_to_spawn--;
     with (oUNSC_station) {
-        var stationid = id;
         with (instance_create(x,y,oUNSC_longsword_GATL1)) {
             side = REBEL;
-            parentid = stationid;
-            commandFighters(id, selfid.shipid.x, selfid.shipid.y, noone);
+            parentid = selfid.stationid;
+            commandFighters(selfid.stationid, parentid.x, parentid.y, noone);
         }
     }
 }
