@@ -72,6 +72,8 @@ pdt_burst_count_max = 4;
 pdt_cooldown = 0;
 pdt_cooldown_max = 40;
 pdt_range = 250;
+
+
 </string>
           </argument>
         </arguments>
