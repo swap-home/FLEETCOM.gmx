@@ -37,6 +37,10 @@ global.damageRatio[2,0] = 1;       //thermal -&gt; titaniumA
 global.damageRatio[2,1] = 1.5;     //thermal -&gt; shield
 global.damageRatio[2,2] = 0.75;    //thermal -&gt; battleplating
 
+global.damageRatio[3,0] = 1;       //boarding -&gt; titaniumA
+global.damageRatio[3,1] = 1;       //boarding -&gt; shield
+global.damageRatio[3,2] = 1;       //boarding -&gt; battleplating
+
 global.UNSCfighters = ds_list_create();
 ds_list_add(global.UNSCfighters, oUNSC_longsword_GATL1);
 ds_list_add(global.UNSCfighters, oUNSC_broadsword_F41);

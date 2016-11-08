@@ -28,6 +28,7 @@
             <string>event_inherited();
 
 boarding_strength = 1;
+boarding_damage = 1;
 </string>
           </argument>
         </arguments>

@@ -27,10 +27,10 @@
             <kind>1</kind>
             <string>event_inherited();
 
-hull_modifier = 1; //multiplier for max_hull
-shield_modifier = 1; //multiplier for max_shield
-shield_recharge_modifier = 1; //multiplier for recharge
-shield_delay_modifier = 1; //multiplier for shield recharge delay
+//hull_modifier = 1; //multiplier for max_hull
+//shield_modifier = 1; //multiplier for max_shield
+//shield_recharge_modifier = 1; //multiplier for recharge
+//shield_delay_modifier = 1; //multiplier for shield recharge delay
 
 hull = 0;
 hull_max = 0;
