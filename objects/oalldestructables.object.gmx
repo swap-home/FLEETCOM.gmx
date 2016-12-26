@@ -47,6 +47,7 @@ shield = 0;
 shield_max = 0;
 
 invulnerable = false;
+invisible = false;
 </string>
           </argument>
         </arguments>

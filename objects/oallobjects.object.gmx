@@ -156,7 +156,15 @@ turning = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_self();
+            <string>if (!invisible) {
+    draw_self();
+}
+else {
+    var oldalpha = draw_get_alpha();
+    draw_set_alpha(0.05);
+    draw_self();
+    draw_set_alpha(oldalpha);
+}
 </string>
           </argument>
         </arguments>

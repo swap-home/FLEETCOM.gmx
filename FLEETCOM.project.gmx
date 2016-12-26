@@ -109,6 +109,7 @@
     <sprite>sprites\sprite37</sprite>
     <sprite>sprites\sprite42</sprite>
     <sprite>sprites\sHangar</sprite>
+    <sprite>sprites\sUNSC_hornet</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -168,10 +169,8 @@
         <script>scripts\groupHasPrimaryFire_new.gml</script>
       </scripts>
     </scripts>
-    <script>scripts\capitalShipInitialize.gml</script>
-    <script>scripts\singleShipInitialize.gml</script>
-    <script>scripts\projectileInitialize.gml</script>
     <script>scripts\beamCollision.gml</script>
+    <script>scripts\splashDamage.gml</script>
     <script>scripts\checkLoS.gml</script>
     <scripts name="sound">
       <script>scripts\ackSound.gml</script>
@@ -203,15 +202,21 @@
       <script>scripts\updateSave.gml</script>
       <script>scripts\writeSave.gml</script>
       <script>scripts\deleteSave.gml</script>
+      <script>scripts\createLoadShip.gml</script>
     </scripts>
     <script>scripts\textbox_show.gml</script>
     <script>scripts\mission_start.gml</script>
     <script>scripts\mission_end.gml</script>
-    <script>scripts\createLoadShip.gml</script>
     <script>scripts\getShipFleetStrength.gml</script>
     <script>scripts\getShipModuleSlots.gml</script>
     <scripts name="moduleBonuses">
       <script>scripts\applyModule.gml</script>
+      <script>scripts\applySkill.gml</script>
+    </scripts>
+    <scripts name="objectInitialization">
+      <script>scripts\capitalShipInitialize.gml</script>
+      <script>scripts\singleShipInitialize.gml</script>
+      <script>scripts\projectileInitialize.gml</script>
     </scripts>
   </scripts>
   <shaders name="shaders">
@@ -309,6 +314,7 @@
         <object>objects\oUNSC_MAC</object>
         <object>objects\oUNSC_SMAC</object>
         <object>objects\object7</object>
+        <object>objects\oUNSC_HornetMine</object>
       </objects>
       <objects name="Covenant">
         <object>objects\oCove_EnergyGun_class2</object>
@@ -346,7 +352,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="44">
+  <constants number="48">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -391,6 +397,10 @@
     <constant name="MODULE_MAC">1</constant>
     <constant name="MODULE_HANGAR">2</constant>
     <constant name="MAX_LEVELUPS">7</constant>
+    <constant name="ARCHER_NORMAL">0</constant>
+    <constant name="ARCHER_HOMING">1</constant>
+    <constant name="ARCHER_FAST">2</constant>
+    <constant name="ACHER_BARRAGE">3</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

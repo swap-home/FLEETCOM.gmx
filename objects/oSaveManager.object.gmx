@@ -51,7 +51,9 @@ ship_count = 0;
 ship_name = ds_list_create();
 ship_type = ds_list_create();
 ship_exp = ds_list_create();
+ship_level = ds_list_create();
 ship_modules = ds_list_create();
+ship_skills = ds_list_create();
 
 // For use in game - id = ship was created, noone = ship not participating
 ship_id = ds_list_create();
@@ -85,7 +87,9 @@ ds_list_destroy(ship_count_preview);
 ds_list_destroy(ship_name);
 ds_list_destroy(ship_type);
 ds_list_destroy(ship_exp);
+ds_list_destroy(ship_level);
 ds_list_destroy(ship_modules);
+ds_list_destroy(ship_skills);
 
 ds_list_destroy(ship_id);
 </string>

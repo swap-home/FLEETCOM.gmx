@@ -26,10 +26,11 @@
           <argument>
             <kind>1</kind>
             <string>ww = 50;        //Width of "ring" effect
-radius = 0;     //Size check variable
 r_max = 120;    //Maximum radius of the effect
 spd = 1;        //Expansion speed
+
 d = 360/15;     //Ring "segments" to be drawn
+radius = 0;     //Size check variable
 
 if (instance_exists(global.fx_control) &amp;&amp; surface_exists(global.fx_control.surf))
 {

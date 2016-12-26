@@ -1,11 +1,13 @@
 var name = argument0;
 var type = argument1;
 var experience = argument2;
-var modules = argument3;
+var level = argument3;
+var modules = argument4;
+var skills = argument5;
 
-var ship_x = argument4;
-var ship_y = argument5;
-var ship_dir = argument6;
+var ship_x = argument6;
+var ship_y = argument7;
+var ship_dir = argument8;
 
 var shipid = instance_create(ship_x, ship_y, shiptype_to_objectindex(type));
 with (shipid) {
@@ -13,7 +15,9 @@ with (shipid) {
     side = UNSC;
     ship_name = name;
     ship_exp = experience;
+    ship_level = level;
     ship_modules = modules;
+    ship_skills = skills;
 }
 
 return shipid;

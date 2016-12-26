@@ -100,7 +100,9 @@ ai_boarding_range = 1500;
 // ship progression stats
 ship_name = "";
 ship_exp = 0;
+ship_level = 0;
 ship_modules = 0;
+ship_skills = 0;
 </string>
           </argument>
         </arguments>
@@ -164,8 +166,8 @@ if (!instance_exists(assignedTargetid))
     assignedTargetid = noone;
     with (oallcapitalships)
     {
-        //ignore units outside sight range, on the same team, neutral, or invulnerable
-        if (distance_to_object(selfid) &gt; sight_range || side == selfside || side == NEUTRAL || invulnerable)
+        //ignore units outside sight range, on the same team, neutral, invisible or invulnerable
+        if (distance_to_object(selfid) &gt; sight_range || side == selfside || side == NEUTRAL || invulnerable || invisible)
         {
             continue;
         }
@@ -209,7 +211,7 @@ if (ai) {
         // TODO: enable risk overlap, save each valid command and then pick a random one
         if (risk &gt;= 0 &amp;&amp; risk &lt;= 1) {
             // Escort self
-            commandFighters(id, 0, 0, id);
+            commandFighters(id, x, y, noone);
         } else if (risk &gt;= intercept_range_low &amp;&amp; risk &lt;= intercept_range_high) {
             // Intercept area
             var diff_x = targetid.x - x;

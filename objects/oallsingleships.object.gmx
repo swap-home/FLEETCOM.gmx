@@ -107,7 +107,7 @@ switch(state) {
         //Find nearest singleship within range
         with (oallsingleships)
         {
-            if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
+            if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible)
             {
                 if (distance_to_object(selfid_l) &lt; closest_l)
                 {
@@ -122,7 +122,7 @@ switch(state) {
         {
             with (oallcapitalships)
             {
-                if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
+                if (side != selfid_l.side &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible)
                 {
                     if (distance_to_object(selfid_l) &lt; closest_l)
                     {

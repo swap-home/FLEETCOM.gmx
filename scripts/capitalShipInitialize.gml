@@ -17,6 +17,8 @@ if (race == "unsc")
     if (ship_modules & MODULE_HANGAR) {
         applyModule(id, MODULE_HANGAR);
     }
+    
+    // Apply skill bonuses if sufficient level
     broadsword = broadsword_max;
     broadsword_deploy_cd = broadsword_deploy_cd_max;
     longsword = longsword_max;
@@ -24,8 +26,6 @@ if (race == "unsc")
     pelican = pelican_max;
     pelican_deploy_cd = pelican_deploy_cd_max;
     mac_cooldown = mac_cooldown_max;
-    
-    
 }
 else
 {

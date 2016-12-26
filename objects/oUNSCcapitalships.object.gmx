@@ -27,8 +27,6 @@
             <kind>1</kind>
             <string>event_inherited();
 
-hanger = 1;
-
 broadsword = 0;
 broadsword_max = 0;
 broadsword_deploy_max = 0;
@@ -43,7 +41,6 @@ longsword_deploy_cd_max = 60;
 
 pelican = 0;
 pelican_max = 0;
-pelican_deploy_max = 0;
 pelican_deploy_cd = 0;
 pelican_deploy_cd_max = 30;
 pelican_boarding_strength = 1;
@@ -62,6 +59,7 @@ archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 150;
 archerpod_range = 800;
+archerpod_type = ARCHER_NORMAL;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
@@ -73,6 +71,29 @@ pdt_cooldown = 0;
 pdt_cooldown_max = 40;
 pdt_range = 250;
 
+scanner = 0;
+scanner_cooldown = 0;
+scanner_cooldown_max = 120;
+scanner_range = 300;
+scanner_draw = 0;
+scanner_x = 0;
+scanner_y = 0;
+
+scanner_remote_ability_cooldown = 0;
+scanner_remote_ability_cooldown_max = 0;
+scanner_remote_ability_range = 600;
+
+scanner_remote = 0;
+scanner_remote_cooldown = 0;
+scanner_remote_cooldown_max = 120;
+scanner_remote_range = 150;
+
+repair = 0;
+repair_targetid = noone;
+repair_cooldown = 0;
+repair_cooldown_max = 30;
+repair_value = 30;
+repair_range = 200;
 
 </string>
           </argument>
@@ -337,6 +358,11 @@ if (mac_cooldown &gt; 0) {
             ID.side = side;
             ID.direction = targetdir + irandom_range(-50,50);
             ID.targetid = targetid;
+            ID.targetx = targetid.x+irandom_range(-30,30);
+            ID.targety = targetid.y+irandom_range(-30,30);
+            if (archerpod_type == ARCHER_HOMING) {
+                ID.homing_target = true;
+            }
         }
     }
 }
@@ -414,6 +440,80 @@ if (pdt_burst_count == 0) {
     }
 } else if (pdt_burst_delay &gt; 0) {
     pdt_burst_delay -= 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (scanner &amp;&amp; scanner_cooldown &lt;= 0)
+{
+    //scan
+    scanner_cooldown = scanner_cooldown_max;
+    scanner_draw = 30;
+}
+
+if (scanner_cooldown &gt; 0) {
+    scanner_cooldown -= 1;
+}
+
+if (scanner_draw &gt; 0) {
+    scanner_draw -= 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (repair &amp;&amp; repair_cooldown &lt;= 0)
+{
+    //repair
+    var nearest_id = noone;
+    var nearest_dist = repair_range;
+    var selfid = id;
+    with (oallcapitalships) {
+        if (distance_to_object(selfid) &lt;= nearest_dist) {
+            nearest_dist = distance_to_object(selfid);
+            nearest_id = id;
+        }
+    }
+
+    repair_targetid = nearest_id;
+    repair_targetid.hull = max(repair_targetid.hull_max, repair_targetid.hull + repair_value);
+}
+
+if (repair_cooldown &gt; 0) {
+    repair_cooldown -= 1;
 }
 </string>
           </argument>

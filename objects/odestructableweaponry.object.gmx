@@ -31,8 +31,17 @@ dmg_kinetic = 0;
 dmg_explosive = 0;
 dmg_thermal = 0;
 
+maxturnrate = 0;
+movespeed = 0;
+
 parentid = noone;
 targetid = noone;
+homing_target = false;
+homing_location = false;
+targetx = 0;
+targety = 0;
+
+homing_location_end_range = 5;
 </string>
           </argument>
         </arguments>
@@ -82,6 +91,46 @@ event_inherited();
       </action>
     </event>
     <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (homing_target) {homing_obj(targetid);}
+else if (homing_location) {homing_point(targetx, targety);}
+
+if (homing_location &amp;&amp; distance_to_point(targetx, targety) &lt;= homing_location_end_range) {
+    homing_location = false;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
