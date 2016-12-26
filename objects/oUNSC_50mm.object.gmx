@@ -137,7 +137,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (global.fx_control.fx) {
+            <string>if (global.fx_control.fx &amp;&amp; !expired) {
     effect_create_above(ef_flare,x,y,0,c_yellow);
 }
 </string>
