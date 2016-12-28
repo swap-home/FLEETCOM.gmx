@@ -31,6 +31,8 @@ dmg_kinetic = 0;
 dmg_explosive = 0;
 dmg_thermal = 0;
 
+affects = onone;
+
 parentid = noone;
 targetid = noone;
 

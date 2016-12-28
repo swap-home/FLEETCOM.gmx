@@ -28,6 +28,7 @@ else    //damage hull (titianiumA or battleplating
     var tmpdmg, tmpratio;
     if (targetid.race == "unsc"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),0];}
     else if (targetid.race == "cove"){tmpratio = global.damageRatio[enumDamageTypes(damagetype),2];}
+    else {tmpratio = 1;}
     tmpdmg = basedmg * tmpratio;
     
     targetid.hull -= tmpdmg;

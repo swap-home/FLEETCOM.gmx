@@ -399,7 +399,7 @@ if (archerpod_cooldown &gt; 0) {
     target_count_l = 0;
     with(odestructableweaponry)
     {
-        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.pdt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable) 
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.pdt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible) 
         {
             targets_l[target_count_l] = id;
             target_count_l+=1;
@@ -407,7 +407,7 @@ if (archerpod_cooldown &gt; 0) {
     }
     with(oallsingleships)
     {
-        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.pdt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable)
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.pdt_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible)
         {
             targets_l[target_count_l] = id;
             target_count_l+=1;

@@ -430,7 +430,21 @@ if (boarding_damage_counter &gt;= boarding_damage_counter_max
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="ocapitalprojectileweaponry">
+    <event eventtype="4" ename="odestructableweaponry">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -447,12 +461,67 @@ if (boarding_damage_counter &gt;= boarding_damage_counter_max
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallcapitalships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
     Damage_Unit(other.dmg_thermal, other.id, id, "thermal");
-    with (other){instance_destroy();}
+    with (other) {
+        if (explode_on_impact &amp;&amp; !exploded) {
+            splashDamage(explosive_affects, id);
+            exploded = true;
+        }
+        instance_destroy();
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="oprojectileweaponry">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (other.affects == oallcapitalships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+{
+    Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
+    Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
+    Damage_Unit(other.dmg_thermal, other.id, id, "thermal");
+    with (other) {
+        if (explode_on_impact &amp;&amp; !exploded) {
+            splashDamage(explosive_affects, id);
+            exploded = true;
+        }
+        instance_destroy();
+    }
 }
 </string>
           </argument>

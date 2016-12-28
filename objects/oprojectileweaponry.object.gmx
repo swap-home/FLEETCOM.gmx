@@ -30,6 +30,23 @@
 dmg_kinetic = 0;
 dmg_explosive = 0;
 dmg_thermal = 0;
+affects = onone;
+
+explosive_aoe = false;
+explosive_affects = onone;
+explosive_range = 0;
+explosive_full_dmg_kinetic = 0;
+explosive_falloff_dmg_kinetic = 0;
+explosive_full_dmg_explosive = 0;
+explosive_falloff_dmg_explosive = 0;
+explosive_full_dmg_thermal = 0;
+explosive_falloff_dmg_thermal = 0;
+explode_on_destroy = false;
+explode_on_impact = false;
+explosive_proximity_range = 0;
+explode_on_proximity = false;
+explode_on_location = false;
+exploded = false;
 
 maxturnrate = 0;
 movespeed = 0;
@@ -44,6 +61,32 @@ targety = 0;
 homing_location_end_range = 5;
 
 expired = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (explode_on_destroy &amp;&amp; !exploded) {
+    splashDamage(explosive_affects, id);
+    exploded = true;
+}
 </string>
           </argument>
         </arguments>
@@ -149,6 +192,74 @@ else if (homing_location) {homing_point(targetx, targety);}
 
 if (homing_location &amp;&amp; distance_to_point(targetx, targety) &lt;= homing_location_end_range) {
     homing_location = false;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (explode_on_proximity &amp;&amp; !exploded 
+    &amp;&amp; distance_to_object(targetid) &lt;= explosive_proximity_range) {
+    
+    splashDamage(explosive_affects, id);
+    exploded = true;
+    instance_destroy();
+}
+
+if (explode_on_location &amp;&amp; !exploded
+    &amp;&amp; distance_to_point(targetx, targety) &lt; homing_location_end_range) {
+    
+    splashDamage(explosive_affects, id);
+    exploded = true;
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>event_inherited();
+
+if (explosive_aoe &amp;&amp; global.debug &amp;&amp; !invisible) {
+    draw_set_color(c_orange);
+    draw_circle(x,y,explosive_range,true);
+    
+    if (explode_on_proximity) {
+        draw_set_color(c_red);
+        draw_circle(x,y,explosive_proximity_range,true);
+    }
 }
 </string>
           </argument>

@@ -306,7 +306,6 @@
     <objects name="Weaponry">
       <object>objects\obeamweaponry</object>
       <object>objects\oprojectileweaponry</object>
-      <object>objects\ocapitalprojectileweaponry</object>
       <object>objects\odestructableweaponry</object>
       <objects name="UNSC">
         <object>objects\oUNSC_50mm</object>

@@ -120,15 +120,18 @@ if (selected || global.debug)
         draw_line(x, y, targetid.x, targetid.y);
     }
     
-    if (instance_exists(fighter_targetid))
-    {
-        draw_set_color(c_yellow);
-        draw_line(x, y, fighter_targetid.x, fighter_targetid.y);
-    } else if (fighter_targetid == noone) {
-        draw_set_color(c_yellow);
-        draw_line(x, y, fighter_target_x, fighter_target_y);
+    // TODO: Generalize fighters into a system race-ambiguous
+    if ((race == "unsc" &amp;&amp; (broadsword_max &gt; 0 || longsword_max &gt; 0))
+     || (race == "cove" &amp;&amp; (banshee_max &gt; 0 || seraph_max &gt; 0))) {
+        if (instance_exists(fighter_targetid))
+        {
+            draw_set_color(c_yellow);
+            draw_line(x, y, fighter_targetid.x, fighter_targetid.y);
+        } else if (fighter_targetid == noone) {
+            draw_set_color(c_yellow);
+            draw_line(x, y, fighter_target_x, fighter_target_y);
+        }
     }
-    
 }
 event_inherited();
 </string>
