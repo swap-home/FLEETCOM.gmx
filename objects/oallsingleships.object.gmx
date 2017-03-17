@@ -34,7 +34,7 @@ singleship_range = 1;
 
 exp_value = 1;
 
-singleship_trail_color = c_white;
+child_trail_color = c_white;
 
 sight_range = 300; //range to detect targets and begin interception/attack/escort
 escort_leash_range = 500; //range to return to initial point
@@ -53,7 +53,7 @@ trail = instance_create(x,y,oribbontrail);
 with(trail) {
     parent = ID;
     depth = ID.depth;
-    trail_color = ID.singleship_trail_color;
+    trail_color = ID.child_trail_color;
 }
 
 parentid = 0;

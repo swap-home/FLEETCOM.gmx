@@ -51,6 +51,11 @@ exploded = false;
 maxturnrate = 0;
 movespeed = 0;
 
+cruise_movespeed = 0;
+cruise_turnrate = 0;
+
+launch_duration = 0;
+
 parentid = noone;
 targetid = noone;
 homing_target = false;

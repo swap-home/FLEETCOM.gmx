@@ -58,8 +58,26 @@ mac_range = 1000;
 archerpod = 0;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 150;
-archerpod_range = 800;
-archerpod_type = ARCHER_NORMAL;
+archerpod_range = 750;
+archer_per_shot = 4;
+
+ares = 0;
+ares_cooldown = 0;
+ares_cooldown_max = 400;
+ares_range = 1200;
+ares_per_shot = 1;
+
+rapier = 0;
+rapier_cooldown = 0;
+rapier_cooldown = 50;
+rapier_range = 400;
+rapier_per_shot = 1;
+
+howler = 0;
+howler_cooldown = 0;
+howler_cooldown_max = 0;
+howler_range = 800;
+howler_per_shot = 1;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
@@ -74,25 +92,27 @@ pdt_range = 250;
 scanner = 0;
 scanner_cooldown = 0;
 scanner_cooldown_max = 120;
-scanner_range = 300;
-scanner_draw = 0;
-scanner_x = 0;
-scanner_y = 0;
+scanner_range = 200;
+scanner_draw_time_max = 15;
+scanner_draw_time = scanner_draw_time_max;
+scanner_reveal_time = 600;
 
 scanner_remote_ability_cooldown = 0;
 scanner_remote_ability_cooldown_max = 0;
 scanner_remote_ability_range = 600;
 
-scanner_remote = 0;
-scanner_remote_cooldown = 0;
-scanner_remote_cooldown_max = 120;
-scanner_remote_range = 150;
+//scanner_remote = 0;
+//scanner_remote_cooldown = 0;
+//scanner_remote_cooldown_max = 120;
+//scanner_remote_range = 150;
+//scanner_remote_draw_time_max = 15;
+//scanner_remote_draw_time = scanner_remote_draw_time_max;
 
 repair = 0;
 repair_targetid = noone;
 repair_cooldown = 0;
-repair_cooldown_max = 30;
-repair_value = 30;
+repair_cooldown_max = 15;
+repair_value = 1;
 repair_range = 200;
 
 </string>
@@ -348,7 +368,7 @@ if (mac_cooldown &gt; 0) {
         targetdir = point_direction(x,y,targetid.x,targetid.y);
         archerpod_cooldown = archerpod_cooldown_max;
         
-        var missiles_fired = archerpod/4;
+        var missiles_fired = archerpod/archer_per_shot;
         if (status_half_secondary != 0) {
             missiles_fired /= 2;
         }
@@ -360,15 +380,59 @@ if (mac_cooldown &gt; 0) {
             ID.targetid = targetid;
             ID.targetx = targetid.x+irandom_range(-30,30);
             ID.targety = targetid.y+irandom_range(-30,30);
-            if (archerpod_type == ARCHER_HOMING) {
-                ID.homing_target = true;
-            }
         }
     }
 }
 
 if (archerpod_cooldown &gt; 0) {
     archerpod_cooldown -= 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; ares_cooldown &lt;= 0)
+{
+    if (point_distance(x, y, targetid.x, targetid.y) &lt;= ares_range)
+    {
+        var targetdir;
+        targetdir = point_direction(x,y,targetid.x,targetid.y);
+        ares_cooldown = ares_cooldown_max;
+        
+        var missiles_fired = ares/ares_per_shot;
+        if (status_half_secondary != 0) {
+            missiles_fired /= 2;
+        }
+        repeat (missiles_fired)
+        {
+            ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_AresMissile);
+            ID.side = side;
+            ID.direction = targetdir + irandom_range(-75,75);
+            ID.targetid = targetid;
+            ID.targetx = targetid.x+irandom_range(-10,10);
+            ID.targety = targetid.y+irandom_range(-10,10);
+        }
+    }
+}
+
+if (ares_cooldown &gt; 0) {
+    ares_cooldown -= 1;
 }
 </string>
           </argument>
@@ -461,19 +525,26 @@ if (pdt_burst_count == 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (scanner &amp;&amp; scanner_cooldown &lt;= 0)
+            <string>var selfid = id;
+if (scanner &amp;&amp; scanner_cooldown &lt;= 0)
 {
     //scan
+    with (oallobjects) {
+        if (distance_to_point(selfid.x, selfid.y) &lt;= selfid.scanner_range &amp;&amp; invisible &amp;&amp; side != selfid.side) {
+            invisible = false;
+            revealed_time = selfid.scanner_reveal_time;
+        }
+    }
     scanner_cooldown = scanner_cooldown_max;
-    scanner_draw = 30;
+    scanner_draw_time = 0;
 }
 
 if (scanner_cooldown &gt; 0) {
     scanner_cooldown -= 1;
 }
 
-if (scanner_draw &gt; 0) {
-    scanner_draw -= 1;
+if (scanner_draw_time &lt; scanner_draw_time_max) {
+    scanner_draw_time += 1;
 }
 </string>
           </argument>
@@ -502,14 +573,16 @@ if (scanner_draw &gt; 0) {
     var nearest_dist = repair_range;
     var selfid = id;
     with (oallcapitalships) {
-        if (distance_to_object(selfid) &lt;= nearest_dist) {
+        if (distance_to_object(selfid) &lt;= nearest_dist &amp;&amp; selfid.side == side &amp;&amp; hull &lt; hull_max) {
             nearest_dist = distance_to_object(selfid);
             nearest_id = id;
         }
     }
 
     repair_targetid = nearest_id;
-    repair_targetid.hull = max(repair_targetid.hull_max, repair_targetid.hull + repair_value);
+    if (instance_exists(repair_targetid)) {
+        repair_targetid.hull = min(repair_targetid.hull_max, repair_targetid.hull + repair_value);
+    }
 }
 
 if (repair_cooldown &gt; 0) {
@@ -568,6 +641,73 @@ if (mac &gt; 0 &amp;&amp; (selected || global.debug)) {
 }
         
 draw_set_alpha(oldAlpha);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Draw scanner indicators
+if (scanner &gt; 0) {
+    oldColor = draw_get_color();
+    oldAlpha = draw_get_alpha();
+    if (scanner_draw_time == scanner_draw_time_max) {
+        draw_set_color(c_gray);
+        draw_set_alpha(0.25);
+        draw_circle(x,y,scanner_range,true);
+    } else {
+        draw_set_color(c_ltgray);
+        draw_set_alpha(0.1 + 0.25*scanner_draw_time/scanner_draw_time_max);
+        draw_circle(x,y,scanner_range*scanner_draw_time/scanner_draw_time_max,true);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Draw repair indicators
+if (repair &gt; 0) {
+    oldColor = draw_get_color();
+    oldAlpha = draw_get_alpha();
+    draw_set_color(c_teal);
+    draw_set_alpha(0.50);
+    if (instance_exists(repair_targetid)) {
+        draw_line(x,y,repair_targetid.x,repair_targetid.y);
+    } else {
+        draw_circle(x,y,repair_range,true);
+    }
+    draw_set_color(oldColor);
+}
 </string>
           </argument>
         </arguments>

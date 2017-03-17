@@ -16,13 +16,13 @@ movespeed = maxspeed;
 
 switch (side) {
     case UNSC:
-        singleship_trail_color = c_yellow;
+        child_trail_color = c_yellow;
         break;
     case REBEL:
-        singleship_trail_color = c_red;
+        child_trail_color = c_red;
         break;
     case COVE:
-        singleship_trail_color = c_purple;
+        child_trail_color = c_purple;
         break;
 }
 

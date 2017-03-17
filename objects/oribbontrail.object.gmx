@@ -91,7 +91,7 @@ ds_list_destroy(trail_y);
           <argument>
             <kind>1</kind>
             <string>if (instance_exists(parent)) {
-    trail_color = parent.singleship_trail_color;
+    trail_color = parent.child_trail_color;
     if (ds_list_size(trail_x) &gt;= trail_max_points) {
         ds_list_delete(trail_x, 0);
         ds_list_delete(trail_y, 0);       

@@ -56,29 +56,9 @@
     </sounds>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\sCove_corvette_SDVH</sprite>
-    <sprite>sprites\sCove_destroyer_CPV</sprite>
-    <sprite>sprites\sCove_battlecruiser_CCS</sprite>
-    <sprite>sprites\sCove_cruiser_CRS</sprite>
-    <sprite>sprites\sCove_assaultcarrier_CAS</sprite>
-    <sprite>sprites\sCove_phantom</sprite>
-    <sprite>sprites\sCove_seraph</sprite>
-    <sprite>sprites\sCove_banshee</sprite>
-    <sprite>sprites\sUNSC_corvette_fast</sprite>
-    <sprite>sprites\sUNSC_corvette_repair</sprite>
-    <sprite>sprites\sUNSC_frigate_charonL</sprite>
-    <sprite>sprites\sUNSC_frigate_parisH</sprite>
-    <sprite>sprites\sUNSC_destroyer_diligence</sprite>
-    <sprite>sprites\sUNSC_destroyer_halberd</sprite>
-    <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
-    <sprite>sprites\sUNSC_pheonix</sprite>
-    <sprite>sprites\sUNSC_pelican</sprite>
-    <sprite>sprites\sUNSC_broadsword</sprite>
-    <sprite>sprites\sUNSC_longsword</sprite>
     <sprite>sprites\sUNSC_odp</sprite>
     <sprite>sprites\sUNSC_station</sprite>
     <sprite>sprites\sUNSC_Explosion</sprite>
-    <sprite>sprites\sUNSC_ArcherMissile</sprite>
     <sprite>sprites\sUNSC_50mm</sprite>
     <sprite>sprites\sUNSC_120mm</sprite>
     <sprite>sprites\sCove_PlasmaCannons</sprite>
@@ -110,6 +90,35 @@
     <sprite>sprites\sprite42</sprite>
     <sprite>sprites\sHangar</sprite>
     <sprite>sprites\sUNSC_hornet</sprite>
+    <sprites name="Ships">
+      <sprites name="CapitalShips">
+        <sprite>sprites\sCove_corvette_SDVH</sprite>
+        <sprite>sprites\sCove_destroyer_CPV</sprite>
+        <sprite>sprites\sCove_battlecruiser_CCS</sprite>
+        <sprite>sprites\sCove_cruiser_CRS</sprite>
+        <sprite>sprites\sCove_assaultcarrier_CAS</sprite>
+        <sprite>sprites\sUNSC_corvette_fast</sprite>
+        <sprite>sprites\sUNSC_corvette_repair</sprite>
+        <sprite>sprites\sUNSC_frigate_charonL</sprite>
+        <sprite>sprites\sUNSC_frigate_parisH</sprite>
+        <sprite>sprites\sUNSC_destroyer_diligence</sprite>
+        <sprite>sprites\sUNSC_destroyer_halberd</sprite>
+        <sprite>sprites\sUSNC_cruiser_marathonH</sprite>
+        <sprite>sprites\sUNSC_pheonix</sprite>
+      </sprites>
+      <sprites name="SingleShips">
+        <sprite>sprites\sCove_banshee</sprite>
+        <sprite>sprites\sCove_seraph</sprite>
+        <sprite>sprites\sCove_phantom</sprite>
+        <sprite>sprites\sUNSC_longsword</sprite>
+        <sprite>sprites\sUNSC_broadsword</sprite>
+        <sprite>sprites\sUNSC_pelican</sprite>
+      </sprites>
+    </sprites>
+    <sprites name="Projectiles">
+      <sprite>sprites\sUNSC_ArcherMissile</sprite>
+      <sprite>sprites\sUNSC_AresMissile</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -310,6 +319,7 @@
       <objects name="UNSC">
         <object>objects\oUNSC_50mm</object>
         <object>objects\oUNSC_ArcherMissile</object>
+        <object>objects\oUNSC_AresMissile</object>
         <object>objects\oUNSC_MAC</object>
         <object>objects\oUNSC_SMAC</object>
         <object>objects\object7</object>
@@ -351,7 +361,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="48">
+  <constants number="44">
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>
@@ -396,10 +406,6 @@
     <constant name="MODULE_MAC">1</constant>
     <constant name="MODULE_HANGAR">2</constant>
     <constant name="MAX_LEVELUPS">7</constant>
-    <constant name="ARCHER_NORMAL">0</constant>
-    <constant name="ARCHER_HOMING">1</constant>
-    <constant name="ARCHER_FAST">2</constant>
-    <constant name="ACHER_BARRAGE">3</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

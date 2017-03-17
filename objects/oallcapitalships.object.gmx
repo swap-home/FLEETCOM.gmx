@@ -217,7 +217,12 @@ if (ai) {
             var diff_x = targetid.x - x;
             var diff_y = targetid.y - y;
             var ratio = (risk - intercept_range_low) / (intercept_range_high - intercept_range_low);
-            commandFighters(id, x + ratio*diff_x, y + ratio*diff_y, noone);
+            // If intercepting on top of hitbox, attack ship
+            if (collision_point(x + ratio*diff_x, y + ratio*diff_y, targetid, false, true)) {
+                commandFighters(id, targetid.x, targetid.y, noone);
+            } else {
+                commandFighters(id, x + ratio*diff_x, y + ratio*diff_y, noone);
+            }
         } else if (risk &gt;= 9 &amp;&amp; risk &lt;= 10) {
             // Attack enemy capital ship
             commandFighters(id, targetid.x, targetid.y, noone);
@@ -646,7 +651,7 @@ if (boarding_level &gt; 0) {
 }
 
 // draw targeting reticule
-if (instance_exists(global.ui_controller)) {
+if (instance_exists(global.ui_controller) &amp;&amp; !invisible) {
     var size_multiplier = global.ui_controller.ui_size_clock/global.ui_controller.ui_size_clock_max;
     var rotation_multiplier = global.ui_controller.ui_rotation_clock/global.ui_controller.ui_rotation_clock_max * 360;
     if (side == global.playerside) {

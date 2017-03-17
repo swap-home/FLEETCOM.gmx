@@ -43,7 +43,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>240</string>
+            <string>120</string>
           </argument>
         </arguments>
       </action>
@@ -317,83 +317,11 @@ pulselaserturret_A[17] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>seraph_deploy_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>4</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>seraph_deploy_cd_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>60</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>banshee_max</string>
           </argument>
           <argument>
             <kind>0</kind>
             <string>24</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>banshee_deploy_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>6</string>
           </argument>
         </arguments>
       </action>
@@ -442,6 +370,30 @@ pulselaserturret_A[17] = -17.7;
           <argument>
             <kind>0</kind>
             <string>8</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>revealed_time</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>240</string>
           </argument>
         </arguments>
       </action>

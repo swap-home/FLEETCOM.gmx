@@ -31,13 +31,13 @@ race = "cove";
 
 banshee = 0;
 banshee_max = 0;
-banshee_deploy_max = 0;
+banshee_deploy_max = 6;
 banshee_deploy_cd = 0;
 banshee_deploy_cd_max = 30;
 
 seraph = 0;
 seraph_max = 0;
-seraph_deploy_max = 0;
+seraph_deploy_max = 4;
 seraph_deploy_cd = 0;
 seraph_deploy_cd_max = 60;
 

@@ -47,6 +47,10 @@ shield = 0;
 shield_max = 0;
 
 invulnerable = false;
+
+front_dmg = 1;
+side_dmg = 1;
+back_dmg = 1;
 </string>
           </argument>
         </arguments>

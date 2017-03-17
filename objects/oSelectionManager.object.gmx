@@ -430,7 +430,7 @@ if (mouse_check_button_pressed(mb_right)) {
         if (!ds_list_empty(selection)) {
             ackSound();
             var targetId = collision_point(mouse_x, mouse_y, oselectableships, false, false);
-            if (targetId != noone) {
+            if (targetId != noone &amp;&amp; !targetId.invisible) {
                 if (targetId.side != global.playerside) {
                     for (var i = 0; i &lt; ds_list_size(selection); i++) {
                         attackTarget(ds_list_find_value(selection, i), targetId);

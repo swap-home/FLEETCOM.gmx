@@ -67,7 +67,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>2.0</string>
+            <string>4.0</string>
           </argument>
         </arguments>
       </action>
@@ -188,6 +188,30 @@ pointdefenseturret_A[11] = -17.7;
           <argument>
             <kind>0</kind>
             <string>16</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>scanner</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>1</string>
           </argument>
         </arguments>
       </action>

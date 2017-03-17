@@ -63,7 +63,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>movespeed</string>
+            <string>cruise_movespeed</string>
           </argument>
           <argument>
             <kind>0</kind>
