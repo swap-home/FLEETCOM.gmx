@@ -29,26 +29,16 @@
 
 race = "unsc";
 
-pdt = 0;
-//pdt_volley = 0; 
-pdt_cooldown = 0;
-pdt_cooldown_max = 15;
-pdt_range = 250;
+autocannon = 0;
+autocannon_cooldown = 0;
+autocannon_cooldown_max = 20;
+autocannon_range = 450;
 
-/*
-pdt_burst_delay = 0;
-pdt_burst_delay_max = 10;
-pdt_burst_count = 0;
-pdt_burst_count_max = 8;
-pdt_cooldown = 0;
-pdt_cooldown_max = 90;
-pdt_range = 250;
-*/
-
-archerpod = 0;
-archerpod_cooldown = 0;
-archerpod_cooldown_max = 90;
-archerpod_range = 350;
+asgm = 0;
+asgm_cooldown = 0;
+asgm_cooldown_max = 45;
+asgm_range = 600;
+asgm_per_shot = 2;
 </string>
           </argument>
         </arguments>
@@ -79,41 +69,41 @@ if (instance_exists(targetid))
     {
         var targetdir_l = point_direction(x,y,targetid.x,targetid.y);
         
-        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= pdt_range)
-            || collision_line(x,y,x+lengthdir_x(pdt_range,direction),y+lengthdir_y(pdt_range,direction),targetid,false,true))
-            &amp;&amp; pdt_cooldown &lt;= 0)
+        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= autocannon_range)
+            || collision_line(x,y,x+lengthdir_x(autocannon_range,direction),y+lengthdir_y(autocannon_range,direction),targetid,false,true))
+            &amp;&amp; autocannon_cooldown &lt;= 0)
         {
-            pdt_cooldown = pdt_cooldown_max;
+            autocannon_cooldown = autocannon_cooldown_max;
             
             var i;
-            for (i = 0; i &lt; pdt; i+=1)
+            for (i = 0; i &lt; autocannon; i+=1)
             {
-                createChild(x,y,oUNSC_50mm, targetdir_l);
+                createChild(x,y,oUNSC_120mm, targetdir_l);
             }
         }
 
-        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= archerpod_range)
-            || collision_line(x,y,x+lengthdir_x(archerpod_range,direction),y+lengthdir_y(archerpod_range,direction),targetid,false,true))
-            &amp;&amp; archerpod_cooldown &lt;= 0)
+        if (((withinDegrees(direction, targetdir_l, 30) &amp;&amp; distance_to_object(targetid) &lt;= asgm_range)
+            || collision_line(x,y,x+lengthdir_x(asgm_range,direction),y+lengthdir_y(asgm_range,direction),targetid,false,true))
+            &amp;&amp; asgm_cooldown &lt;= 0)
         {
-            archerpod_cooldown = archerpod_cooldown_max;
-        
+            asgm_cooldown = asgm_cooldown_max;
+            var missiles_fired = asgm/asgm_per_shot;
             var i;
-            for (i = 0; i &lt; archerpod; i+=1)
+            for (i = 0; i &lt; missiles_fired; i+=1)
             {
-                var missile = createChild(x,y,oUNSC_ArcherMissile, targetdir_l);
+                var missile = createChild(x,y,oUNSC_ASGM10, targetdir_l);
                 missile.targetid = targetid;
             }
         }
     }
 }
 
-if (pdt_cooldown &gt; 0) {
-    pdt_cooldown -= 1;
+if (autocannon_cooldown &gt; 0) {
+    autocannon_cooldown -= 1;
 }
 
-if (archerpod_cooldown &gt; 0) {
-    archerpod_cooldown -= 1;
+if (asgm_cooldown &gt; 0) {
+    asgm_cooldown -= 1;
 }
 </string>
           </argument>

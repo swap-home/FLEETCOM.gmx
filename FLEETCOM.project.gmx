@@ -117,8 +117,9 @@
     </sprites>
     <sprites name="Projectiles">
       <sprite>sprites\sUNSC_ArcherMissile</sprite>
-      <sprite>sprites\sUNSC_AresMissile</sprite>
+      <sprite>sprites\sUNSC_LanceMissile</sprite>
     </sprites>
+    <sprite>sprites\sAsteroid</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -312,14 +313,20 @@
         </objects>
       </objects>
     </objects>
+    <objects name="Destructables">
+      <object>objects\oAsteroid</object>
+    </objects>
     <objects name="Weaponry">
       <object>objects\obeamweaponry</object>
       <object>objects\oprojectileweaponry</object>
       <object>objects\odestructableweaponry</object>
       <objects name="UNSC">
         <object>objects\oUNSC_50mm</object>
+        <object>objects\oUNSC_120mm</object>
         <object>objects\oUNSC_ArcherMissile</object>
         <object>objects\oUNSC_AresMissile</object>
+        <object>objects\oUNSC_ASGM10</object>
+        <object>objects\oUNSC_LanceMissile</object>
         <object>objects\oUNSC_MAC</object>
         <object>objects\oUNSC_SMAC</object>
         <object>objects\object7</object>

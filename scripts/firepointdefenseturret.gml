@@ -16,14 +16,9 @@ turret_y = y - (turret_R*sin(theta));
 var selfid;
 selfid = id;
 
-var ID;
-ID = instance_create(turret_x,turret_y,oUNSC_50mm);
-ID.side = selfid.side;
-ID.parentid = selfid;
+//direction is default, overwrite if possible later
+var ID = createChild(turret_x,turret_y,oUNSC_50mm, direction);
 ID.targetid = targetid;
-
-//default, overwrite if possible later
-ID.direction = direction;
 
 if (instance_exists(targetid))
 {

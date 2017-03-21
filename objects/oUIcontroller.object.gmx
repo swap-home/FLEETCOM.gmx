@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(global.ui_controller)) {
+            <string>//Controller for drawing buttons and UI, incluing map zoom
+
+if (instance_exists(global.ui_controller)) {
     show_error("Multiple UI Controllers detected!", global.WARNING);
 }
 global.ui_controller = id;
@@ -130,7 +132,7 @@ if (instance_exists(oGameMenucontroller)) {
     
     // Ships
     action_tooltip_strings[? CORVETTE_FAST] = "SCOUT CORVETTE#Fast attack light capital ship, excellent at scouting enemy positions##cR: "+string(ctrlid.creditCost[? CORVETTE_FAST])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CORVETTE_FAST]);
-    action_tooltip_strings[? CORVETTE_REPAIR] = "SUPPORT CORVETTE#Support light capital ship, capable of performing emergency repairs##cR: "+string(ctrlid.creditCost[? CORVETTE_REPAIR])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CORVETTE_REPAIR]);
+    action_tooltip_strings[? CORVETTE_REPAIR] = "LOGISTICS CORVETTE#Support light capital ship, capable of performing emergency repairs##cR: "+string(ctrlid.creditCost[? CORVETTE_REPAIR])+"#Fleet strength: "+string(ctrlid.fleetStrength[? CORVETTE_REPAIR]);
     action_tooltip_strings[? FRIGATE_CHARON] = "CHARON-CLASS LIGHT FRIGATE#Frigate class with the largest troop complement and number of fighters, suited for troop support##cR: "+string(ctrlid.creditCost[? FRIGATE_CHARON])+"#Fleet strength: "+string(ctrlid.fleetStrength[? FRIGATE_CHARON]);
     action_tooltip_strings[? FRIGATE_PARIS] = "PARIS-CLASS HEAVY FRIGATE#Frigate class with heavy armor and armaments, used to screen formations from fighters and transports##cR: "+string(ctrlid.creditCost[? FRIGATE_PARIS])+"#Fleet strength: "+string(ctrlid.fleetStrength[? FRIGATE_PARIS]);
     action_tooltip_strings[? DESTROYER_DILIGENCE] = "DILIGENCE-CLASS DESTROYER#Destroyer class with a sizable troop complement, allows for the deployment of troops from the frontline##cR: "+string(ctrlid.creditCost[? DESTROYER_DILIGENCE])+"#Fleet strength: "+string(ctrlid.fleetStrength[? DESTROYER_DILIGENCE]);

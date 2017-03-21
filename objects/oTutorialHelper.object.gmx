@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>tutorial_step = -1;
+            <string>// Helper for setting up Tutorial
+
+tutorial_step = -1;
 
 /*
 -1 - Briefing

@@ -67,7 +67,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>8</string>
+            <string>40</string>
           </argument>
         </arguments>
       </action>
@@ -163,7 +163,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>1000</string>
+            <string>900</string>
           </argument>
         </arguments>
       </action>
@@ -187,7 +187,37 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>oallships</string>
+            <string>oallcapitalships</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var ID = id;
+child_trail_color = c_orange;
+
+trail = instance_create(x,y,oribbontrail);
+with(trail) {
+    parent = ID;
+    depth = ID.depth;
+    trail_color = ID.child_trail_color;
+    trail_max_points = 3;
+}
+</string>
           </argument>
         </arguments>
       </action>

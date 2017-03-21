@@ -1,6 +1,6 @@
 //remove this later
-hull_max = hull_max*4;
-shield_max = shield_max*4;
+hull_max = hull_max*1;
+shield_max = shield_max*1;
 
 if (instance_exists(parentid))
 {

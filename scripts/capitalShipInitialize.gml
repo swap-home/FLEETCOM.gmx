@@ -1,6 +1,6 @@
 //remove this later
-hull_max = hull_max*7;
-shield_max = shield_max*7;
+hull_max = hull_max * 400;
+shield_max = shield_max * 400;
 
 
 hull = hull_max;

@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(global.save_manager)) {
+            <string>// Persistent Manager for saving player progress
+
+if (instance_exists(global.save_manager)) {
     show_error("Multiple Save Managers detected!", global.WARNING);
 }
 global.save_manager = id;

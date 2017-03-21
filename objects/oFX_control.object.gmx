@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(global.fx_control)) {
+            <string>// Controller for graphical effects beyond sprites
+
+if (instance_exists(global.fx_control)) {
     show_error("Warning, duplicate fx_control detected", global.WARNING);
 }
 global.fx_control = id;

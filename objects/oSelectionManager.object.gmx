@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(global.selection_manager)) {
+            <string>// Controller for player input
+
+if (instance_exists(global.selection_manager)) {
     show_error("Multiple Selection Managers detected! " +
         "old: " + string(global.selection_manager) + ", new: " + string(id),
         global.WARNING);
@@ -204,7 +206,7 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
         with (oTutorialHelper) {
             tutorial_step = 13;
         }
-        room_goto(RandomBattle);
+        room_goto(FixedBattle);
     }
 }
 // Global left pressed

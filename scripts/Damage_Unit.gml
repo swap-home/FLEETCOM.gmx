@@ -31,6 +31,18 @@ else    //damage hull (titianiumA or battleplating
     else {tmpratio = 1;}
     tmpdmg = basedmg * tmpratio;
     
+    // apply directional damage
+    if (targetid.takes_directional && damagetype != "boarding") {
+        var incoming_direction = point_direction(attackerid.x, attackerid.y, targetid.x, targetid.y);
+        if (abs(angle_difference(targetid.direction+180, incoming_direction)) < front_angle) {
+            tmpdmg *= front_dmg;
+        } else if (abs(angle_difference(targetid.direction, incoming_direction)) < back_angle) {
+            tmpdmg *= back_dmg;
+        } else {
+            tmpdmg *= side_dmg;
+        }
+    }
+    
     targetid.hull -= tmpdmg;
     with (targetid){
         if (hull <= 0 && targetid != 0) { // TODO: what is this targetid != 0 doing?

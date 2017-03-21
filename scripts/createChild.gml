@@ -15,6 +15,7 @@ with (childId) {
     parentid = ID;
     //motion_add(ID.direction, ID.speed);
     side = ID.side;
+    race = ID.race;
     ai = ID.ai;
     direction = create_direction;
 }

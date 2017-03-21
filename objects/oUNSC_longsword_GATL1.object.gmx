@@ -111,11 +111,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>pdt</string>
+            <string>autocannon</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>2</string>
+            <string>1</string>
           </argument>
         </arguments>
       </action>
@@ -135,11 +135,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>archerpod</string>
+            <string>asgm</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>2</string>
+            <string>4</string>
           </argument>
         </arguments>
       </action>

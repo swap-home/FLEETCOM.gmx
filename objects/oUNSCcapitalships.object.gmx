@@ -57,15 +57,21 @@ mac_range = 1000;
 
 archerpod = 0;
 archerpod_cooldown = 0;
-archerpod_cooldown_max = 150;
-archerpod_range = 750;
+archerpod_cooldown_max = 60;
+archerpod_range = 850;
 archer_per_shot = 4;
 
 ares = 0;
 ares_cooldown = 0;
-ares_cooldown_max = 400;
-ares_range = 1200;
+ares_cooldown_max = 60;
+ares_range = 1050;
 ares_per_shot = 1;
+
+lance = 0;
+lance_cooldown = 0;
+lance_cooldown_max = 90;
+lance_range = 1500;
+lance_per_shot = 1;
 
 rapier = 0;
 rapier_cooldown = 0;
@@ -82,12 +88,12 @@ howler_per_shot = 1;
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
 pdt_burst_delay = 0;
-pdt_burst_delay_max = 30;
+pdt_burst_delay_max = 15;
 pdt_burst_count = 0;
-pdt_burst_count_max = 4;
+pdt_burst_count_max = 3;
 pdt_cooldown = 0;
-pdt_cooldown_max = 40;
-pdt_range = 250;
+pdt_cooldown_max = 60;
+pdt_range = 500;
 
 scanner = 0;
 scanner_cooldown = 0;
@@ -309,9 +315,7 @@ if (pelican_deploy_cd &gt; 0) {
 {
     turnTowards(primary_target_dir);
     if (withinDegrees(direction, primary_target_dir, 2))
-    {
-        var selfid = id;
-        
+    {  
         mac_cooldown = mac_cooldown_max;
         
         if (global.sfx) {
@@ -322,12 +326,7 @@ if (pelican_deploy_cd &gt; 0) {
         {
             var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
             var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
-            with (instance_create(fire_x,fire_y,oUNSC_MAC))
-            {
-                dir = selfid.primary_target_dir;
-                side = selfid.side;
-                parentid = selfid;
-            }
+            createChild(fire_x,fire_y,oUNSC_MAC, primary_target_dir)
         }
         fire_primary = false;
     }
@@ -374,9 +373,7 @@ if (mac_cooldown &gt; 0) {
         }
         repeat (missiles_fired)
         {
-            ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_ArcherMissile);
-            ID.side = side;
-            ID.direction = targetdir + irandom_range(-50,50);
+            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_ArcherMissile, targetdir + irandom_range(-50,50));
             ID.targetid = targetid;
             ID.targetx = targetid.x+irandom_range(-30,30);
             ID.targety = targetid.y+irandom_range(-30,30);
@@ -421,9 +418,7 @@ if (archerpod_cooldown &gt; 0) {
         }
         repeat (missiles_fired)
         {
-            ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_AresMissile);
-            ID.side = side;
-            ID.direction = targetdir + irandom_range(-75,75);
+            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_AresMissile,targetdir + irandom_range(-45,45));
             ID.targetid = targetid;
             ID.targetx = targetid.x+irandom_range(-10,10);
             ID.targety = targetid.y+irandom_range(-10,10);
@@ -454,7 +449,51 @@ if (ares_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count &gt; 0)
+            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; lance_cooldown &lt;= 0)
+{
+    if (point_distance(x, y, targetid.x, targetid.y) &lt;= lance_range)
+    {
+        var targetdir;
+        targetdir = point_direction(x,y,targetid.x,targetid.y);
+        lance_cooldown = lance_cooldown_max;
+        
+        var missiles_fired = lance/lance_per_shot;
+        if (status_half_secondary != 0) {
+            missiles_fired /= 2;
+        }
+        repeat (missiles_fired)
+        {
+            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_LanceMissile, targetdir + irandom_range(-75,75));
+            ID.targetid = targetid;
+        }
+    }
+}
+
+if (lance_cooldown &gt; 0) {
+    lance_cooldown -= 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// M910 Point-defense gun
+if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count &gt; 0)
 {
     var selfid_l;
     selfid_l = id;

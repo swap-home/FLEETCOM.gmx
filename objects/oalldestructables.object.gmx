@@ -49,8 +49,16 @@ shield_max = 0;
 invulnerable = false;
 
 front_dmg = 1;
+front_angle = 30;
 side_dmg = 1;
 back_dmg = 1;
+back_angle = 30;
+takes_directional = false;
+
+side = NEUTRAL;
+race = "none";
+
+blocks_all = false;
 </string>
           </argument>
         </arguments>
@@ -87,7 +95,7 @@ back_dmg = 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oalldestructables &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if ((blocks_all || other.affects == oalldestructables) &amp;&amp; side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -136,7 +144,7 @@ back_dmg = 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oalldestructables &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if ((blocks_all || other.affects == oalldestructables) &amp;&amp; side != other.side &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");

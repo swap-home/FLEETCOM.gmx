@@ -111,7 +111,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>pdt</string>
+            <string>autocannon</string>
           </argument>
           <argument>
             <kind>0</kind>
@@ -135,7 +135,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>archerpod</string>
+            <string>asgm</string>
           </argument>
           <argument>
             <kind>0</kind>
