@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Controller for drawing buttons and UI, incluing map zoom
+            <string>//Controller for drawing buttons and UI
 
 if (instance_exists(global.ui_controller)) {
     show_error("Multiple UI Controllers detected!", global.WARNING);
@@ -83,7 +83,7 @@ button_tooltip_padding = 10;
 button_tooltip_distance_from_button = 8;
 
 
-infotext_padding = 16;
+infotext_padding = 20;
 infotext_xscale = 0.75;
 infotext_yscale = 0.75;
 infotext_module_icon_size = 32;
@@ -92,6 +92,7 @@ infotext_module_icon_size_ratio = infotext_module_icon_size/64;
 
 ui_click = false;
 objective_string = "";
+
 
 ui_rotation_clock = 0;
 ui_rotation_clock_max = 100;
@@ -245,10 +246,10 @@ if (global.selection_manager != 0) {
         }
         
         // Check if mouse over buttons
-        if (mouse_x &gt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * i)
-            &amp;&amp; mouse_x &lt;= view_xview[PRIMARY_VIEW] + border + minimap_width + (padding * (i+1)) + (button_size * (i+1))
-            &amp;&amp; mouse_y &gt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height
-            &amp;&amp; mouse_y &lt;= view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] - border - minimap_height + button_size) {
+        if (window_mouse_get_x() &gt;= border + minimap_width + (padding * (i+1)) + (button_size * i)
+            &amp;&amp; window_mouse_get_x() &lt;= border + minimap_width + (padding * (i+1)) + (button_size * (i+1))
+            &amp;&amp; window_mouse_get_y() &gt;= SCREEN_HEIGHT - border - minimap_height
+            &amp;&amp; window_mouse_get_y() &lt;= SCREEN_HEIGHT - border - minimap_height + button_size) {
             
             button_mouseover = i;
             
@@ -431,8 +432,8 @@ if (ui_size_clock == ui_size_clock_max) {
             <kind>1</kind>
             <string>// draw UI elements
 var button_count = ds_list_size(button_actions);
-var draw_x = 0 + border;
-var draw_y = view_hview[PRIMARY_VIEW] - border - minimap_height;
+var draw_x = 0 + border * display_scale;
+var draw_y = SCREEN_HEIGHT - (border + minimap_height) * display_scale;
 
 var minimap_wscale = minimap_width / room_width;
 var minimap_hscale = minimap_height / room_height;
@@ -442,18 +443,18 @@ draw_set_alpha(GUI_ALPHA);
 
 // draw minimap
 draw_set_color(c_gray);
-draw_ellipse(draw_x * display_scale, 
-    draw_y * display_scale, 
-    (draw_x + minimap_width) * display_scale, 
-    (draw_y + minimap_height) * display_scale, 
+draw_ellipse(draw_x, 
+    draw_y, 
+    draw_x + minimap_width * display_scale, 
+    draw_y + minimap_height * display_scale, 
     false);
 
 // draw minimap screen
 draw_set_color(c_white);
 draw_rectangle((draw_x + view_xview[PRIMARY_VIEW] * minimap_wscale) * display_scale, 
     (draw_y + view_yview[PRIMARY_VIEW] * minimap_hscale) * display_scale,
-    (draw_x + (view_wview[PRIMARY_VIEW] + view_xview[PRIMARY_VIEW]) * minimap_wscale) * display_scale,
-    (draw_y + (view_hview[PRIMARY_VIEW] + view_yview[PRIMARY_VIEW]) * minimap_hscale) * display_scale,
+    (draw_x + (SCREEN_WIDTH + view_xview[PRIMARY_VIEW]) * minimap_wscale) * display_scale,
+    (draw_y + (SCREEN_HEIGHT + view_yview[PRIMARY_VIEW]) * minimap_hscale) * display_scale,
     true);
     
 // TODO: move this computation out of draw step, decouple minimap state from game state
@@ -462,20 +463,20 @@ with (oallcapitalships) {
     else if (side == NEUTRAL) {draw_set_color(c_white);}
     else {draw_set_color(c_red);}
     
-    draw_rectangle((draw_x + x * minimap_wscale) * global.ui_controller.display_scale - minimap_square_length/2, 
-    (draw_y + y * minimap_hscale) * global.ui_controller.display_scale - minimap_square_length/2,
-    (draw_x + x * minimap_wscale) * global.ui_controller.display_scale + minimap_square_length/2,
-    (draw_y + y * minimap_hscale) * global.ui_controller.display_scale + minimap_square_length/2,
+    draw_rectangle((draw_x + x * minimap_wscale - minimap_square_length/2) * global.ui_controller.display_scale, 
+    (draw_y + y * minimap_hscale - minimap_square_length/2) * global.ui_controller.display_scale,
+    (draw_x + x * minimap_wscale + minimap_square_length/2) * global.ui_controller.display_scale,
+    (draw_y + y * minimap_hscale + minimap_square_length/2) * global.ui_controller.display_scale,
     false);
      
 }
 
-draw_x += minimap_width;
+draw_x += minimap_width * display_scale;
 
 // draw UI buttons
 draw_set_color(c_gray);
 for (var i = 0; i &lt; button_count; i++) {
-    draw_x += padding;
+    draw_x += padding * display_scale;
     draw_rectangle(draw_x * display_scale, 
         draw_y * display_scale,
         (draw_x + button_size) * display_scale,
@@ -486,26 +487,26 @@ for (var i = 0; i &lt; button_count; i++) {
     if (global.selection_manager.current_command == button_actions[| i]) {
         draw_set_color(c_red);
         if (ui_rotation_clock / ui_rotation_clock_max &lt; 1/2) {
-            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height, 
-                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
-                button_border_width);
-            draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
-                border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
-                button_border_width);
+            draw_line_width((border + minimap_width + (padding * (i+1)) + (button_size * i)) * display_scale, 
+                (SCREEN_HEIGHT - border - minimap_height) * display_scale, 
+                (border + minimap_width + (padding * (i+1)) + (button_size * (i+1))) * display_scale, 
+                (SCREEN_HEIGHT - border - minimap_height) * display_scale,
+                button_border_width * display_scale);
+            draw_line_width((border + minimap_width + (padding * (i+1)) + (button_size * i)) * display_scale, 
+                (SCREEN_HEIGHT - border - minimap_height + button_size) * display_scale, 
+                (border + minimap_width + (padding * (i+1)) + (button_size * (i+1))) * display_scale, 
+                (SCREEN_HEIGHT - border - minimap_height + button_size) * display_scale,
+                button_border_width * display_scale);
         } else {
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                SCREEN_HEIGHT - border - minimap_height,
                 border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                SCREEN_HEIGHT - border - minimap_height + button_size,
                 button_border_width);
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                SCREEN_HEIGHT - border - minimap_height,
                 border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                SCREEN_HEIGHT - border - minimap_height + button_size,
                 button_border_width);
         }
     }
@@ -514,25 +515,25 @@ for (var i = 0; i &lt; button_count; i++) {
         draw_set_color(c_yellow);
         if (ui_rotation_clock / ui_rotation_clock_max &lt; 1/2) {
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                SCREEN_HEIGHT - border - minimap_height,
                 border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                SCREEN_HEIGHT - border - minimap_height + button_size,
                 button_border_width);
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                SCREEN_HEIGHT - border - minimap_height,
                 border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                SCREEN_HEIGHT - border - minimap_height + button_size,
                 button_border_width);
         } else {
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height, 
+                SCREEN_HEIGHT - border - minimap_height, 
                 border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height,
+                SCREEN_HEIGHT - border - minimap_height,
                 button_border_width);
             draw_line_width(border + minimap_width + (padding * (i+1)) + (button_size * i), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size, 
+                SCREEN_HEIGHT - border - minimap_height + button_size, 
                 border + minimap_width + (padding * (i+1)) + (button_size * (i+1)), 
-                view_hview[PRIMARY_VIEW] - border - minimap_height + button_size,
+                SCREEN_HEIGHT - border - minimap_height + button_size,
                 button_border_width);
         }
     }
@@ -561,7 +562,7 @@ for (var i = 0; i &lt; button_count; i++) {
                 draw_y - button_tooltip_distance_from_button,
                 false);
                 
-            draw_set_font(Halo);
+            draw_set_font(HaloCE_gui_hud);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_text_ext_transformed(draw_x + button_size/2 - button_tooltip_width/2 + button_tooltip_padding,
@@ -584,7 +585,7 @@ for (var i = 0; i &lt; button_count; i++) {
     draw_set_alpha(GUI_ALPHA);
     
     // draw key shortcut
-    draw_set_font(Halo);
+    draw_set_font(Halo3_title);
     draw_set_halign(fa_center);
     draw_set_color(c_gray);
     draw_text((draw_x + button_size/2) * display_scale, (draw_y + button_size + text_padding) * display_scale, string(chr(button_keys[| i])));
@@ -596,21 +597,21 @@ var ctrlid = instance_find(oGameMenucontroller,0);
 if (ctrlid == noone) {
     if (objective_string != "") {
         draw_set_color(c_gray);
-        draw_set_font(Halo);
+        draw_set_font(HaloCE_gui_hud);
         draw_set_halign(fa_left);
-        draw_text_ext(border, border, "Current Objective: #" + objective_string, -1, view_wview[PRIMARY_VIEW]);
+        draw_text_ext(border, border, "Current Objective: #" + objective_string, -1, SCREEN_WIDTH);
     }
 } else {
     draw_set_color(c_gray);
-    draw_set_font(Halo);
+    draw_set_font(HaloCE_gui_hud);
     draw_set_halign(fa_left);
-    draw_text_ext(border, border, "Credits: " + string(global.save_manager.credits) + "#Fleet Strength: " + string(ctrlid.fleetStrengthCurrent) + "/" + string(ctrlid.fleetStrengthMax), -1, view_wview[PRIMARY_VIEW]);
+    draw_text_ext(border, border, "Credits: " + string(global.save_manager.credits) + "#Fleet Strength: " + string(ctrlid.fleetStrengthCurrent) + "/" + string(ctrlid.fleetStrengthMax), -1, SCREEN_WIDTH);
 }
 
 // if only 1 ship selected, draw unitinfo
 if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.selection_manager.selection) == 1) {
     draw_set_color(c_gray);
-    draw_set_font(Halo);
+    draw_set_font(HaloCE_gui_hud);
     draw_set_halign(fa_right);
     var unitid = global.selection_manager.selection[| 0];
     
@@ -619,7 +620,7 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
         unitid = unitid.upgradeid;
     }
     
-    var info_x = view_wview[PRIMARY_VIEW] - border;
+    var info_x = SCREEN_WIDTH - border;
     var info_y = border;
     if (unitid.race == "unsc") {
         draw_text_transformed(info_x, info_y, unitid.ship_name, 1, 1, 0);
@@ -692,23 +693,23 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
 if (text_string != "") {
     draw_set_alpha(1);
     draw_set_color(c_gray);
-    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
-        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
+    draw_rectangle(SCREEN_WIDTH/2 - textbox_width/2, 
+        SCREEN_HEIGHT/2 - textbox_height/2,
+        SCREEN_WIDTH/2 + textbox_width/2, 
+        SCREEN_HEIGHT/2 + textbox_height/2,
         true);
 
     draw_set_alpha(textbox_alpha);        
     draw_set_color(c_black);
-    draw_rectangle(view_wview[PRIMARY_VIEW]/2 - textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 - textbox_height/2,
-        view_wview[PRIMARY_VIEW]/2 + textbox_width/2, 
-        view_hview[PRIMARY_VIEW]/2 + textbox_height/2,
+    draw_rectangle(SCREEN_WIDTH/2 - textbox_width/2, 
+        SCREEN_HEIGHT/2 - textbox_height/2,
+        SCREEN_WIDTH/2 + textbox_width/2, 
+        SCREEN_HEIGHT/2 + textbox_height/2,
         false);
         
-    var text_x = view_wview[PRIMARY_VIEW]/2 - textbox_width/2 + textbox_padding;
-    var text_y = view_hview[PRIMARY_VIEW]/2 - textbox_height/2 + textbox_padding;
-    draw_set_font(Halo);
+    var text_x = SCREEN_WIDTH/2 - textbox_width/2 + textbox_padding;
+    var text_y = SCREEN_HEIGHT/2 - textbox_height/2 + textbox_padding;
+    draw_set_font(HaloCE_gui_hud);
     draw_set_halign(fa_left);
     var display_string = string_copy(text_string, 1, floor(text_show_count)); // 1-indexed instead of 0-indexed
     draw_set_color(c_white);

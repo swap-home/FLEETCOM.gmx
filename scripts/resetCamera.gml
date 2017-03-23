@@ -1,0 +1,16 @@
+var x_center = view_xview[PRIMARY_VIEW] + view_wview[PRIMARY_VIEW] / 2;
+var y_center = view_yview[PRIMARY_VIEW] + view_hview[PRIMARY_VIEW] / 2; 
+view_wview[PRIMARY_VIEW] = SCREEN_WIDTH*zoom_multiplier;
+view_hview[PRIMARY_VIEW] = SCREEN_HEIGHT*zoom_multiplier;
+view_wview[1] = SCREEN_WIDTH*zoom_multiplier;
+view_hview[1] = SCREEN_HEIGHT*zoom_multiplier;
+x = x_center;
+y = y_center;
+view_xview[PRIMARY_VIEW] = x_center - view_wview[PRIMARY_VIEW] / 2;
+view_yview[PRIMARY_VIEW] = y_center - view_hview[PRIMARY_VIEW] / 2;
+view_xview[1] = x_center - view_wview[PRIMARY_VIEW] / 2;
+view_yview[1] = y_center - view_hview[PRIMARY_VIEW] / 2;
+view_hborder[PRIMARY_VIEW] = view_wview[PRIMARY_VIEW] / 2;
+view_vborder[PRIMARY_VIEW] = view_hview[PRIMARY_VIEW] / 2;
+view_hborder[1] = view_wview[1] / 2;
+view_vborder[1] = view_hview[1] / 2;

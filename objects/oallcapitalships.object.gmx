@@ -627,7 +627,7 @@ if (!invulnerable &amp;&amp; shield_max &gt; 0 &amp;&amp; (boarding_level &gt; 0
 // draw a boarding bar
 if (boarding_level &gt; 0 || global.debug) { //|| security_level != security_level_initial) {
     draw_bar_split(x-sprite_width/2,y-(sprite_height/2)-21,sprite_width,5,boarding_timer+boarding_timer_max,2*boarding_timer_max,c_green,c_red);
-    draw_set_font(Halo);
+    draw_set_font(HaloCE_gui_hud);
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
     draw_text(x-sprite_width/2 - 22,y-(sprite_height/2)-21-4,string(security_level));
@@ -636,7 +636,7 @@ if (boarding_level &gt; 0 || global.debug) { //|| security_level != security_lev
 
 // draw ship name
 if (ship_name != "" &amp;&amp; (selected || global.debug)) {
-    draw_set_font(Halo);
+    draw_set_font(HaloCE_gui_hud);
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
     //draw_text(x, y-(sprite_height/2) - 42, ship_name_string);
@@ -645,7 +645,7 @@ if (ship_name != "" &amp;&amp; (selected || global.debug)) {
 
 // draw status effects
 if (boarding_level &gt; 0) {
-    draw_set_font(Halo);
+    draw_set_font(HaloCE_gui_hud);
     draw_set_color(c_red);
     var status = "BOARDED";
     draw_set_halign(fa_center);

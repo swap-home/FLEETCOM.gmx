@@ -228,6 +228,7 @@
       <script>scripts\singleShipInitialize.gml</script>
       <script>scripts\projectileInitialize.gml</script>
     </scripts>
+    <script>scripts\resetCamera.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_bloom.shader</shader>
@@ -235,7 +236,9 @@
     <shader type="GLSLES">shaders\sh_old.shader</shader>
   </shaders>
   <fonts name="fonts">
-    <font>fonts\Halo</font>
+    <font>fonts\Halo3_title</font>
+    <font>fonts\HaloCE_chatbox</font>
+    <font>fonts\HaloCE_gui_hud</font>
   </fonts>
   <objects name="objects">
     <object>objects\onone</object>
@@ -368,7 +371,9 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="44">
+  <constants number="46">
+    <constant name="SCREEN_WIDTH">1024</constant>
+    <constant name="SCREEN_HEIGHT">768</constant>
     <constant name="STEPS_PER_SECOND">30</constant>
     <constant name="GUI_ALPHA">0.65</constant>
     <constant name="MOVING">0</constant>

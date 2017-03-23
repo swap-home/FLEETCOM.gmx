@@ -354,7 +354,7 @@ if (tutorial_step == 11) {
             <kind>1</kind>
             <string>// draw in-screen tips
 
-draw_set_font(Halo);
+draw_set_font(HaloCE_gui_hud);
 draw_set_color(c_white);
 draw_set_halign(fa_center);
 
