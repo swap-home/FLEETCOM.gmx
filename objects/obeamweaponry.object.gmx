@@ -151,7 +151,7 @@ alarm[0]=2;
           <argument>
             <kind>1</kind>
             <string>draw_set_blend_mode(bm_add);
-draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,dir,beamColor,alpha);
+draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,direction,beamColor,alpha);
 draw_set_blend_mode(bm_normal);
 </string>
           </argument>

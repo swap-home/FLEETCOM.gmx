@@ -54,13 +54,14 @@ energyprojector_range = 1400;
 
 plasmaturret = 0;
 plasmaturret_cooldown = 0;
-plasmaturret_cooldown_max = 300;
-plasmaturret_range = 1000;
+plasmaturret_cooldown_max = 90;
+plasmaturret_range = 900;
+plasmaturret_per_shot = 3;
 
 plt = 0;
 plt_cooldown = 0;
 plt_cooldown_max = 25;
-plt_range = 450;
+plt_range = 600;
 pulselaser_draw = 0;
 
 epdraworigin_x[0] = 0;
@@ -318,13 +319,59 @@ if (energyprojector_cooldown &gt; 0) {
     {
         plasmaturret_cooldown = plasmaturret_cooldown_max;
         
-        var plasmaturret_shots = plasmaturret/3;
+        var plasmaturret_shots = plasmaturret/plasmaturret_per_shot;
         if (status_half_secondary != 0) {
             plasmaturret_shots /= 2;
         }
         repeat (plasmaturret_shots)
         {
-            ID = instance_create(x+irandom_range(-30,30),y+irandom_range(-30,30),oCove_PlasmaTorpedo);
+            ID = instance_create(x+irandom_range(-60,60),y+irandom_range(-60,60),oCove_PlasmaCannon);
+            ID.side = side;
+            ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-1,1);
+            ID.targetid = targetid;
+            ID.parentid = id;
+        }
+    }
+}
+
+if (plasmaturret_cooldown &gt; 0) {
+    plasmaturret_cooldown -= 1;    
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/*
+if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
+{
+    if (point_distance(x,y,targetid.x,targetid.y) &lt;= plasmaturret_range)
+    {
+        plasmaturret_cooldown = plasmaturret_cooldown_max;
+        
+        var plasmaturret_shots = plasmaturret/plasmaturret_per_shot;
+        if (status_half_secondary != 0) {
+            plasmaturret_shots /= 2;
+        }
+        repeat (plasmaturret_shots)
+        {
+            ID = instance_create(x+irandom_range(-60,60),y+irandom_range(-60,60),oCove_PlasmaTorpedo);
             ID.side = side;
             ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-15,15);
             ID.targetid = targetid;
@@ -336,7 +383,7 @@ if (energyprojector_cooldown &gt; 0) {
 if (plasmaturret_cooldown &gt; 0) {
     plasmaturret_cooldown -= 1;    
 }
-
+*/
 </string>
           </argument>
         </arguments>

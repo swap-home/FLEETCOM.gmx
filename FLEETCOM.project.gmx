@@ -59,12 +59,6 @@
     <sprite>sprites\sUNSC_odp</sprite>
     <sprite>sprites\sUNSC_station</sprite>
     <sprite>sprites\sUNSC_Explosion</sprite>
-    <sprite>sprites\sUNSC_50mm</sprite>
-    <sprite>sprites\sUNSC_120mm</sprite>
-    <sprite>sprites\sCove_PlasmaCannons</sprite>
-    <sprite>sprites\sCove_FuelRod</sprite>
-    <sprite>sprites\sCove_HeavyPlasma</sprite>
-    <sprite>sprites\sCove_PlasmaTorpedo</sprite>
     <sprites name="UI">
       <sprite>sprites\smouse</sprite>
       <sprite>sprites\smousescroll</sprite>
@@ -118,6 +112,14 @@
     <sprites name="Projectiles">
       <sprite>sprites\sUNSC_ArcherMissile</sprite>
       <sprite>sprites\sUNSC_LanceMissile</sprite>
+      <sprite>sprites\sUNSC_50mm</sprite>
+      <sprite>sprites\sUNSC_120mm</sprite>
+      <sprite>sprites\sCove_PlasmaCannons</sprite>
+      <sprite>sprites\sCoveHeavyPlasma</sprite>
+      <sprite>sprites\sCove_HeavyPlasmaRed</sprite>
+      <sprite>sprites\sCove_FuelRod</sprite>
+      <sprite>sprites\sCove_PlasmaCannonArray</sprite>
+      <sprite>sprites\sCove_PlasmaTorpedo</sprite>
     </sprites>
     <sprite>sprites\sAsteroid</sprite>
   </sprites>
@@ -339,6 +341,7 @@
         <object>objects\oCove_EnergyGun_class2</object>
         <object>objects\oCove_ProjectileCannon_class2</object>
         <object>objects\oCove_EnergyGun_class2_Heavy</object>
+        <object>objects\oCove_PlasmaCannon</object>
         <object>objects\oCove_PlasmaTorpedo</object>
         <object>objects\oCove_PulseLaser</object>
         <object>objects\oCove_EnergyProjector</object>

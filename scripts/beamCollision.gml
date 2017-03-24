@@ -8,8 +8,8 @@ cy = 0;
 
 _x = x;
 _y = y;
-xx = x + lengthdir_x(maxrange, dir);
-yy = y + lengthdir_y(maxrange, dir);
+xx = x + lengthdir_x(maxrange, direction);
+yy = y + lengthdir_y(maxrange, direction);
 
 if (!instance_exists(parentid)) {instance_destroy();}
 

@@ -85,7 +85,7 @@ global.shots = 0;
 if (room == RandomBattle)
 {
     alarm[1] = 1;
-    alarm[0] = irandom(10*30)+ 10*30;
+    alarm[0] = irandom(30*30)+ 30*30;
 }
 else if (room == Tutorial)
 {
@@ -397,7 +397,7 @@ if (coveShipCount*3 &gt; unscShipCount)
     }
 }
 
-alarm[0] = irandom(15*30)+ 10*30;
+alarm[0] = irandom(45*30)+ 30*30;
 </string>
           </argument>
         </arguments>

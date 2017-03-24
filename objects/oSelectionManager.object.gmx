@@ -206,7 +206,7 @@ if (current_command &gt; NO_SHIP &amp;&amp; current_command &lt; SHIP_END) {
         with (oTutorialHelper) {
             tutorial_step = 13;
         }
-        room_goto(FixedBattle);
+        room_goto(RandomBattle);
     }
 }
 // Global left pressed

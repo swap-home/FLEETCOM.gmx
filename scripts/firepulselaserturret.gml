@@ -23,7 +23,7 @@ with (instance_create(turret_x,turret_y,oCove_PulseLaser))
     target = targetid;
     x = turret_x;
     y = turret_y;
-    dir = targetdir;
+    direction = targetdir;
     side = selfid.side;
     parentid = selfid;
 }

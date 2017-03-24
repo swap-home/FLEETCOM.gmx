@@ -36,9 +36,9 @@ exp_value = 1;
 
 child_trail_color = c_white;
 
-sight_range = 300; //range to detect targets and begin interception/attack/escort
+sight_range = 600; //range to detect targets and begin interception/attack/escort
 escort_leash_range = 500; //range to return to initial point
-intercept_leash_range = 400; 
+intercept_leash_range = 500; 
 
 
 refuel_range = 9001;

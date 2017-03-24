@@ -32,7 +32,8 @@ race = "cove";
 plasmacannon = 0;
 plasmacannon_cooldown = 0;
 plasmacannon_cooldown_max = 15;
-plasmacannon_range = 350;
+plasmacannon_range = 400;
+plasmacannon_per_shot = 2;
 
 fuelrodcannon = 0;
 fuelrodcannon_cooldown = 0;
@@ -79,13 +80,14 @@ if (instance_exists(targetid))
         {
             //sound_play(plasmaCannonFire);
             plasmacannon_cooldown = plasmacannon_cooldown_max;
-            
-            for (var i = 0; i &lt; plasmacannon; i++)
+            var shots_fired = plasmacannon/plasmacannon_per_shot;
+            for (var i = 0; i &lt; shots_fired; i++)
             {
                 createChild(x,y,oCove_EnergyGun_class2, targetdir_l);
             }
         }
 
+        /*
         if (((withinDegrees(direction, targetdir_l, 5) &amp;&amp; distance_to_object(targetid) &lt;= fuelrodcannon_range)
             || collision_line(x,y,x+lengthdir_x(fuelrodcannon_range,direction),y+lengthdir_y(fuelrodcannon_range,direction),targetid,false,true))
             &amp;&amp; fuelrodcannon_cooldown &lt;= 0)
@@ -97,8 +99,8 @@ if (instance_exists(targetid))
             {
                 createChild(x,y,oCove_ProjectileCannon_class2, targetdir_l);
             }
-        }
-
+        }*/
+        /*
         if (heavyplasmacannon_cooldown &lt;= 0 &amp;&amp; distance_to_object(targetid) &lt;= heavyplasmacannon_range)
         {
             heavyplasmacannon_cooldown = heavyplasmacannon_cooldown_max;
@@ -107,7 +109,7 @@ if (instance_exists(targetid))
             {
                 createChild(x,y,oCove_EnergyGun_class2_Heavy, targetdir_l);
             }
-        }
+        }*/
     }
 }
 
