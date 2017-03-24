@@ -763,6 +763,7 @@ screennum++;
           <argument>
             <kind>1</kind>
             <string>sound_stop(FarthestOutpost);
+global.sfx = !global.sfx;
 </string>
           </argument>
         </arguments>

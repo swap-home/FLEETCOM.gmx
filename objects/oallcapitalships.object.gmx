@@ -427,9 +427,9 @@ if (boarding_level &gt; 0) {
 }
 // Take damage from Boarders
 if (boarding_damage_counter &gt;= boarding_damage_counter_max 
-    &amp;&amp; boarding_level * boarding_damage &gt; 0) {
+    &amp;&amp; (boarding_level-security_level) * boarding_damage &gt; 0) {
     
-    Damage_Unit(boarding_damage*boarding_level, boarding_originship, id, "boarding");
+    Damage_Unit(boarding_damage*(boarding_level-security_level), boarding_originship, id, "boarding");
     boarding_damage_counter = 0;
 }
 </string>

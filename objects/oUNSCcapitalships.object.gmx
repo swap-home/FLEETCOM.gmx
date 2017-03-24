@@ -569,7 +569,7 @@ if (scanner &amp;&amp; scanner_cooldown &lt;= 0)
 {
     //scan
     with (oallobjects) {
-        if (distance_to_object(selfid) &lt;= selfid.scanner_range &amp;&amp; invisible &amp;&amp; side != selfid.side) {
+        if (distance_to_object(selfid) &lt;= selfid.scanner_range &amp;&amp; side != selfid.side) {
             invisible = false;
             revealed_time = selfid.scanner_reveal_time;
         }

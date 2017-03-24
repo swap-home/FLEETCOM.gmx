@@ -56,7 +56,7 @@ plasmaturret = 0;
 plasmaturret_cooldown = 0;
 plasmaturret_cooldown_max = 90;
 plasmaturret_range = 900;
-plasmaturret_per_shot = 3;
+plasmaturret_per_shot = 2;
 
 plt = 0;
 plt_cooldown = 0;
@@ -325,7 +325,7 @@ if (energyprojector_cooldown &gt; 0) {
         }
         repeat (plasmaturret_shots)
         {
-            ID = instance_create(x+irandom_range(-60,60),y+irandom_range(-60,60),oCove_PlasmaCannon);
+            ID = instance_create(x+irandom_range(-45,45),y+irandom_range(-45,45),oCove_PlasmaCannon);
             ID.side = side;
             ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-1,1);
             ID.targetid = targetid;

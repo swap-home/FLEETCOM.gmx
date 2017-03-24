@@ -43,6 +43,7 @@
 
 init = false;
 invisible = false;
+invis_enabled = false;
 revealed_time = 0;
 movespeed = 0;
 </string>
@@ -97,9 +98,11 @@ turning = false;
             <string>event_inherited();
 
 if (revealed_time &gt; 0) {
-    if (--revealed_time == 0) {
-        invisible = true;
-    }
+    --revealed_time;
+}
+
+if (revealed_time == 0 &amp;&amp; invis_enabled) {
+    invisible = true;
 }
 </string>
           </argument>
