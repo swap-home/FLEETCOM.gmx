@@ -135,7 +135,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac_max</string>
+            <string>hmac_max</string>
           </argument>
           <argument>
             <kind>0</kind>

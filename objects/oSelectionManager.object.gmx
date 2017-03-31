@@ -297,7 +297,7 @@ if (mouse_check_button_pressed(mb_left)) {
                 with (selection[| i]) {
                     var dist = point_distance(x, y, mouse_x, mouse_y);
                     if (race == "unsc") {
-                        if (mac_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                        if ((lmac_cooldown &lt;= 0 || hmac_cooldown &lt;= 0) &amp;&amp; dist &lt; closest_available_distance) {
                             closest_available_id = id;
                             closest_available_distance = dist;
                         }
@@ -512,7 +512,7 @@ if (current_command == FIRE_PRIMARY) {
             with (selection[| i]) {
                 var dist = point_distance(x, y, mouse_x, mouse_y);
                 if (race == "unsc") {
-                    if (mac_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                    if ((lmac_cooldown &lt;= 0 || hmac_cooldown &lt;= 0) &amp;&amp; dist &lt; closest_available_distance) {
                         closest_available_id = id;
                         closest_available_distance = dist;
                     }
@@ -530,7 +530,11 @@ if (current_command == FIRE_PRIMARY) {
             var range = 0;
             var dir = point_direction(closest_available_id.x, closest_available_id.y, mouse_x, mouse_y);
             if (closest_available_id.race = "unsc") {
-                range = closest_available_id.mac_range;
+                if (closest_available_id.lmac &gt; 0) {
+                    range = closest_available_id.lmac_range;
+                } else if (closest_available_id.hmac &gt; 0) {
+                    range = closest_available_id.hmac_range;
+                }
             } else if (closest_available_id.race = "cove") {
                 range = closest_available_id.energyprojector_range;
             }
@@ -639,7 +643,8 @@ switch (current_command) {
 {
     with (selection[| i]) {
         if (race == "unsc") {
-            mac_cooldown = 0;
+            lmac_cooldown = 0;
+            hmac_cooldown = 0;
             hull = hull_max;
             shield = shield_max;
         } else if (race == "cove") {

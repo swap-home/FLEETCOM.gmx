@@ -111,7 +111,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>pdt</string>
+            <string>helix</string>
           </argument>
           <argument>
             <kind>0</kind>
@@ -183,7 +183,7 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mac_max</string>
+            <string>lmac_max</string>
           </argument>
           <argument>
             <kind>0</kind>

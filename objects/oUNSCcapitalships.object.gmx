@@ -49,11 +49,19 @@ race = "unsc";
 side = 0;
 
 //INITIALIZATION of UNSC ship vars
-mac = 0;
-mac_max = 0;
-mac_cooldown = 0;
-mac_cooldown_max = 900;
-mac_range = 1000;
+lmac = 0;
+lmac_max = 0;
+lmac_cooldown = 0;
+lmac_cooldown_max = 5400;
+lmac_range = 3000;
+lmac_per_shot = 1;
+
+hmac = 0;
+hmac_max = 0;
+hmac_cooldown = 0;
+hmac_cooldown_max = 5400;
+hmac_range = 3500;
+hmac_per_shot = 2;
 
 archerpod = 0;
 archerpod_cooldown = 0;
@@ -81,9 +89,15 @@ rapier_per_shot = 1;
 
 howler = 0;
 howler_cooldown = 0;
-howler_cooldown_max = 0;
+howler_cooldown_max = 240;
 howler_range = 800;
 howler_per_shot = 1;
+
+helix = 0;
+helix_cooldown = 0;
+helix_cooldown_max = 45;
+helix_range = 550;
+helix_per_shot = 1;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
@@ -311,32 +325,82 @@ if (pelican_deploy_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_primary &amp;&amp; mac_cooldown &lt;= 0 &amp;&amp; mac &gt; 0)
+            <string>if (fire_primary &amp;&amp; lmac_cooldown &lt;= 0 &amp;&amp; lmac &gt; 0)
 {
     turnTowards(primary_target_dir);
     if (withinDegrees(direction, primary_target_dir, 2))
     {  
-        mac_cooldown = mac_cooldown_max;
+        lmac_cooldown = lmac_cooldown_max;
         
         if (global.sfx) {
             sound_play(macFire);
         }
         
-        for (var i = 0; i &lt; mac; i++)
+        var shots_fired = lmac * lmac_per_shot;
+        for (var i = 0; i &lt; shots_fired; i++)
         {
             var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
             var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
-            createChild(fire_x,fire_y,oUNSC_MAC, primary_target_dir)
+            createChild(fire_x,fire_y,oUNSC_LMAC, primary_target_dir);
         }
         fire_primary = false;
     }
 }
 
-if (mac_cooldown &gt; 0) {
+if (lmac_cooldown &gt; 0) {
     if (status_half_primarycharge != 0) {
-        mac_cooldown -= 0.5;
+        lmac_cooldown -= 0.5;
     } else {
-        mac_cooldown -= 1;
+        lmac_cooldown -= 1;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (fire_primary &amp;&amp; hmac_cooldown &lt;= 0 &amp;&amp; hmac &gt; 0)
+{
+    turnTowards(primary_target_dir);
+    if (withinDegrees(direction, primary_target_dir, 2))
+    {  
+        hmac_cooldown = hmac_cooldown_max;
+        
+        if (global.sfx) {
+            sound_play(macFire);
+        }
+        
+        var shots_fired = hmac / hmac_per_shot;
+        for (var i = 0; i &lt; shots_fired; i++)
+        {
+            var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            createChild(fire_x,fire_y,oUNSC_HMAC, primary_target_dir);
+        }
+        fire_primary = false;
+    }
+}
+
+if (hmac_cooldown &gt; 0) {
+    if (status_half_primarycharge != 0) {
+        hmac_cooldown -= 0.5;
+    } else {
+        hmac_cooldown -= 1;
     }
 }
 </string>
@@ -492,6 +556,71 @@ if (lance_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>// Helix AAA
+if (fire_pointdef &amp;&amp; helix_cooldown &lt;= 0)
+{
+    var selfid_l;
+    selfid_l = id;
+
+    var target_count_l, targets_l;
+    target_count_l = 0;
+    with(odestructableweaponry)
+    {
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.helix_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible) 
+        {
+            targets_l[target_count_l] = id;
+            target_count_l+=1;
+        }
+    }
+    with(oallsingleships)
+    {
+        if(side!=selfid_l.side &amp;&amp; distance_to_object(selfid_l)&lt;selfid_l.helix_range &amp;&amp; side != NEUTRAL &amp;&amp; !invulnerable &amp;&amp; !invisible)
+        {
+            targets_l[target_count_l] = id;
+            target_count_l+=1;
+        }
+    }
+
+
+    if (target_count_l &gt; 0)
+    {
+        helix_cooldown = helix_cooldown_max;
+        
+        var helix_shots = helix;
+        if (status_half_pointdefense != 0) {
+            helix_shots /= 2;
+        }
+        for (var i = 0; i &lt; helix_shots; i++)
+        {
+            firepointdefenseturret(i,targets_l[i mod target_count_l],oUNSC_AAA,6);
+        }
+    }
+}
+
+if (helix_cooldown &gt; 0) {
+    --helix_cooldown;
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>// M910 Point-defense gun
 if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count &gt; 0)
 {
@@ -529,7 +658,7 @@ if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count 
         }
         for (var i = 0; i &lt; pdt_shots; i++)
         {
-            firepointdefenseturret(i,targets_l[i mod target_count_l]);
+            firepointdefenseturret(i,targets_l[i mod target_count_l],oUNSC_50mm,10);
         }
     }
 }
@@ -668,17 +797,28 @@ if (repair_cooldown &gt; 0) {
 var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
-if (mac &gt; 0 &amp;&amp; (selected || global.debug)) {
+if (lmac &gt; 0 &amp;&amp; (selected || global.debug)) {
     draw_bar(x-sprite_width/2,
         y-(sprite_height/2)-3,
         sprite_width,
         3,
-        mac_cooldown_max-mac_cooldown,
-        mac_cooldown_max,
+        lmac_cooldown_max-lmac_cooldown,
+        lmac_cooldown_max,
         c_yellow,
         c_white);
 }
-        
+
+if (hmac &gt; 0 &amp;&amp; (selected || global.debug)) {
+    draw_bar(x-sprite_width/2,
+        y-(sprite_height/2)-3,
+        sprite_width,
+        3,
+        hmac_cooldown_max-hmac_cooldown,
+        hmac_cooldown_max,
+        c_yellow,
+        c_white);
+}        
+
 draw_set_alpha(oldAlpha);
 </string>
           </argument>

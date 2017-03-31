@@ -30,7 +30,11 @@
 dmg_kinetic = 0;
 dmg_explosive = 0;
 dmg_thermal = 0;
+
 affects = onone;
+
+parentid = noone;
+targetid = noone;
 
 explosive_aoe = false;
 explosive_affects = onone;
@@ -51,12 +55,12 @@ exploded = false;
 maxturnrate = 0;
 movespeed = 0;
 
-launch_turnrate = 0;
-launch_movespeed = 0;
-launch_duration = 0;
-
-cruise_turnrate = 0;
 cruise_movespeed = 0;
+cruise_turnrate = 0;
+
+launch_duration = 0;
+launch_movespeed = 0;
+launch_turnrate = 0;
 
 parentid = noone;
 targetid = noone;
@@ -67,7 +71,36 @@ targety = 0;
 
 homing_location_end_range = 5;
 
+expired = false;
 trail_color = c_white;
+
+friendly_fire = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (explode_on_destroy &amp;&amp; !exploded) {
+    splashDamage(explosive_affects, id);
+    exploded = true;
+}
 </string>
           </argument>
         </arguments>
@@ -102,17 +135,25 @@ alarm[0] = maxrange/movespeed;
     <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
-        <id>203</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_kill_object</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>expired = true;
+instance_destroy();
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
     <event eventtype="3" enumb="1">
@@ -199,31 +240,6 @@ if (homing_location &amp;&amp; distance_to_point(targetx, targety) &lt;= homing_
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (hull &lt;= 0)
-{
-    instance_destroy();
-}
-event_inherited();
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>if (explode_on_proximity &amp;&amp; !exploded 
     &amp;&amp; distance_to_object(targetid) &lt;= explosive_proximity_range) {
     
@@ -243,8 +259,6 @@ if (explode_on_location &amp;&amp; !exploded
           </argument>
         </arguments>
       </action>
-    </event>
-    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -261,17 +275,11 @@ if (explode_on_location &amp;&amp; !exploded
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>event_inherited();
-
-if (explosive_aoe &amp;&amp; global.debug &amp;&amp; !invisible) {
-    draw_set_color(c_orange);
-    draw_circle(x,y,explosive_range,true);
-    
-    if (explode_on_proximity) {
-        draw_set_color(c_red);
-        draw_circle(x,y,explosive_proximity_range,true);
-    }
+            <string>if (hull &lt;= 0)
+{
+    instance_destroy();
 }
+event_inherited();
 </string>
           </argument>
         </arguments>

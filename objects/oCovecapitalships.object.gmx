@@ -58,6 +58,12 @@ plasmaturret_cooldown_max = 90;
 plasmaturret_range = 900;
 plasmaturret_per_shot = 2;
 
+plasmatorpedo = 0;
+plasmatorpedo_cooldown = 0;
+plasmatorpedo_cooldown_max = 450;
+plasmatorpedo_range = 1500;
+plasmatorpedo_per_shot = 3;
+
 plt = 0;
 plt_cooldown = 0;
 plt_cooldown_max = 25;
@@ -313,29 +319,27 @@ if (energyprojector_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
+            <string>
+if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmatorpedo_cooldown &lt;= 0)
 {
-    if (point_distance(x,y,targetid.x,targetid.y) &lt;= plasmaturret_range)
+    if (checkLoS(x, y, plasmatorpedo_range, point_direction(x, y, targetid.x, targetid.y), oallcapitalships) == targetid)
     {
-        plasmaturret_cooldown = plasmaturret_cooldown_max;
+        plasmatorpedo_cooldown = plasmatorpedo_cooldown_max;
         
-        var plasmaturret_shots = plasmaturret/plasmaturret_per_shot;
+        var plasmatorpedo_shots = plasmatorpedo/plasmatorpedo_per_shot;
         if (status_half_secondary != 0) {
-            plasmaturret_shots /= 2;
+            plasmatorpedo_shots /= 2;
         }
-        repeat (plasmaturret_shots)
+        repeat (plasmatorpedo_shots)
         {
-            ID = instance_create(x+irandom_range(-45,45),y+irandom_range(-45,45),oCove_PlasmaCannon);
-            ID.side = side;
-            ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-1,1);
+            var ID = createChild(x+irandom_range(-60,60),y+irandom_range(-60,60),oCove_PlasmaTorpedo, point_direction(x, y, targetid.x, targetid.y) + irandom_range(-1,1));
             ID.targetid = targetid;
-            ID.parentid = id;
         }
     }
 }
 
-if (plasmaturret_cooldown &gt; 0) {
-    plasmaturret_cooldown -= 1;    
+if (plasmatorpedo_cooldown &gt; 0) {
+    plasmatorpedo_cooldown -= 1;    
 }
 
 </string>
@@ -358,8 +362,7 @@ if (plasmaturret_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*
-if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_cooldown &lt;= 0)
 {
     if (point_distance(x,y,targetid.x,targetid.y) &lt;= plasmaturret_range)
     {
@@ -371,11 +374,8 @@ if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_
         }
         repeat (plasmaturret_shots)
         {
-            ID = instance_create(x+irandom_range(-60,60),y+irandom_range(-60,60),oCove_PlasmaTorpedo);
-            ID.side = side;
-            ID.direction = point_direction(x, y, targetid.x, targetid.y) + irandom_range(-15,15);
+            var ID = createChild(x+irandom_range(-45,45),y+irandom_range(-45,45),oCove_PlasmaCannon, point_direction(x, y, targetid.x, targetid.y) + irandom_range(-1,1));
             ID.targetid = targetid;
-            ID.parentid = id;
         }
     }
 }
@@ -383,7 +383,7 @@ if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; plasmaturret_
 if (plasmaturret_cooldown &gt; 0) {
     plasmaturret_cooldown -= 1;    
 }
-*/
+
 </string>
           </argument>
         </arguments>

@@ -453,8 +453,8 @@ draw_ellipse(draw_x,
 draw_set_color(c_white);
 draw_rectangle((draw_x + view_xview[PRIMARY_VIEW] * minimap_wscale) * display_scale, 
     (draw_y + view_yview[PRIMARY_VIEW] * minimap_hscale) * display_scale,
-    (draw_x + (SCREEN_WIDTH + view_xview[PRIMARY_VIEW]) * minimap_wscale) * display_scale,
-    (draw_y + (SCREEN_HEIGHT + view_yview[PRIMARY_VIEW]) * minimap_hscale) * display_scale,
+    (draw_x + (view_wview[PRIMARY_VIEW] + view_xview[PRIMARY_VIEW]) * minimap_wscale) * display_scale,
+    (draw_y + (view_hview[PRIMARY_VIEW] + view_yview[PRIMARY_VIEW]) * minimap_hscale) * display_scale,
     true);
     
 // TODO: move this computation out of draw step, decouple minimap state from game state
@@ -649,10 +649,15 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
             draw_text_transformed(info_x, info_y, "Pelican Transports: " + string(unitid.pelican) + "/" + string(unitid.pelican_max) + "(" + string(unitid.pelican_boarding_strength) + ")", infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
-        if (unitid.mac &gt; 0) {
-            draw_text_transformed(info_x, info_y, "Mark II MACs: " + string(unitid.mac) + "(" + string(floor((unitid.mac_cooldown_max-unitid.mac_cooldown)/unitid.mac_cooldown_max*100)) + "%)", infotext_xscale, infotext_yscale, 0);
+        if (unitid.lmac &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Mark II Light MACs: " + string(unitid.lmac) + "(" + string(floor((unitid.lmac_cooldown_max-unitid.lmac_cooldown)/unitid.lmac_cooldown_max*100)) + "%)", infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
+        if (unitid.hmac &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Mark IV Heavy MACs: " + string(unitid.hmac) + "(" + string(floor((unitid.hmac_cooldown_max-unitid.hmac_cooldown)/unitid.hmac_cooldown_max*100)) + "%)", infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+
         
         draw_text_transformed(info_x, info_y, string(unitid.ship_exp)+" XP", infotext_xscale, infotext_yscale, 0);
         info_y += infotext_padding;

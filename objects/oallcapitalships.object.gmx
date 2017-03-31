@@ -52,7 +52,7 @@ singleship_range = 1;
 
 exp_value = 20;
 
-sight_range = 1500;
+sight_range = 2000;
 strategy = "closest";
 findtarget_delay = 30;
 
@@ -258,11 +258,15 @@ if (ai) {
     // set primary target
     
     if (race == "unsc") {
-        if (mac_cooldown &lt;= 0 &amp;&amp; mac &gt; 0 &amp;&amp; irandom(10) &gt;= risk) {
+        if ((lmac_cooldown &lt;= 0 &amp;&amp; lmac &gt; 0) || (hmac_cooldown &lt;= 0 &amp;&amp; hmac &gt; 0) &amp;&amp; irandom(10) &gt;= risk) {
             var fire_x = x + lengthdir_x(primary_origin_distance_offset,primary_origin_angle_offset+direction);
             var fire_y = y + lengthdir_y(primary_origin_distance_offset,primary_origin_angle_offset+direction);
+            var range;
+            if (lmac &gt; 0) {range = lmac_range;}
+            else if (hmac &gt; 0) {range = hmac_range;}
+            
             if (instance_exists(targetid) 
-                &amp;&amp; checkLoS(fire_x, fire_y, mac_range, point_direction(fire_x, fire_y, targetid.x, targetid.y), oallcapitalships) == targetid) {
+                &amp;&amp; checkLoS(fire_x, fire_y, range, point_direction(fire_x, fire_y, targetid.x, targetid.y), oallcapitalships) == targetid) {
              
                 firePrimary(id, targetid.x, targetid.y);   
             }
@@ -403,7 +407,7 @@ if (security_level != boarding_level &amp;&amp; boarding_level &gt; 0) {
                 boarding_level = 0;
                 clear_all_debuffs(id);
             } else if (!invulnerable) {
-                instance_destroy();
+                //instance_destroy();
             }
         } else {
             security_level--;
@@ -468,7 +472,7 @@ if (boarding_damage_counter &gt;= boarding_damage_counter_max
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallcapitalships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallcapitalships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -517,7 +521,7 @@ if (boarding_damage_counter &gt;= boarding_damage_counter_max
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallcapitalships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallcapitalships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");

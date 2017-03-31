@@ -83,7 +83,7 @@ exp_value = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -132,7 +132,7 @@ exp_value = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     /*if (shield &gt; 0) {
         createShieldFlare(id);

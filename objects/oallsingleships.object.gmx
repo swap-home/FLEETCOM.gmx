@@ -384,7 +384,7 @@ if (instance_exists(targetid)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallsingleships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallsingleships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");
@@ -433,7 +433,7 @@ if (instance_exists(targetid)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (other.affects == oallsingleships &amp;&amp; side != other.side &amp;&amp; !invulnerable)
+            <string>if (other.affects == oallsingleships &amp;&amp; (side != other.side || (other.friendly_fire &amp;&amp; id != other.parentid)) &amp;&amp; !invulnerable)
 {
     Damage_Unit(other.dmg_kinetic, other.id, id, "kinetic");
     Damage_Unit(other.dmg_explosive, other.id, id, "explosive");

@@ -113,6 +113,7 @@
       <sprite>sprites\sUNSC_ArcherMissile</sprite>
       <sprite>sprites\sUNSC_LanceMissile</sprite>
       <sprite>sprites\sUNSC_50mm</sprite>
+      <sprite>sprites\sUNSC_HelixAAA</sprite>
       <sprite>sprites\sUNSC_120mm</sprite>
       <sprite>sprites\sCove_PlasmaCannons</sprite>
       <sprite>sprites\sCoveHeavyPlasma</sprite>
@@ -142,8 +143,6 @@
       <script>scripts\enumDamageTypes.gml</script>
       <script>scripts\shiptype_to_objectindex.gml</script>
       <script>scripts\objectindex_to_shiptype.gml</script>
-      <script>scripts\moduleupgrade_to_modulebit.gml</script>
-      <script>scripts\modulebit_to_moduleupgrade.gml</script>
     </scripts>
     <scripts name="selection">
       <script>scripts\addSelection.gml</script>
@@ -219,18 +218,20 @@
     <script>scripts\textbox_show.gml</script>
     <script>scripts\mission_start.gml</script>
     <script>scripts\mission_end.gml</script>
-    <script>scripts\getShipFleetStrength.gml</script>
-    <script>scripts\getShipModuleSlots.gml</script>
-    <scripts name="moduleBonuses">
-      <script>scripts\applyModule.gml</script>
-      <script>scripts\applySkill.gml</script>
-    </scripts>
     <scripts name="objectInitialization">
       <script>scripts\capitalShipInitialize.gml</script>
       <script>scripts\singleShipInitialize.gml</script>
       <script>scripts\projectileInitialize.gml</script>
     </scripts>
     <script>scripts\resetCamera.gml</script>
+    <scripts name="unused">
+      <script>scripts\getShipFleetStrength.gml</script>
+      <script>scripts\getShipModuleSlots.gml</script>
+      <script>scripts\applyModule.gml</script>
+      <script>scripts\applySkill.gml</script>
+      <script>scripts\moduleupgrade_to_modulebit.gml</script>
+      <script>scripts\modulebit_to_moduleupgrade.gml</script>
+    </scripts>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_bloom.shader</shader>
@@ -322,17 +323,20 @@
       <object>objects\oAsteroid</object>
     </objects>
     <objects name="Weaponry">
+      <object>objects\oallweaponry</object>
       <object>objects\obeamweaponry</object>
       <object>objects\oprojectileweaponry</object>
       <object>objects\odestructableweaponry</object>
       <objects name="UNSC">
         <object>objects\oUNSC_50mm</object>
+        <object>objects\oUNSC_AAA</object>
         <object>objects\oUNSC_120mm</object>
         <object>objects\oUNSC_ArcherMissile</object>
         <object>objects\oUNSC_AresMissile</object>
         <object>objects\oUNSC_ASGM10</object>
         <object>objects\oUNSC_LanceMissile</object>
-        <object>objects\oUNSC_MAC</object>
+        <object>objects\oUNSC_LMAC</object>
+        <object>objects\oUNSC_HMAC</object>
         <object>objects\oUNSC_SMAC</object>
         <object>objects\object7</object>
         <object>objects\oUNSC_HornetMine</object>
@@ -364,6 +368,7 @@
       <object>objects\oribbontrail</object>
       <object>objects\owarp</object>
       <object>objects\oshieldflare</object>
+      <object>objects\oparticletrail</object>
     </objects>
   </objects>
   <rooms name="rooms">

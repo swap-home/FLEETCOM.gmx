@@ -4,6 +4,9 @@ var theta;
 
 number = argument0;
 targetid = argument1;
+projectile_type = argument2;
+projectile_speed = argument3;
+
 
 turret_R = pointdefenseturret_R[number];
 turret_A = mod360(pointdefenseturret_A[number]);
@@ -17,7 +20,7 @@ var selfid;
 selfid = id;
 
 //direction is default, overwrite if possible later
-var ID = createChild(turret_x,turret_y,oUNSC_50mm, direction);
+var ID = createChild(turret_x,turret_y,projectile_type,direction);
 ID.targetid = targetid;
 
 if (instance_exists(targetid))
@@ -25,7 +28,7 @@ if (instance_exists(targetid))
     // calculus interception
     var interception_coords = ds_list_create();
     //TODO base firingSolution off of turret coords instead of ship center of mass
-    if (firingSolution(selfid, targetid, 10, noone, interception_coords)) {
+    if (firingSolution(selfid, targetid, projectile_speed, noone, interception_coords)) {
         ID.direction = point_direction(turret_x, turret_y, interception_coords[| 0], interception_coords[| 1]);        
     }
     ds_list_destroy(interception_coords);

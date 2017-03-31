@@ -43,7 +43,7 @@ with (parentid)
     if (instance_exists(selfid.targetid) && first_instance == selfid.targetid) {global.hits++;}
     if (first_instance != noone)
     {
-        if (side != first_instance.side)
+        if (side != first_instance.side || selfid.friendly_fire)
         {
             Damage_Unit(selfid.dmg_kinetic, selfid, first_instance, "kinetic");
             Damage_Unit(selfid.dmg_explosive, selfid, first_instance, "explosive");

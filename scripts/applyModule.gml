@@ -4,7 +4,8 @@ var mod_bit = argument1;
 with (shipid) {
     switch (mod_bit) {
         case MODULE_MAC:
-            mac = mac_max;
+            lmac = lmac_max;
+            hmac = hmac_max;
             break;
         case MODULE_HANGAR:
             longsword_max += 4;

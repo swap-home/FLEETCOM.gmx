@@ -7,7 +7,7 @@ if (!ds_exists(group, ds_type_list)) {
 for (var i = 0; i < ds_list_size(group); i++) {
     var unitId = group[| i];
     if (unitId.race == "unsc") {
-        if (unitId.mac > 0) {
+        if (unitId.lmac > 0 || unitId.hmac > 0) {
             return true;
         }
     } else if (unitId.race == "cove") {
