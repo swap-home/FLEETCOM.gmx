@@ -6,19 +6,10 @@ shield_max = shield_max * 400;
 hull = hull_max;
 shield = shield_max;
 movespeed = maxspeed;
-security_level = security_level_initial;
+security_level = security_level_initial + security_level_garrison;
 
 if (race == "unsc")
 {
-    // Apply module bonuses if equipped
-    if (ship_modules & MODULE_MAC) {
-        applyModule(id, MODULE_MAC);
-    }
-    if (ship_modules & MODULE_HANGAR) {
-        applyModule(id, MODULE_HANGAR);
-    }
-    
-    // Apply skill bonuses if sufficient level
     broadsword = broadsword_max;
     broadsword_deploy_cd = broadsword_deploy_cd_max;
     longsword = longsword_max;

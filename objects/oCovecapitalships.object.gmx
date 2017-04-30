@@ -34,18 +34,24 @@ banshee_max = 0;
 banshee_deploy_max = 6;
 banshee_deploy_cd = 0;
 banshee_deploy_cd_max = 30;
+banshee_replenish_cd = 0;
+banshee_replenish_cd_max = 210;
 
 seraph = 0;
 seraph_max = 0;
 seraph_deploy_max = 4;
 seraph_deploy_cd = 0;
 seraph_deploy_cd_max = 60;
+seraph_replenish_cd = 0;
+seraph_replenish_cd_max = 210;
 
 phantom = 0;
 phantom_max = 0;
 phantom_deploy_cd = 0;
 phantom_deploy_cd_max = 30;
 phantom_boarding_strength = 1;
+phantom_replenish_cd = 0;
+phantom_replenish_cd_max = 630;
 
 energyprojector = 0;
 energyprojector_cooldown = 0;
@@ -61,12 +67,12 @@ plasmaturret_per_shot = 2;
 plasmatorpedo = 0;
 plasmatorpedo_cooldown = 0;
 plasmatorpedo_cooldown_max = 450;
-plasmatorpedo_range = 1500;
+plasmatorpedo_range = 1200;
 plasmatorpedo_per_shot = 3;
 
 plt = 0;
 plt_cooldown = 0;
-plt_cooldown_max = 25;
+plt_cooldown_max = 50;
 plt_range = 600;
 pulselaser_draw = 0;
 
@@ -122,7 +128,7 @@ if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
 if (scramble_fighters &amp;&amp; banshee_deploy_cd &lt;= 0 &amp;&amp; banshee &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
 {
     banshee_deploy_cd = banshee_deploy_cd_max;
-    banshee -= 1;
+    --banshee;
     
     var fighter = createChild(x,y,singleship_type, irandom_range(0,359));
     if (!instance_exists(fighter_targetid)) {
@@ -141,7 +147,14 @@ if (scramble_fighters &amp;&amp; banshee_deploy_cd &lt;= 0 &amp;&amp; banshee &g
 }
 
 if (banshee_deploy_cd &gt; 0) {
-    banshee_deploy_cd -= 1;
+    --banshee_deploy_cd;
+}
+
+if (banshee_replenish_cd &gt; 0) {
+    --banshee_replenish_cd;
+} else if (banshee_replenish_cd &lt;= 0 &amp;&amp; banshee &lt; banshee_max) {
+    banshee_replenish_cd = banshee_replenish_cd_max;
+    ++banshee;
 }
 
 </string>
@@ -185,7 +198,7 @@ if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
 if (scramble_fighters &amp;&amp; seraph_deploy_cd &lt;= 0 &amp;&amp; seraph &gt; 0 &amp;&amp; deployed_l &lt; max_deploy) 
 {
     seraph_deploy_cd = seraph_deploy_cd_max;
-    seraph -= 1;
+    --seraph;
     
     var fighter = createChild(x,y,singleship_type, irandom_range(0,359));
     if (!instance_exists(fighter_targetid)) {
@@ -204,8 +217,16 @@ if (scramble_fighters &amp;&amp; seraph_deploy_cd &lt;= 0 &amp;&amp; seraph &gt;
 }
 
 if (seraph_deploy_cd &gt; 0) {
-    seraph_deploy_cd -= 1;
+    --seraph_deploy_cd;
 }
+
+if (seraph_replenish_cd &gt; 0) {
+    --seraph_replenish_cd;
+} else if (seraph_replenish_cd &lt;= 0 &amp;&amp; seraph &lt; seraph_max) {
+    seraph_replenish_cd = seraph_replenish_cd_max;
+    ++seraph;
+}
+
 </string>
           </argument>
         </arguments>
@@ -240,14 +261,22 @@ if (phantom_deploy_cd &lt;= 0 &amp;&amp; phantom &gt; 0 &amp;&amp; !ds_list_empt
             board(transport_targetid);
         }
         phantom_deploy_cd = phantom_deploy_cd_max;
-        phantom -= 1;
+        --phantom;
     }
     
 }
 
 if (phantom_deploy_cd &gt; 0) {
-    phantom_deploy_cd -= 1;
+    --phantom_deploy_cd;
 }
+
+if (phantom_replenish_cd &gt; 0) {
+    --phantom_replenish_cd;
+} else if (phantom_replenish_cd &lt;= 0 &amp;&amp; phantom &lt; phantom_max) {
+    phantom_replenish_cd = phantom_replenish_cd_max;
+    ++phantom;
+}
+
 </string>
           </argument>
         </arguments>

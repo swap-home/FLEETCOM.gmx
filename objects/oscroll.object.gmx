@@ -217,8 +217,10 @@ y = (view_hview[PRIMARY_VIEW]-view_yview[PRIMARY_VIEW])/2;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (abs(++zoom_mousewheel_increment) &gt;= zoom_mousewheel_increment_max) {
-    if (zoom_multiplier + zoom_multiplier_increment &lt;= zoom_multiplier_max) {
+            <string>if (!screen_locked &amp;&amp; abs(++zoom_mousewheel_increment) &gt;= zoom_mousewheel_increment_max) {
+    if (zoom_multiplier + zoom_multiplier_increment &gt;= zoom_multiplier_min
+            &amp;&amp; SCREEN_WIDTH*(zoom_multiplier+zoom_multiplier_increment) &lt;= room_width
+            &amp;&amp; SCREEN_HEIGHT*(zoom_multiplier+zoom_multiplier_increment) &lt;= room_height) {
         zoom_multiplier += zoom_multiplier_increment;
         resetCamera();
     }
@@ -246,7 +248,7 @@ y = (view_hview[PRIMARY_VIEW]-view_yview[PRIMARY_VIEW])/2;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (abs(--zoom_mousewheel_increment) &gt;= zoom_mousewheel_increment_max) {
+            <string>if (!screen_locked &amp;&amp; abs(--zoom_mousewheel_increment) &gt;= zoom_mousewheel_increment_max) {
     if (zoom_multiplier - zoom_multiplier_increment &gt;= zoom_multiplier_min) {
         zoom_multiplier -= zoom_multiplier_increment;
         resetCamera();

@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-9000</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -168,6 +168,7 @@ with (shipid) {
     ship_name = "UNSC Seven Seas";
     
     createShipWarpTrail(id, 5, 0.5, 0.5);
+    loadModules(global.save_manager.ship_modules[| 0], id);
 }
 global.save_manager.ship_id[| 0] = shipid;
 
@@ -237,7 +238,7 @@ with (shipid) {
         global.ui_controller.button_required = 0;
     }
     
-    if (selfid.tutorial_step &lt; 10 &amp;&amp; (ship_modules &amp; MODULE_MAC)) {
+    if (selfid.tutorial_step &lt; 10 &amp;&amp; lmac &gt; 0) {
         selfid.tutorial_step = 10;
         global.ui_controller.button_required = -1;
     }

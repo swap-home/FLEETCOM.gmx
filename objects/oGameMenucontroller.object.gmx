@@ -137,10 +137,9 @@ if (ships_to_spawn &lt; ds_list_size(global.save_manager.ship_name)) {
             global.save_manager.ship_exp[| ships_to_spawn],
             global.save_manager.ship_level[| ships_to_spawn],
             global.save_manager.ship_modules[| ships_to_spawn],
-            global.save_manager.ship_skills[| ships_to_spawn],
             irandom_range(spawn_border, room_width-spawn_border-warp_zone), 
             irandom_range(spawn_border, room_height-spawn_border),
-            0);            
+            0);
         createShipWarpTrail(shipid, 5, 0.5, 0.5);
         global.save_manager.ship_id[| ships_to_spawn] = shipid;
         ships_to_spawn++;

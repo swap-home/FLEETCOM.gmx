@@ -46,6 +46,7 @@ invisible = false;
 invis_enabled = false;
 revealed_time = 0;
 movespeed = 0;
+animation_on = false;
 </string>
           </argument>
         </arguments>
@@ -68,7 +69,9 @@ movespeed = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_speed = 0;
+            <string>if (!animation_on) {
+    image_speed = 0;
+}
 image_angle = direction;
 speed = movespeed;
 

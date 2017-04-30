@@ -221,6 +221,30 @@ pointdefenseturret_A[29] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>hmac</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>2</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>hmac_max</string>
           </argument>
           <argument>
@@ -393,7 +417,31 @@ pointdefenseturret_A[29] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>8</string>
+            <string>4</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ship_modules_base</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>60</string>
           </argument>
         </arguments>
       </action>

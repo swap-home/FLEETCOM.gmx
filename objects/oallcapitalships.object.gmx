@@ -74,7 +74,8 @@ primary_origin_distance_offset = 0;
 fire_secondary = true;
 fire_pointdef = true;
 
-security_level_initial = 0;
+security_level_initial = 0; // base from type of ship
+security_level_garrison = 0; // bonus from ship garrison
 security_level = 0;
 boarding_level = 0;
 boarding_timer = 0;
@@ -82,7 +83,7 @@ boarding_timer_max = STEPS_PER_SECOND * 3;
 boarding_captures = false;
 boarding_side = NEUTRAL;
 boarding_originship = noone;
-boarding_damage = 1;
+boarding_damage = 10;
 boarding_damage_counter = 0;
 boarding_damage_counter_max = 2;
 
@@ -97,14 +98,17 @@ status_immobilization = 0;
 // ai vars
 ai_boarding_range = 1500;
 
+ship_modules_base = 0;
 // ship progression stats
 ship_name = "";
 ship_exp = 0;
 ship_level = 0;
-ship_modules = 0;
-ship_skills = 0;
+ship_modules_max = 0;
+ship_modules = 0; // Load modules in capitalShipInit
 
 takes_directional = true;
+
+fog_reveal_range = 500;
 </string>
           </argument>
         </arguments>
@@ -338,6 +342,7 @@ event_inherited();
             <kind>1</kind>
             <string>event_inherited();
 
+var selfid = id;
 var dist_tolerance = maxspeed;
 var angle_tolerance = 0.5;
 var turn_heuristic = 0.5; //compensate for time to turn

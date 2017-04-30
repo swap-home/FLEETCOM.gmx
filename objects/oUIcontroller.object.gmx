@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-9001</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -294,7 +294,7 @@ if (global.selection_manager != 0) {
             <kind>1</kind>
             <string>if (text_string != "" &amp;&amp; text_show_count &lt; string_length(text_string)) {
     if (mouse_check_button(mb_left)) {
-        text_show_count += text_speed * 2;
+        text_show_count += text_speed * 5;
     }
     text_show_count += text_speed;
     
@@ -629,12 +629,28 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
             draw_text_transformed(info_x, info_y, shiptype_strings[? unitid.object_index], infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
+        if (unitid.ares &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Ares Silos: " + string(unitid.ares), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
         if (unitid.archerpod &gt; 0) {
             draw_text_transformed(info_x, info_y, "Archer Pods: " + string(unitid.archerpod), infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
+        if (unitid.howler &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Howler Pods: " + string(unitid.howler), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.lance &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Lance Batteries: " + string(unitid.lance), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
         if (unitid.pdt &gt; 0) {
             draw_text_transformed(info_x, info_y, "Point-defense Guns: " + string(unitid.pdt), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.helix &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Helix Anti-Air Artillery: " + string(unitid.helix), infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
         if (unitid.broadsword_max &gt; 0) {

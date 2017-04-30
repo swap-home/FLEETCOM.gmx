@@ -31,14 +31,21 @@ race = "unsc";
 
 autocannon = 0;
 autocannon_cooldown = 0;
-autocannon_cooldown_max = 20;
+autocannon_cooldown_max = 15;
 autocannon_range = 450;
 
 asgm = 0;
 asgm_cooldown = 0;
-asgm_cooldown_max = 45;
+asgm_cooldown_max = 150;
 asgm_range = 600;
 asgm_per_shot = 2;
+
+bombcharge = 0;
+bombcharge_cooldown = 0;
+bombcharge_cooldown_max = 60;
+bombcharge_range = 50;
+
+
 </string>
           </argument>
         </arguments>
@@ -95,6 +102,20 @@ if (instance_exists(targetid))
                 missile.targetid = targetid;
             }
         }
+        
+        if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= bombcharge_range)
+            || collision_line(x,y,x+lengthdir_x(bombcharge_range,direction),y+lengthdir_y(bombcharge_range,direction),targetid,false,true))
+            &amp;&amp; bombcharge_cooldown &lt;= 0
+            &amp;&amp; object_is_ancestor(targetid.object_index, oallcapitalships))
+        {
+            bombcharge_cooldown = bombcharge_cooldown_max;
+            
+            var i;
+            for (i = 0; i &lt; bombcharge; i+=1)
+            {
+                createChild(x,y,oUNSC_bombcharge, targetdir_l);
+            }
+        }
     }
 }
 
@@ -104,6 +125,10 @@ if (autocannon_cooldown &gt; 0) {
 
 if (asgm_cooldown &gt; 0) {
     asgm_cooldown -= 1;
+}
+
+if (bombcharge_cooldown &gt; 0) {
+    bombcharge_cooldown -= 1;
 }
 </string>
           </argument>

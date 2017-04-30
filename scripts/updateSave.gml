@@ -12,8 +12,8 @@ for (var i = 0; i < ds_list_size(ship_id); i++) {
         ship_name[| i] = shipid.ship_name;
         ship_exp[| i] = shipid.ship_exp;
         ship_level[| i] = shipid.ship_level;
-        ship_modules[| i] = shipid.ship_modules;
-        ship_skills[| i] = shipid.ship_skills;
+        ds_map_destroy(ship_modules[| i]);
+        ship_modules[| i] = saveModules(shipid);
     }
 }
 
@@ -24,8 +24,8 @@ for (var i = ds_list_size(ship_id)-1; i >= 0; i--) {
         ds_list_delete(ship_type, i);
         ds_list_delete(ship_exp, i);
         ds_list_delete(ship_level, i);
+        ds_map_destroy(ship_modules[| i]);
         ds_list_delete(ship_modules, i);
-        ds_list_delete(ship_skills, i);
     }
 }
 ds_list_destroy(indices_to_remove);
@@ -39,8 +39,7 @@ with (oallcapitalships) {
                 ds_list_add(savemgrid.ship_type, shipindex);
                 ds_list_add(savemgrid.ship_exp, id.ship_exp);
                 ds_list_add(savemgrid.ship_level, id.ship_level);
-                ds_list_add(savemgrid.ship_modules, id.ship_modules);
-                ds_list_add(savemgrid.ship_skills, id.ship_skills);
+                ds_list_add(savemgrid.ship_modules, saveModules(id));
             }
         }
     }

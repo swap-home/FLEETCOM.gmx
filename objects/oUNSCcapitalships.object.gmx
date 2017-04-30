@@ -29,71 +29,83 @@
 
 broadsword = 0;
 broadsword_max = 0;
-broadsword_deploy_max = 0;
+broadsword_deploy_max = 1;
 broadsword_deploy_cd = 0;
 broadsword_deploy_cd_max = 60;
+broadsword_replenish_cd = 0;
+broadsword_replenish_cd_max = 210;
 
 longsword = 0;
 longsword_max = 0;
-longsword_deploy_max = 0;
+longsword_deploy_max = 1;
 longsword_deploy_cd = 0;
 longsword_deploy_cd_max = 60;
+longsword_replenish_cd = 0;
+longsword_replenish_cd_max = 210;
 
 pelican = 0;
 pelican_max = 0;
 pelican_deploy_cd = 0;
 pelican_deploy_cd_max = 30;
 pelican_boarding_strength = 1;
+pelican_replenish_cd = 0;
+pelican_replenish_cd_max = 630;
 
 race = "unsc";
 side = 0;
 
 //INITIALIZATION of UNSC ship vars
 lmac = 0;
-lmac_max = 0;
+lmac_max = -1;
 lmac_cooldown = 0;
 lmac_cooldown_max = 5400;
 lmac_range = 3000;
 lmac_per_shot = 1;
 
 hmac = 0;
-hmac_max = 0;
+hmac_max = -1;
 hmac_cooldown = 0;
 hmac_cooldown_max = 5400;
 hmac_range = 3500;
 hmac_per_shot = 2;
 
 archerpod = 0;
+archerpod_max = -1;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 60;
 archerpod_range = 850;
 archer_per_shot = 4;
 
 ares = 0;
+ares_max = -1;
 ares_cooldown = 0;
 ares_cooldown_max = 60;
 ares_range = 1050;
 ares_per_shot = 1;
 
 lance = 0;
+lance_max = -1;
 lance_cooldown = 0;
 lance_cooldown_max = 90;
 lance_range = 1500;
 lance_per_shot = 1;
 
 rapier = 0;
+rapier_max = -1;
 rapier_cooldown = 0;
 rapier_cooldown = 50;
 rapier_range = 400;
 rapier_per_shot = 1;
 
 howler = 0;
+howler_max = -1;
 howler_cooldown = 0;
 howler_cooldown_max = 240;
 howler_range = 800;
 howler_per_shot = 1;
 
 helix = 0;
+helix_max = -1;
 helix_cooldown = 0;
 helix_cooldown_max = 45;
 helix_range = 550;
@@ -101,6 +113,7 @@ helix_per_shot = 1;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
+pdt_max = -1;
 pdt_burst_delay = 0;
 pdt_burst_delay_max = 15;
 pdt_burst_count = 0;
@@ -110,6 +123,7 @@ pdt_cooldown_max = 60;
 pdt_range = 500;
 
 scanner = 0;
+scanner_max = -1;
 scanner_cooldown = 0;
 scanner_cooldown_max = 120;
 scanner_range = 200;
@@ -117,24 +131,36 @@ scanner_draw_time_max = 15;
 scanner_draw_time = scanner_draw_time_max;
 scanner_reveal_time = 600;
 
-scanner_remote_ability_cooldown = 0;
-scanner_remote_ability_cooldown_max = 0;
-scanner_remote_ability_range = 600;
-
-//scanner_remote = 0;
-//scanner_remote_cooldown = 0;
-//scanner_remote_cooldown_max = 120;
-//scanner_remote_range = 150;
-//scanner_remote_draw_time_max = 15;
-//scanner_remote_draw_time = scanner_remote_draw_time_max;
+scanner_remote = 0;
+scanner_remote_max = 0;
+scanner_remote_cooldown = 0;
+scanner_remote_cooldown_max = 120;
+scanner_remote_range = 150;
+scanner_remote_draw_time_max = 15;
+scanner_remote_draw_time = scanner_remote_draw_time_max;
 
 repair = 0;
+repair_max = -1;
 repair_targetid = noone;
 repair_cooldown = 0;
 repair_cooldown_max = 15;
-repair_value = 1;
+repair_value = 20;
 repair_range = 200;
 
+emergency_repair = 0;
+emergency_repair_max = 0;
+
+hornet_mines = 0;
+hornet_mines_max = 0;
+
+odst_detachment = 0;
+odst_detachment_max = -1;
+
+emergency_thruster = 0;
+emergency_thruster_max = -1;
+
+shiva_nuke = 0;
+shiva_nuke_max = 0;
 </string>
           </argument>
         </arguments>
@@ -200,6 +226,13 @@ if (broadsword_deploy_cd &gt; 0) {
     broadsword_deploy_cd -= 1;
 }
 
+if (broadsword_replenish_cd &gt; 0) {
+    --broadsword_replenish_cd;
+} else if (broadsword_replenish_cd &lt;= 0 &amp;&amp; broadsword &lt; broadsword_max) {
+    broadsword_replenish_cd = broadsword_replenish_cd_max;
+    ++broadsword;
+}
+
 </string>
           </argument>
         </arguments>
@@ -263,6 +296,13 @@ if (longsword_deploy_cd &gt; 0) {
     longsword_deploy_cd -= 1;
 }
 
+if (longsword_replenish_cd &gt; 0) {
+    --longsword_replenish_cd;
+} else if (longsword_replenish_cd &lt;= 0 &amp;&amp; longsword &lt; longsword_max) {
+    longsword_replenish_cd = longsword_replenish_cd_max;
+    ++longsword;
+}
+
 </string>
           </argument>
         </arguments>
@@ -297,14 +337,22 @@ if (pelican_deploy_cd &lt;= 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empt
             board(transport_targetid);
         }
         pelican_deploy_cd = pelican_deploy_cd_max;
-        pelican -= 1;   
+        --pelican;   
     }
     
 }
 
 if (pelican_deploy_cd &gt; 0) {
-    pelican_deploy_cd -= 1;
+    --pelican_deploy_cd;
 }
+
+if (pelican_replenish_cd &gt; 0) {
+    --pelican_replenish_cd;
+} else if (pelican_replenish_cd &lt;= 0 &amp;&amp; pelican &lt; pelican_max) {
+    pelican_replenish_cd = pelican_replenish_cd_max;
+    ++pelican;
+}
+
 </string>
           </argument>
         </arguments>

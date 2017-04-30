@@ -336,7 +336,6 @@ if (coveShipCount*3 &gt; unscShipCount)
             if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
-            applyModule(id, MODULE_MAC);
         }
     }
 
@@ -350,7 +349,6 @@ if (coveShipCount*3 &gt; unscShipCount)
             if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
-            applyModule(id, MODULE_MAC);
         }
     }
     
@@ -364,7 +362,6 @@ if (coveShipCount*3 &gt; unscShipCount)
             if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
-            applyModule(id, MODULE_MAC);
         }
     }
     
@@ -378,7 +375,6 @@ if (coveShipCount*3 &gt; unscShipCount)
             if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
-            applyModule(id, MODULE_MAC);
         }
     }
     
@@ -392,7 +388,6 @@ if (coveShipCount*3 &gt; unscShipCount)
             if (ctrl.ai) {
                 apply_ai(createId, -1);
             }
-            applyModule(id, MODULE_MAC);
         }
     }
 }

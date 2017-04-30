@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-9000</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -55,7 +55,6 @@ ship_type = ds_list_create();
 ship_exp = ds_list_create();
 ship_level = ds_list_create();
 ship_modules = ds_list_create();
-ship_skills = ds_list_create();
 
 // For use in game - id = ship was created, noone = ship not participating
 ship_id = ds_list_create();
@@ -90,6 +89,9 @@ ds_list_destroy(ship_name);
 ds_list_destroy(ship_type);
 ds_list_destroy(ship_exp);
 ds_list_destroy(ship_level);
+for (var i = 0; i &lt; ds_list_size(ship_modules); ++i) {
+    ds_map_destroy(ship_modules[| i]);
+}
 ds_list_destroy(ship_modules);
 ds_list_destroy(ship_skills);
 

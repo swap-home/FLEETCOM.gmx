@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>-5</depth>
   <persistent>0</persistent>
-  <parentName>oUNSCcapitalships</parentName>
+  <parentName>oUNSC_frigates</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -183,35 +183,11 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>lmac_max</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>1</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>archerpod</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>40</string>
+            <string>36</string>
           </argument>
         </arguments>
       </action>
@@ -235,7 +211,7 @@ pointdefenseturret_A[11] = -17.7;
           </argument>
           <argument>
             <kind>0</kind>
-            <string>6</string>
+            <string>4</string>
           </argument>
         </arguments>
       </action>
@@ -423,35 +399,11 @@ pointdefenseturret_A[11] = -17.7;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>security_level_initial</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>2</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>primary_origin_distance_offset</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>69</string>
+            <string>76</string>
           </argument>
         </arguments>
       </action>
