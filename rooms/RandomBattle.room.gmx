@@ -4,7 +4,7 @@
   <width>3200</width>
   <height>1600</height>
   <vsnap>64</vsnap>
-  <hsnap>64</hsnap>
+  <hsnap>16</hsnap>
   <isometric>0</isometric>
   <speed>30</speed>
   <persistent>0</persistent>
@@ -64,6 +64,7 @@
     <instance objName="oUNSC_frigate_parisH" x="96" y="816" name="inst_5B6AA430" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oCove_corvette_SDVH" x="2560" y="320" name="inst_77CC049B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="oCove_corvette_SDVH" x="2560" y="960" name="inst_74EFEF18" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="ofogofwar" x="96" y="0" name="inst_D7FB2766" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

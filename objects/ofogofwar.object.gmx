@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>FogOfWar_madgetr_init(16,c_black,13,7);
+            <string>focus = 16;
+FogOfWar_madgetr_init(focus,c_black,13,7);
 alarm[0] = 30;
 </string>
           </argument>

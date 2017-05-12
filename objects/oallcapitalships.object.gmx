@@ -172,9 +172,25 @@ if (!instance_exists(assignedTargetid))
     assignedTargetid = noone;
     with (oallcapitalships)
     {
-        //ignore units outside sight range, on the same team, neutral, invisible or invulnerable
-        if (distance_to_object(selfid) &gt; sight_range || side == selfside || side == NEUTRAL || invulnerable || invisible)
+        //ignore units outside sight range, 
+        // on the same team, neutral, 
+        // invisible, invulnerable
+        if (distance_to_object(selfid) &gt; sight_range || 
+            side == selfside || 
+            side == NEUTRAL || 
+            invulnerable || 
+            invisible)
         {
+            continue;
+        }
+        
+        // or in the fog of war
+        var shipid = id;
+        var in_fog = false;
+        with (ofogofwar) {
+            in_fog = FogOfWar_unitInFog(shipid.x, shipid.y, focus, grid);
+        }
+        if (in_fog) {
             continue;
         }
         

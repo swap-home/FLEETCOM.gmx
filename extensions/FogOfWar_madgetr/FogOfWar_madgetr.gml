@@ -71,7 +71,7 @@ d3d_transform_add_translation( -(view_xview), -(view_yview), 0 );
 d3d_transform_add_scaling( view_wport / view_wview, view_hport / view_hview, 1 );
 draw_set_blend_mode( bm_subtract );
 var s = max(view_wview,view_hview);
-show_debug_message(string(view_xview- (view_xview mod foc))+","+string(view_yview- (view_yview mod foc))+","+string(view_xview+s- (view_xview mod foc))+","+string(view_yview+s- (view_yview mod foc)));
+//show_debug_message(string(view_xview- (view_xview mod foc))+","+string(view_yview- (view_yview mod foc))+","+string(view_xview+s- (view_xview mod foc))+","+string(view_yview+s- (view_yview mod foc)));
 FogOfWar_madgetr_draw(view_xview- (view_xview mod foc),view_yview- (view_yview mod foc),view_xview+s- (view_xview mod foc),view_yview+s- (view_yview mod foc),7,grid);
 draw_set_blend_mode( bm_normal );
 d3d_transform_set_identity();
