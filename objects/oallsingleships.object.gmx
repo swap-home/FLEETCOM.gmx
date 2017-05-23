@@ -65,7 +65,7 @@ escortid = noone;
 target_x = 0;
 target_y = 0;
 
-fog_reveal_range = 100;
+fog_reveal_range = 200;
 </string>
           </argument>
         </arguments>

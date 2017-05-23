@@ -31,6 +31,8 @@ mac = 0;
 mac_cooldown = 0;
 mac_cooldown_max = 900;
 mac_range = 1500;
+
+fog_reveal_range = 1500;
 </string>
           </argument>
         </arguments>

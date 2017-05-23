@@ -91,7 +91,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0.25</string>
+            <string>0.5</string>
           </argument>
         </arguments>
       </action>
@@ -490,6 +490,30 @@ front_dmg = 0.7;
 side_dmg = 0.75;
 back_dmg = 2.5;
 </string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>fog_reveal_range</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>1500</string>
           </argument>
         </arguments>
       </action>

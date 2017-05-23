@@ -72,7 +72,7 @@ plasmatorpedo_per_shot = 3;
 
 plt = 0;
 plt_cooldown = 0;
-plt_cooldown_max = 50;
+plt_cooldown_max = 75;
 plt_range = 600;
 pulselaser_draw = 0;
 

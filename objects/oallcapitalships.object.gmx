@@ -108,7 +108,7 @@ ship_modules = 0; // Load modules in capitalShipInit
 
 takes_directional = true;
 
-fog_reveal_range = 500;
+fog_reveal_range = 1000;
 </string>
           </argument>
         </arguments>
