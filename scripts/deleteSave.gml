@@ -1,3 +1,5 @@
+// deletes the save file
+
 var slot = argument0;
 
 if (file_exists(working_directory+"save"+string(slot)+".txt")) {

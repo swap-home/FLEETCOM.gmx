@@ -1,3 +1,5 @@
+// convert ship instance vars to map of modules and return map
+
 var shipid = argument0;
 
 var module_map = ds_map_create();
@@ -88,7 +90,7 @@ for (var i = 0; i < MODULE_MAX; ++i) {
             module_map[? i] = shipid.pelican_max;
             break;
         default:
-            //TODO: report some bug with module not listed for saving
+            show_debug_message("module " + string(i) + " could not be saved");
             break;
     }
 }

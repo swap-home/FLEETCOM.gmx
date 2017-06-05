@@ -1,9 +1,9 @@
-//remove this later
+// capital ship bonus
 hull_max = hull_max * 400;
 shield_max = shield_max * 400;
 
 
-hull = hull_max;
+hull = hull_max * ship_health;
 shield = shield_max;
 movespeed = maxspeed;
 security_level = security_level_initial + security_level_garrison;

@@ -678,10 +678,11 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
         draw_text_transformed(info_x, info_y, string(unitid.ship_exp)+" XP", infotext_xscale, infotext_yscale, 0);
         info_y += infotext_padding;
         
-        var module_capacity = ds_list_create();
-        module_capacity = getShipModuleSlots(unitid, module_capacity);
-        draw_text_transformed(info_x, info_y, "Module Capacity: " + string(module_capacity[| 0]) + "/" + string(module_capacity[| 1]), infotext_xscale, infotext_yscale, 0);
-        ds_list_destroy(module_capacity);
+        // TODO: add module slot readout?
+        //var module_capacity = ds_list_create();
+        //module_capacity = getShipModuleSlots(unitid, module_capacity);
+        //draw_text_transformed(info_x, info_y, "Module Capacity: " + string(module_capacity[| 0]) + "/" + string(module_capacity[| 1]), infotext_xscale, infotext_yscale, 0);
+        //ds_list_destroy(module_capacity);
         info_y += infotext_padding;
         
         // Draw module icons
@@ -693,7 +694,10 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
                 modules -= checkbit;
                 var module_icon = -1;
                 switch (checkbit) {
-                    case MODULE_MAC:
+                    case MODULE_LMAC:
+                        module_icon = sPrimaryFire;
+                        break;
+                    case MODULE_HMAC:
                         module_icon = sPrimaryFire;
                         break;
                     case MODULE_HANGAR:

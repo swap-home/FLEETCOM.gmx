@@ -105,6 +105,7 @@ ship_exp = 0;
 ship_level = 0;
 ship_modules_max = 0;
 ship_modules = 0; // Load modules in capitalShipInit
+ship_health = 1;
 
 takes_directional = true;
 

@@ -118,6 +118,7 @@
     <sprites name="Projectiles">
       <sprite>sprites\sUNSC_ArcherMissile</sprite>
       <sprite>sprites\sUNSC_LanceMissile</sprite>
+      <sprite>sprites\sUNSC_Shiva</sprite>
       <sprite>sprites\sUNSC_50mm</sprite>
       <sprite>sprites\sUNSC_HelixAAA</sprite>
       <sprite>sprites\sUNSC_120mm</sprite>
@@ -193,6 +194,8 @@
     <scripts name="sound">
       <script>scripts\ackSound.gml</script>
       <script>scripts\reportSound.gml</script>
+      <script>scripts\ackPlaying.gml</script>
+      <script>scripts\reportPlaying.gml</script>
     </scripts>
     <script>scripts\firingSolution.gml</script>
     <script>scripts\quadratic_smallest_nonnegative.gml</script>
@@ -221,7 +224,6 @@
       <script>scripts\writeSave.gml</script>
       <script>scripts\deleteSave.gml</script>
       <script>scripts\createLoadShip.gml</script>
-      <script>scripts\saveModules.gml</script>
       <script>scripts\loadModules.gml</script>
     </scripts>
     <script>scripts\textbox_show.gml</script>
@@ -239,6 +241,7 @@
       <script>scripts\applyModule.gml</script>
       <script>scripts\moduleupgrade_to_modulebit.gml</script>
       <script>scripts\modulebit_to_moduleupgrade.gml</script>
+      <script>scripts\saveModules.gml</script>
     </scripts>
     <script>scripts\FogOfWar_unitInFog.gml</script>
   </scripts>
@@ -394,7 +397,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="66">
+  <constants number="70">
     <constant name="SCREEN_WIDTH">1024</constant>
     <constant name="SCREEN_HEIGHT">768</constant>
     <constant name="STEPS_PER_SECOND">30</constant>
@@ -436,6 +439,10 @@
     <constant name="REBEL">1</constant>
     <constant name="COVE">2</constant>
     <constant name="NEUTRAL">3</constant>
+    <constant name="SAVE_SHIP_STATUS_ACTIVE">0</constant>
+    <constant name="SAVE_SHIP_STATUS_REFIT">1</constant>
+    <constant name="SAVE_SHIP_STATUS_DECOM">2</constant>
+    <constant name="SAVE_SHIP_STATUS_DESTROYED">3</constant>
     <constant name="SAVE_SLOT_COUNT">2</constant>
     <constant name="MAP_BORDER">32</constant>
     <constant name="MAX_LEVELUPS">7</constant>

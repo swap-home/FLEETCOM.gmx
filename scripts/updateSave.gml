@@ -1,34 +1,27 @@
+// at the end of a mission, update save manager with ship stats from ship instances
+// TODO REDO
 var savemgrid = id;
 
-var indices_to_remove = ds_list_create();
-
-for (var i = 0; i < ds_list_size(ship_id); i++) {
+for (var i = 0; i < ds_list_size(ship_status); i++) {
     var shipid = ship_id[| i];
-    if (shipid == noone) {
+    // Ship not in current mission, do not update
+    if (ship_status[| i] != SAVE_SHIP_STATUS_ACTIVE) {
         continue;
-    } else if (!instance_exists(shipid)) {
-        ds_list_add(indices_to_remove,i);
-    } else {
-        ship_name[| i] = shipid.ship_name;
-        ship_exp[| i] = shipid.ship_exp;
-        ship_level[| i] = shipid.ship_level;
-        ds_map_destroy(ship_modules[| i]);
-        ship_modules[| i] = saveModules(shipid);
+    // Otherwise check ship
+    } else if (ship_status[| i] == SAVE_SHIP_STATUS_ACTIVE) {
+        // Ship destroyed during mission
+        if (!instance_exists(shipid)) {
+            ship_status[| i] = SAVE_SHIP_STATUS_DESTROYED;
+        } else {
+            ship_name[| i] = shipid.ship_name;
+            ship_exp[| i] = shipid.ship_exp;
+            ship_level[| i] = shipid.ship_level;
+            ship_health[| i] = shipid.hull/shipid.hull_max;
+            ds_map_destroy(ship_modules[| i]);
+            ship_modules[| i] = saveModules(shipid);
+        }
     }
 }
-
-// Iterate in reverse to remove dead ships
-for (var i = ds_list_size(ship_id)-1; i >= 0; i--) {
-    if (ship_id[| i] != noone && !instance_exists(ship_id[| i])) {
-        ds_list_delete(ship_name, i);
-        ds_list_delete(ship_type, i);
-        ds_list_delete(ship_exp, i);
-        ds_list_delete(ship_level, i);
-        ds_map_destroy(ship_modules[| i]);
-        ds_list_delete(ship_modules, i);
-    }
-}
-ds_list_destroy(indices_to_remove);
 
 with (oallcapitalships) {
     if (side == UNSC && !unselectable && !object_is_ancestor(id.object_index,oUNSCstructures)) {

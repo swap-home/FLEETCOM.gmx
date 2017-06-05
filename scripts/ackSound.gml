@@ -2,6 +2,10 @@ if (!global.sfx) {
     exit;
 }
 
+if (ackPlaying() || reportPlaying()) {
+    return 0;
+}
+
 var MAX_SOUND = 16;
 var toplay = irandom_range(1,MAX_SOUND);
 

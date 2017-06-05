@@ -1,3 +1,5 @@
+// given map of modules, set ship state to that
+
 var module_map = argument0;
 var shipid = argument1;
 
@@ -27,7 +29,7 @@ with (shipid) {
     pelican_max = 0;
 }
 
-show_debug_message(json_encode(module_map));
+show_debug_message("loaded: " + json_encode(module_map));
 for (var i = 0; i < MODULE_MAX; ++i) {
     // TODO: There is no good map iteration, we'll use a hack for O(n)
     if (ds_map_exists(module_map, i)) {
@@ -45,7 +47,7 @@ for (var i = 0; i < MODULE_MAX; ++i) {
                 shipid.helix = module_map[? i];
                 break;
             case MODULE_ARCHER:
-                shipid.archerpod = module_map[? i] * 6;
+                shipid.archerpod = module_map[? i] * 4;
                 break;
             case MODULE_PDT:
                 shipid.pdt = module_map[? i] * 2;
@@ -97,7 +99,7 @@ for (var i = 0; i < MODULE_MAX; ++i) {
                 shipid.pelican_max = module_map[? i];
                 break;
             default:
-                //TODO: report some bug with module not listed for saving
+                show_debug_message("module " + string(i) + " could not be loaded");
                 break;
         }
     }

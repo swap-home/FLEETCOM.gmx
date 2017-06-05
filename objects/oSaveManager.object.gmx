@@ -54,7 +54,9 @@ ship_name = ds_list_create();
 ship_type = ds_list_create();
 ship_exp = ds_list_create();
 ship_level = ds_list_create();
+ship_health = ds_list_create();
 ship_modules = ds_list_create();
+ship_status = ds_list_create();
 
 // For use in game - id = ship was created, noone = ship not participating
 ship_id = ds_list_create();
@@ -89,11 +91,12 @@ ds_list_destroy(ship_name);
 ds_list_destroy(ship_type);
 ds_list_destroy(ship_exp);
 ds_list_destroy(ship_level);
+ds_list_destroy(ship_health);
 for (var i = 0; i &lt; ds_list_size(ship_modules); ++i) {
     ds_map_destroy(ship_modules[| i]);
 }
 ds_list_destroy(ship_modules);
-ds_list_destroy(ship_skills);
+ds_list_destroy(ship_status);
 
 ds_list_destroy(ship_id);
 </string>

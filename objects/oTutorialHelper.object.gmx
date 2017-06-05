@@ -65,7 +65,7 @@ if (room == Tutorial) {
     stationid = instance_create(1280, 320, oUNSC_station);
     with (stationid) {
         side = NEUTRAL;
-        pdt = 2;
+        pdt = 6;
         broadsword_max = 0;
         longsword_max = 0;
         pelican_max = 0;
@@ -166,9 +166,10 @@ with (shipid) {
     direction = 0;
     side = UNSC;
     ship_name = "UNSC Seven Seas";
-    
+    ship_modules = global.save_manager.ship_modules[| 0];    
+
     createShipWarpTrail(id, 5, 0.5, 0.5);
-    loadModules(global.save_manager.ship_modules[| 0], id);
+    loadModules(ship_modules, id);
 }
 global.save_manager.ship_id[| 0] = shipid;
 
