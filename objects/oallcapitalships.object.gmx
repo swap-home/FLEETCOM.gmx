@@ -28,27 +28,38 @@
             <string>event_inherited();
 
 primary_damage = 1; //multiplier for damage
-primary_rate = 1; //divisor for cooldown
-primary_speed = 1; //multiplier for projectile movespeed
-primary_range = 1; //multiplier for attack range
+primary_reload = 1; //divisor for cooldown
 
 secondary_damage = 1;
-secondary_rate = 1;
-secondary_speed = 1;
-secondary_range = 1;
+secondary_reload = 1;
 
 tertiary_damage = 1;
-tertiary_rate = 1;
-tertiary_speed = 1;
-tertiary_range = 1;
+tertiary_reload = 1;
 
 singleship_launch_rate = 1; //divisor for cooldown
 singleship_launch_range = 1; //multiplier for detection range
+
 //inherited by singleships
 singleship_damage = 1;
-singleship_rate = 1;
-singleship_speed = 1;
-singleship_range = 1;
+singleship_reload = 1;
+
+// barrage mode fires at reduced cooldown
+// cannot fire normally until barrage cooldown ends
+secondary_barrage_enabled = false;
+secondary_barrage_x = 0;
+secondary_barrage_y = 0;
+secondary_barrage_cooldown = 0;
+secondary_barrage_cooldown_max = 210;
+secondary_barrage_duration = 0;
+secondary_barrage_duration_max = 120;
+secondary_barrage_cooldown_multiplier = 3;
+
+tertiary_barrage_enabled = false;
+tertiary_barrage_cooldown = 0;
+tertiary_barrage_cooldown_max = 210;
+tertiary_barrage_duration = 0;
+tertiary_barrage_duration_max = 90;
+tertiary_barrage_cooldown_multiplier = 2;
 
 exp_value = 20;
 
@@ -458,6 +469,30 @@ if (boarding_damage_counter &gt;= boarding_damage_counter_max
     Damage_Unit(boarding_damage*(boarding_level-security_level), boarding_originship, id, "boarding");
     boarding_damage_counter = 0;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (secondary_barrage_cooldown &gt; 0) {secondary_barrage_cooldown--;}
+if (secondary_barrage_duration &gt; 0) {secondary_barrage_duration--;}
+if (tertiary_barrage_cooldown &gt; 0) {tertiary_barrage_cooldown--;}
+if (tertiary_barrage_duration &gt; 0) {tertiary_barrage_duration--;}
 </string>
           </argument>
         </arguments>

@@ -20,6 +20,6 @@
   <width>80</width>
   <height>22</height>
   <frames>
-    <frame index="0">images\sRebel_corvette_fire_0.png</frame>
+    <frame index="0">images\sRebel_corvette_standard_0.png</frame>
   </frames>
 </sprite>

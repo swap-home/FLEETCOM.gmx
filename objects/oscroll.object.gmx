@@ -32,8 +32,8 @@ view_vy = 0;
 viewdrag_visible = false;
 
 scrollspeed = 16;
-full_scroll_border = 32;
-half_scroll_border = 64;
+full_scroll_border = 64;
+half_scroll_border = 96;
 screen_locked = true;
 
 zoom_mousewheel_increment = 0;

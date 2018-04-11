@@ -314,6 +314,37 @@ if (mouse_check_button_pressed(mb_left)) {
             }
         }
         current_command = NO_COMMAND;
+    } else if (current_command == POWER_PRIMARY) {
+        // stuff
+    } else if (current_command == POWER_SECONDARY) {
+        var closest_available_id = noone;
+        var closest_available_distance = 9999;
+        
+        // Search for closest with barrage available and off cooldown
+        for (var i = 0; i &lt; ds_list_size(selection); i++)
+        {
+            with (selection[| i]) {
+                var dist = point_distance(x, y, mouse_x, mouse_y);
+                if (secondary_barrage_enabled &amp;&amp; secondary_barrage_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                    closest_available_id = id;
+                    closest_available_distance = dist;
+                }
+            }
+        }
+        if (instance_exists(closest_available_id)) {
+            fireSecondaryBarrage(closest_available_id, mouse_x, mouse_y);
+        }
+        current_command = NO_COMMAND;
+    } else if (current_command == POWER_TERTIARY) {
+        // Command all ships able to Power Tertiary
+        for (var i = 0; i &lt; ds_list_size(selection); i++)
+        {
+            with (selection[| i]) {
+                if (tertiary_barrage_enabled &amp;&amp; tertiary_barrage_cooldown &lt;= 0) {
+                    fireTertiaryBarrage(id);
+                }
+            }
+        }
     }
 }
 
@@ -486,7 +517,8 @@ switch (current_command) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (!ds_list_empty(selection) &amp;&amp; global.debug)
+            <string>draw_set_alpha(GUI_ALPHA);
+if (!ds_list_empty(selection) &amp;&amp; global.debug)
 {
     // draw speed
     var selectedUnit = ds_list_find_value(selection, 0);
@@ -549,7 +581,36 @@ if (current_command == FIRE_PRIMARY) {
             draw_line_width(closest_available_id.x,closest_available_id.y,closest_available_id.x+lengthdir_x(range,dir),closest_available_id.y+lengthdir_y(range,dir),2);
         }
     }
+} else if (current_command == POWER_SECONDARY) 
+{
+    if (!ds_list_empty(selection))
+    {
+        var closest_available_id = noone;
+        var closest_available_distance = 9999;
+        
+        // Search for closest with barrage available and off cooldown
+        for (var i = 0; i &lt; ds_list_size(selection); i++)
+        {
+            with (selection[| i]) {
+                var dist = point_distance(x, y, mouse_x, mouse_y);
+                if (secondary_barrage_enabled &amp;&amp; secondary_barrage_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                    closest_available_id = id;
+                    closest_available_distance = dist;
+                }
+            }
+        }
+
+        if (instance_exists(closest_available_id)) {
+            draw_set_color(c_red);
+            draw_set_alpha(0.5);
+            var range = 800;
+            var dir = point_direction(closest_available_id.x, closest_available_id.y, mouse_x, mouse_y);
+            draw_line_width(closest_available_id.x,closest_available_id.y,closest_available_id.x+lengthdir_x(range,dir),closest_available_id.y+lengthdir_y(range,dir),10);
+        }
+    }
 }
+
+draw_set_alpha(-1);
 </string>
           </argument>
         </arguments>

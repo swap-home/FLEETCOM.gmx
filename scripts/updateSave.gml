@@ -12,6 +12,7 @@ for (var i = 0; i < ds_list_size(ship_status); i++) {
         // Ship destroyed during mission
         if (!instance_exists(shipid)) {
             ship_status[| i] = SAVE_SHIP_STATUS_DESTROYED;
+        // Ship survived mission, update with instance vars
         } else {
             ship_name[| i] = shipid.ship_name;
             ship_exp[| i] = shipid.ship_exp;

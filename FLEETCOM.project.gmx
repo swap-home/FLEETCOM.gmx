@@ -7,8 +7,6 @@
     <extension index="0">extensions\FogOfWar_madgetr</extension>
   </NewExtensions>
   <sounds name="sound">
-    <sound>sound\sound0</sound>
-    <sound>sound\Remembrance</sound>
     <sounds name="Effects">
       <sound>sound\energyProjectorFire</sound>
       <sound>sound\macFire</sound>
@@ -55,7 +53,6 @@
     </sounds>
     <sounds name="bgm">
       <sound>sound\FarthestOutpost</sound>
-      <sound>sound\BrothersInArms</sound>
     </sounds>
   </sounds>
   <sprites name="sprites">
@@ -69,6 +66,8 @@
       <sprite>sprites\sFighters</sprite>
       <sprite>sprites\sTransports</sprite>
       <sprite>sprites\sPrimaryFire</sprite>
+      <sprite>sprites\sSecondaryFire</sprite>
+      <sprite>sprites\sTertiaryFire</sprite>
       <sprite>sprites\sBuildCorvetteFast</sprite>
       <sprite>sprites\sBuildCorvetteRepair</sprite>
       <sprite>sprites\sBuildFrigateCharon</sprite>
@@ -95,10 +94,14 @@
         <sprite>sprites\sCove_cruiser_CRS</sprite>
         <sprite>sprites\sCove_battleship</sprite>
         <sprite>sprites\sCove_assaultcarrier_CAS</sprite>
-        <sprite>sprites\sUNSC_corvette_fast</sprite>
-        <sprite>sprites\sprite58</sprite>
-        <sprite>sprites\sUNSC_corvette_repair</sprite>
+        <sprite>sprites\sRebel_corvette_standard</sprite>
         <sprite>sprites\sRebel_corvette_fire</sprite>
+        <sprite>sprites\sRebel_corvette_armored</sprite>
+        <sprite>sprites\sRebel_corvette_refit</sprite>
+        <sprite>sprites\sRebel_corvette_missile</sprite>
+        <sprite>sprites\sRebel_corvette_boarding</sprite>
+        <sprite>sprites\sUNSC_corvette_fast</sprite>
+        <sprite>sprites\sUNSC_corvette_repair</sprite>
         <sprite>sprites\sUNSC_frigate_charonL</sprite>
         <sprite>sprites\sUNSC_frigate_parisH</sprite>
         <sprite>sprites\sUNSC_destroyer_diligence</sprite>
@@ -171,6 +174,8 @@
       <script>scripts\commandFighters.gml</script>
       <script>scripts\commandTransports.gml</script>
       <script>scripts\firePrimary.gml</script>
+      <script>scripts\fireSecondaryBarrage.gml</script>
+      <script>scripts\fireTertiaryBarrage.gml</script>
       <scripts name="fighters">
         <script>scripts\escort.gml</script>
         <script>scripts\intercept.gml</script>
@@ -185,7 +190,8 @@
         <script>scripts\groupHasFighters.gml</script>
         <script>scripts\groupHasTransports.gml</script>
         <script>scripts\groupHasPrimaryFire.gml</script>
-        <script>scripts\groupHasPrimaryFire_new.gml</script>
+        <script>scripts\groupHasSecondaryBarrage.gml</script>
+        <script>scripts\groupHasTertiaryBarrage.gml</script>
       </scripts>
     </scripts>
     <script>scripts\beamCollision.gml</script>
@@ -224,6 +230,7 @@
       <script>scripts\writeSave.gml</script>
       <script>scripts\deleteSave.gml</script>
       <script>scripts\createLoadShip.gml</script>
+      <script>scripts\saveModules.gml</script>
       <script>scripts\loadModules.gml</script>
     </scripts>
     <script>scripts\textbox_show.gml</script>
@@ -241,7 +248,6 @@
       <script>scripts\applyModule.gml</script>
       <script>scripts\moduleupgrade_to_modulebit.gml</script>
       <script>scripts\modulebit_to_moduleupgrade.gml</script>
-      <script>scripts\saveModules.gml</script>
     </scripts>
     <script>scripts\FogOfWar_unitInFog.gml</script>
   </scripts>
@@ -282,6 +288,11 @@
           <object>objects\oUNSC_corvettes</object>
           <object>objects\oUNSC_corvette_fast</object>
           <object>objects\oUNSC_corvette_repair</object>
+          <object>objects\oRebel_corvette_standard</object>
+          <object>objects\oRebel_corvette_fire</object>
+          <object>objects\oRebel_corvette_armored</object>
+          <object>objects\oRebel_corvette_refit</object>
+          <object>objects\oRebel_corvette_missile</object>
         </objects>
         <objects name="Frigate">
           <object>objects\oUNSC_frigates</object>
@@ -334,6 +345,7 @@
           <object>objects\oCove_assaultcarrier_CAS</object>
         </objects>
       </objects>
+      <object>objects\ovisiondummy</object>
     </objects>
     <objects name="Destructables">
       <object>objects\oAsteroid</object>
@@ -355,6 +367,7 @@
         <object>objects\oUNSC_LMAC</object>
         <object>objects\oUNSC_HMAC</object>
         <object>objects\oUNSC_SMAC</object>
+        <object>objects\oUNSC_Shiva</object>
         <object>objects\object7</object>
         <object>objects\oUNSC_HornetMine</object>
       </objects>
@@ -397,7 +410,7 @@
     <room>rooms\RandomBattle</room>
     <room>rooms\FixedBattle</room>
   </rooms>
-  <constants number="70">
+  <constants number="74">
     <constant name="SCREEN_WIDTH">1024</constant>
     <constant name="SCREEN_HEIGHT">768</constant>
     <constant name="STEPS_PER_SECOND">30</constant>
@@ -412,8 +425,12 @@
     <constant name="LAUNCH_FIGHTERS">1</constant>
     <constant name="LAUNCH_TRANSPORTS">2</constant>
     <constant name="FIRE_PRIMARY">3</constant>
-    <constant name="MORAY_MINES">4</constant>
-    <constant name="SHIVA_TACNUKE">5</constant>
+    <constant name="POWER_PRIMARY">4</constant>
+    <constant name="POWER_SECONDARY">5</constant>
+    <constant name="POWER_TERTIARY">6</constant>
+    <constant name="POWER_THRUSTERS">7</constant>
+    <constant name="MORAY_MINES">8</constant>
+    <constant name="SHIVA_TACNUKE">9</constant>
     <constant name="NO_SHIP">29</constant>
     <constant name="CORVETTE_FAST">30</constant>
     <constant name="CORVETTE_REPAIR">31</constant>

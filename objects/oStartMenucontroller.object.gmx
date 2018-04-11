@@ -28,8 +28,8 @@
             <string>draw = 0;
 alarm[0] = 150;
 titlealpha = 0.8;
-//sound_volume(FarthestOutpost, 0.25);
-//sound_loop(FarthestOutpost);
+sound_volume(FarthestOutpost, 0.10);
+sound_loop(FarthestOutpost);
 transition_kind = 0;
 
 global.debug = false;

@@ -14,7 +14,10 @@ if (savefile == -1) {
         file_text_write_real(savefile, ship_type[| i]);
         file_text_write_real(savefile, ship_exp[| i]);
         file_text_write_real(savefile, ship_level[| i]);
+        file_text_write_real(savefile, ship_health[| i]);
+        file_text_writeln(savefile);
         file_text_write_string(savefile, ds_map_write(ship_modules[| i]));
+        file_text_writeln(savefile);
         file_text_write_real(savefile, ship_status[| i]);
     }
     file_text_close(savefile);

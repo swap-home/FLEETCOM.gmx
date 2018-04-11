@@ -18,8 +18,10 @@ if (savefile != -1) {
         ds_list_add(ship_level, file_text_read_real(savefile));
         ds_list_add(ship_health, file_text_read_real(savefile));
         var module_map_id = ds_map_create();
+        file_text_readln(savefile);
         ds_map_read(module_map_id, file_text_read_string(savefile));
         ds_list_add(ship_modules, module_map_id);
+        file_text_readln(savefile);
         ds_list_add(ship_status, file_text_read_real(savefile));
         ds_list_add(ship_id, noone);
     }

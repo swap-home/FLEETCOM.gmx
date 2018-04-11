@@ -62,7 +62,7 @@ if (room == Tutorial) {
         "###Insurrectionist activity is suspected in the system.";
     textbox_show(tutorial_string, 100, 120, 800, 400);
     
-    stationid = instance_create(1280, 320, oUNSC_station);
+    stationid = instance_create(1664, 768, oUNSC_station);
     with (stationid) {
         side = NEUTRAL;
         pdt = 6;
@@ -72,9 +72,13 @@ if (room == Tutorial) {
         ship_name = "Remote Station";
         unselectable = true;
         boarding_captures = true;
+        fog_reveal_range = 200;
+        reveal_vision = true;
     }
     
     with (oscroll) {
+        x = 512;
+        y = 768;
         screen_locked = true;
     }
 }
@@ -131,7 +135,7 @@ if (fighters_to_spawn &gt; 0) {
         with (instance_create(x,y,oUNSC_longsword_GATL1)) {
             side = REBEL;
             parentid = selfid.stationid;
-            commandFighters(selfid.stationid, parentid.x, parentid.y, noone);
+            commandFighters(selfid.stationid, selfid.shipid.x, selfid.shipid.y, noone);
         }
     }
 }
@@ -161,7 +165,7 @@ alarm[1] = fighters_spawn_delay;
             <kind>1</kind>
             <string>var selfid = id;
 
-shipid = instance_create(192,320, oUNSC_frigate_charonL);
+shipid = instance_create(192,768, oUNSC_frigate_charonL);
 with (shipid) {
     direction = 0;
     side = UNSC;
@@ -231,7 +235,7 @@ with (shipid) {
     if (selfid.tutorial_step &lt; 1 &amp;&amp; selected) {
         selfid.tutorial_step = 1;
     }
-    if (selfid.tutorial_step &lt; 3 &amp;&amp; x &gt;= 360) {
+    if (selfid.tutorial_step &lt; 3 &amp;&amp; x &gt;= 830) {
         selfid.tutorial_step = 3;
         selfid.stationid.side = REBEL;
         selfid.stationid.invulnerable = true;
@@ -364,35 +368,34 @@ switch (tutorial_step) {
     case -1:
         break;
     case 0:
-        draw_text_ext(400, 500, "To select a unit, left click on it" +
+        draw_text_ext(400, 850, "To select a unit, left click on it" +
             "#Select UNSC Seven Seas by left clicking on it", 32, 600);
         break;
     case 1:
-        draw_text_ext(592, 500, "To move your screen, use the arrow keys" +
-            "#or mouse over the edge of the screen" +
-            "#Try moving the screen to the right to bring the Station into view", 32, 600);
+        draw_text_ext(592, 850, "To move your screen, use the arrow keys" +
+            "#or mouse over the edge of the screen", 32, 600);
         break;
     case 2:
-        draw_text_ext(836, 500, "Order UNSC Seven Seas to approach the Station by right clicking" +
-            "#With UNSC Seven Seas selected, right click near the Station to move to it", 32, 600);
+        draw_text_ext(836, 850, "Order UNSC Seven Seas to explore the fog of war" +
+            "#With UNSC Seven Seas selected, right click to move", 32, 600);
         break;
     case 3:
-        draw_text_ext(836, 500, "Launch UNSC Seven Seas' own fighter complement to intercept" +
+        draw_text_ext(1036, 850, "Launch UNSC Seven Seas' own fighter complement to intercept" +
             "#with the Q key, or by clicking the Launch Fighter button in the bottom left" +
             "#and selecting a location or target for the fighters", 32, 600);
         break;
     case 4:
-        draw_text_ext(1036, 500, "With the fighters out of the way, board the Station" +
+        draw_text_ext(1236, 850, "With the fighters out of the way, board the Station" +
             "#with the W key, or by clicking the Launch Transports button in the bottom left" +
             "#and selecting the Station as the target", 32, 600);
         break;
     case 5: 
-        draw_text_ext(1036, 500, "The number on the left of the boarding bar indicates its" +
+        draw_text_ext(1236, 850, "The number on the left of the boarding bar indicates its" +
             "#security level, which you will have to overcome with transports" +
             "#try launching multiple transports within a short timeframe", 32, 600);
         break;
     case 8:
-        draw_text_ext(768, 500, "Between missions, you will build and refit ships." +
+        draw_text_ext(768, 850, "Between missions, you will build and refit ships." +
             "#Bring UNSC Seven Seas towards the refit station " +
             "the cyan radius will turn into a line, indicating the current unit to upgrade", 32, 600);
         break;

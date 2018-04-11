@@ -55,6 +55,7 @@ race = "unsc";
 side = 0;
 
 //INITIALIZATION of UNSC ship vars
+// Primary Weapons
 lmac = 0;
 lmac_max = -1;
 lmac_cooldown = 0;
@@ -69,12 +70,17 @@ hmac_cooldown_max = 5400;
 hmac_range = 3500;
 hmac_per_shot = 2;
 
+// Secondary Weapons
+
 archerpod = 0;
 archerpod_max = -1;
 archerpod_cooldown = 0;
 archerpod_cooldown_max = 60;
 archerpod_range = 850;
 archer_per_shot = 4;
+archerpod_angle_spread = 50;
+archerpod_target_spread = 30;
+archerpod_firing_spread = 30;
 
 ares = 0;
 ares_max = -1;
@@ -82,6 +88,9 @@ ares_cooldown = 0;
 ares_cooldown_max = 60;
 ares_range = 1050;
 ares_per_shot = 1;
+ares_angle_spread = 45;
+ares_target_spread = 10;
+ares_firing_spread = 30;
 
 lance = 0;
 lance_max = -1;
@@ -89,6 +98,9 @@ lance_cooldown = 0;
 lance_cooldown_max = 90;
 lance_range = 1500;
 lance_per_shot = 1;
+lance_angle_spread = 75;
+lance_target_spread = 3;
+lance_firing_spread = 30;
 
 rapier = 0;
 rapier_max = -1;
@@ -104,6 +116,8 @@ howler_cooldown_max = 240;
 howler_range = 800;
 howler_per_shot = 1;
 
+// Tertiary Weapons
+
 helix = 0;
 helix_max = -1;
 helix_cooldown = 0;
@@ -115,11 +129,11 @@ helix_per_shot = 1;
 pdt = 0;
 pdt_max = -1;
 pdt_burst_delay = 0;
-pdt_burst_delay_max = 15;
+pdt_burst_delay_max = 12;
 pdt_burst_count = 0;
 pdt_burst_count_max = 3;
 pdt_cooldown = 0;
-pdt_cooldown_max = 60;
+pdt_cooldown_max = 90;
 pdt_range = 500;
 
 scanner = 0;
@@ -471,28 +485,48 @@ if (hmac_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; archerpod_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; archerpod_cooldown &lt;= 0) 
 {
-    if (point_distance(x, y, targetid.x, targetid.y) &lt;= archerpod_range)
+    var targetdir;
+    
+    if (secondary_barrage_duration &gt; 0) 
     {
-        var targetdir;
+        targetdir = point_direction(x,y,secondary_barrage_x,secondary_barrage_y);
+        archerpod_cooldown = archerpod_cooldown_max / secondary_barrage_cooldown_multiplier;
+    }
+    else if (instance_exists(targetid) &amp;&amp; point_distance(x, y, targetid.x, targetid.y) &lt;= archerpod_range) 
+    {
         targetdir = point_direction(x,y,targetid.x,targetid.y);
         archerpod_cooldown = archerpod_cooldown_max;
-        
+    }
+    
+    if (archerpod_cooldown &gt; 0) {
         var missiles_fired = archerpod/archer_per_shot;
         if (status_half_secondary != 0) {
             missiles_fired /= 2;
         }
         repeat (missiles_fired)
         {
-            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_ArcherMissile, targetdir + irandom_range(-50,50));
-            ID.targetid = targetid;
-            ID.targetx = targetid.x+irandom_range(-30,30);
-            ID.targety = targetid.y+irandom_range(-30,30);
+            var fire_origin_x = x+irandom_range(-archerpod_firing_spread, archerpod_firing_spread);
+            var fire_origin_y = y+irandom_range(-archerpod_firing_spread, archerpod_firing_spread);
+            var fire_direction = targetdir + irandom_range(-archerpod_angle_spread,archerpod_angle_spread);
+            var ID = createChild(fire_origin_x, fire_origin_y, oUNSC_ArcherMissile, fire_direction);
+            if (secondary_barrage_duration &gt; 0) {
+                ID.targetx = secondary_barrage_x;
+                ID.targety = secondary_barrage_y;
+            } else {
+                ID.targetid = targetid;
+                ID.targetx = targetid.x;
+                ID.targety = targetid.y;
+            }
+            
+            // Add spread
+            ID.targetx += irandom_range(-archerpod_target_spread,archerpod_target_spread);
+            ID.targety += irandom_range(-archerpod_target_spread,archerpod_target_spread);
         }
     }
 }
-
+    
 if (archerpod_cooldown &gt; 0) {
     archerpod_cooldown -= 1;
 }
@@ -516,24 +550,35 @@ if (archerpod_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; ares_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; ares_cooldown &lt;= 0)
 {
-    if (point_distance(x, y, targetid.x, targetid.y) &lt;= ares_range)
+    var targetdir;
+    
+    if (secondary_barrage_duration &gt; 0)
     {
-        var targetdir;
+        targetdir = point_direction(x,y,secondary_barrage_x, secondary_barrage_y);
+        ares_cooldown = ares_cooldown_max / secondary_barrage_cooldown_multiplier;
+    }
+    else if (instance_exists(targetid) &amp;&amp; point_distance(x, y, targetid.x, targetid.y) &lt;= ares_range)
+    {       
         targetdir = point_direction(x,y,targetid.x,targetid.y);
         ares_cooldown = ares_cooldown_max;
-        
+    }
+    
+    if (ares_cooldown &gt; 0) {
         var missiles_fired = ares/ares_per_shot;
         if (status_half_secondary != 0) {
             missiles_fired /= 2;
         }
         repeat (missiles_fired)
         {
-            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_AresMissile,targetdir + irandom_range(-45,45));
+            var fire_origin_x = x+irandom_range(-ares_firing_spread, ares_firing_spread);
+            var fire_origin_y = y+irandom_range(-archerpod_firing_spread, archerpod_firing_spread);
+            var fire_direction = targetdir + irandom_range(-archerpod_angle_spread,archerpod_angle_spread);
+            var ID = createChild(fire_origin_x, fire_origin_y, oUNSC_AresMissile, fire_direction);
             ID.targetid = targetid;
-            ID.targetx = targetid.x+irandom_range(-10,10);
-            ID.targety = targetid.y+irandom_range(-10,10);
+            ID.targetx = targetid.x+irandom_range(-ares_target_spread,ares_target_spread);
+            ID.targety = targetid.y+irandom_range(-ares_target_spread,ares_target_spread);
         }
     }
 }
@@ -561,22 +606,43 @@ if (ares_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; instance_exists(targetid) &amp;&amp; lance_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; lance_cooldown &lt;= 0)
 {
-    if (point_distance(x, y, targetid.x, targetid.y) &lt;= lance_range)
+    var targetdir;
+    
+    if (secondary_barrage_duration &gt; 0)
     {
-        var targetdir;
+        targetdir = point_direction(x,y,secondary_barrage_x,secondary_barrage_y);
+        lance_cooldown = lance_cooldown_max / secondary_barrage_cooldown_multiplier;
+    }
+    else if (instance_exists(targetid) &amp;&amp; point_distance(x, y, targetid.x, targetid.y) &lt;= lance_range)
+    {
         targetdir = point_direction(x,y,targetid.x,targetid.y);
         lance_cooldown = lance_cooldown_max;
-        
+    }
+    
+    if (lance_cooldown &gt; 0) {
         var missiles_fired = lance/lance_per_shot;
         if (status_half_secondary != 0) {
             missiles_fired /= 2;
         }
         repeat (missiles_fired)
         {
-            var ID = createChild(x+irandom_range(-30,30),y+irandom_range(-30,30),oUNSC_LanceMissile, targetdir + irandom_range(-75,75));
-            ID.targetid = targetid;
+            var fire_origin_x = x+irandom_range(-lance_firing_spread, lance_firing_spread);
+            var fire_origin_y = y+irandom_range(-lance_firing_spread, lance_firing_spread);
+            var ID = createChild(fire_origin_x, fire_origin_y, oUNSC_LanceMissile, fire_direction);
+            if (secondary_barrage_duration &gt; 0) {
+                ID.targetx = secondary_barrage_x;
+                ID.targety = secondary_barrage_y;
+            } else {
+                ID.targetid = targetid;
+                ID.targetx = targetid.x;
+                ID.targety = targetid.y;
+            }
+            
+            // Add spread
+            ID.targetx += irandom_range(-lance_target_spread,lance_target_spread);
+            ID.targety += irandom_range(-lance_target_spread,lance_target_spread);
         }
     }
 }
@@ -605,6 +671,7 @@ if (lance_cooldown &gt; 0) {
           <argument>
             <kind>1</kind>
             <string>// Helix AAA
+
 if (fire_pointdef &amp;&amp; helix_cooldown &lt;= 0)
 {
     var selfid_l;
@@ -632,7 +699,11 @@ if (fire_pointdef &amp;&amp; helix_cooldown &lt;= 0)
 
     if (target_count_l &gt; 0)
     {
-        helix_cooldown = helix_cooldown_max;
+        var cooldown_multiplier = secondary_reload;
+        if (tertiary_barrage_duration &gt; 0) {
+            cooldown_multiplier += tertiary_barrage_cooldown_multiplier;
+        }
+        helix_cooldown = helix_cooldown_max / cooldown_multiplier;
         
         var helix_shots = helix;
         if (status_half_pointdefense != 0) {
@@ -697,7 +768,11 @@ if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count 
 
     if (target_count_l &gt; 0)
     {
-        pdt_burst_delay = pdt_burst_delay_max;
+        var cooldown_multiplier = secondary_reload;
+        if (tertiary_barrage_duration &gt; 0) {
+            cooldown_multiplier += tertiary_barrage_cooldown_multiplier;
+        }
+        pdt_burst_delay = pdt_burst_delay_max / cooldown_multiplier;
         pdt_burst_count -= 1;
         
         var pdt_shots = pdt;

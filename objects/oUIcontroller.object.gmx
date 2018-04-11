@@ -395,6 +395,15 @@ if (instance_exists(global.selection_manager)) {
             ds_list_add(button_actions, FIRE_PRIMARY);
         }
         
+        if (groupHasSecondaryBarrage(selection)) {
+            ds_list_add(button_sprites, sSecondaryFire);
+            ds_list_add(button_actions, POWER_SECONDARY);
+        }
+        
+        if (groupHasTertiaryBarrage(selection)) {
+            ds_list_add(button_sprites, sTertiaryFire);
+            ds_list_add(button_actions, POWER_TERTIARY);
+        }
     }
 }
 
