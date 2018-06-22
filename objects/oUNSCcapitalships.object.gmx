@@ -173,8 +173,11 @@ odst_detachment_max = -1;
 emergency_thruster = 0;
 emergency_thruster_max = -1;
 
-shiva_nuke = 0;
-shiva_nuke_max = 0;
+tacnuke = 0;
+tacnuke_max = 0;
+tacnuke_cooldown = 0;
+tacnuke_cooldown_max = 15;
+
 </string>
           </argument>
         </arguments>
@@ -878,6 +881,29 @@ if (scanner_draw_time &lt; scanner_draw_time_max) {
 
 if (repair_cooldown &gt; 0) {
     repair_cooldown -= 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (tacnuke_cooldown &gt; 0) {
+    tacnuke_cooldown -= 1;
 }
 </string>
           </argument>

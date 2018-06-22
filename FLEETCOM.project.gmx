@@ -10,8 +10,6 @@
     <sounds name="Effects">
       <sound>sound\energyProjectorFire</sound>
       <sound>sound\macFire</sound>
-      <sound>sound\fuelRodFire</sound>
-      <sound>sound\plasmaCannonFire</sound>
       <sound>sound\tone</sound>
     </sounds>
     <sounds name="Units">
@@ -77,6 +75,7 @@
       <sprite>sprites\sBuildCruiserMarathon</sprite>
       <sprite>sprites\sStatusPrimary</sprite>
       <sprite>sprites\sUNSCicon</sprite>
+      <sprite>sprites\sNuke</sprite>
     </sprites>
     <sprite>sprites\sUNSC_cruiser_Halcyon</sprite>
     <sprite>sprites\sCove_cruiser_Rev</sprite>
@@ -176,6 +175,7 @@
       <script>scripts\firePrimary.gml</script>
       <script>scripts\fireSecondaryBarrage.gml</script>
       <script>scripts\fireTertiaryBarrage.gml</script>
+      <script>scripts\fireTacNuke.gml</script>
       <scripts name="fighters">
         <script>scripts\escort.gml</script>
         <script>scripts\intercept.gml</script>
@@ -192,6 +192,7 @@
         <script>scripts\groupHasPrimaryFire.gml</script>
         <script>scripts\groupHasSecondaryBarrage.gml</script>
         <script>scripts\groupHasTertiaryBarrage.gml</script>
+        <script>scripts\groupHasTacNuke.gml</script>
       </scripts>
     </scripts>
     <script>scripts\beamCollision.gml</script>
@@ -429,8 +430,8 @@
     <constant name="POWER_SECONDARY">5</constant>
     <constant name="POWER_TERTIARY">6</constant>
     <constant name="POWER_THRUSTERS">7</constant>
-    <constant name="MORAY_MINES">8</constant>
-    <constant name="SHIVA_TACNUKE">9</constant>
+    <constant name="FIRE_MINES">8</constant>
+    <constant name="FIRE_TACNUKE">9</constant>
     <constant name="NO_SHIP">29</constant>
     <constant name="CORVETTE_FAST">30</constant>
     <constant name="CORVETTE_REPAIR">31</constant>

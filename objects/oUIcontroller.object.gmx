@@ -123,8 +123,8 @@ action_tooltip_strings = ds_map_create();
 action_tooltip_strings[? LAUNCH_FIGHTERS] = "LAUNCH FIGHTERS#Launches the ship's fighter complement##Self: return to hangars#Ally: escort ship#Enemy: attack ignoring enemy fighters#No target: intercept area";
 action_tooltip_strings[? LAUNCH_TRANSPORTS] = "LAUNCH PELICANS#Order transports to board a target##Ally: reinforce#Enemy: board ship";
 action_tooltip_strings[? FIRE_PRIMARY] = "MAC#Fire the Magnetic Accelerator Cannon in a direction, dealing massive damage to the first target hit##Ally ships block the shot but do not take damage";
-action_tooltip_strings[? MORAY_MINES] = "MORAY MINES#Deploys a field of anti-fighter mines, which deal area of effect damage##First activation places mines, second activation detonates mines. Mines also detonate on proximity";
-action_tooltip_strings[? SHIVA_TACNUKE] = "SHIVA TACNUKE#Launches a slow tactical nuke, which deals damage in a large area of effect##Detonates upon contact with an enemy or upon reaching its destination";
+action_tooltip_strings[? FIRE_MINES] = "MORAY MINES#Deploys a field of anti-fighter mines, which deal area of effect damage##First activation places mines, second activation detonates mines. Mines also detonate on proximity";
+action_tooltip_strings[? FIRE_TACNUKE] = "SHIVA TACNUKE#Launches a slow tactical nuke, which deals damage in a large area of effect##Detonates upon contact with an enemy or upon reaching its destination";
 
 // only available with oGameMenucontroller
 
@@ -404,6 +404,11 @@ if (instance_exists(global.selection_manager)) {
             ds_list_add(button_sprites, sTertiaryFire);
             ds_list_add(button_actions, POWER_TERTIARY);
         }
+        
+        if (groupHasTacNuke(selection)) {
+            ds_list_add(button_sprites, sNuke);
+            ds_list_add(button_actions, FIRE_TACNUKE);
+        }
     }
 }
 
@@ -652,6 +657,10 @@ if (instance_exists(global.selection_manager) &amp;&amp; ds_list_size(global.sel
         }
         if (unitid.lance &gt; 0) {
             draw_text_transformed(info_x, info_y, "Lance Batteries: " + string(unitid.lance), infotext_xscale, infotext_yscale, 0);
+            info_y += infotext_padding;
+        }
+        if (unitid.tacnuke &gt; 0) {
+            draw_text_transformed(info_x, info_y, "Tactical Nukes: " + string(unitid.tacnuke), infotext_xscale, infotext_yscale, 0);
             info_y += infotext_padding;
         }
         if (unitid.pdt &gt; 0) {

@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>-10</depth>
   <persistent>0</persistent>
-  <parentName>oprojectileweaponry</parentName>
+  <parentName>odestructableweaponry</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -22,6 +22,30 @@
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>hull</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>10</string>
+          </argument>
+        </arguments>
       </action>
       <action>
         <libid>1</libid>
@@ -399,11 +423,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>explosive_proximity_range</string>
+            <string>explode_on_proximity</string>
           </argument>
           <argument>
             <kind>0</kind>
-            <string>50</string>
+            <string>true</string>
           </argument>
         </arguments>
       </action>
@@ -423,11 +447,59 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>explode_on_proximity</string>
+            <string>explosive_proximity_range</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>25</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>explode_on_location</string>
           </argument>
           <argument>
             <kind>0</kind>
             <string>true</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>homing_location_end_range</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>25</string>
           </argument>
         </arguments>
       </action>
@@ -455,8 +527,52 @@
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var ID = id;
+child_trail_color = c_orange;
+
+trail = instance_create(x,y,oribbontrail);
+with(trail) {
+    parent = ID;
+    depth = ID.depth;
+    trail_color = ID.child_trail_color;
+    trail_max_points = 4;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
       <action>
         <libid>1</libid>
         <id>408</id>
@@ -473,7 +589,7 @@
         <arguments>
           <argument>
             <kind>0</kind>
-            <string>global.fx_control.fx</string>
+            <string>global.fx_control.fx &amp;&amp; exploded</string>
           </argument>
         </arguments>
       </action>
@@ -514,37 +630,6 @@
           <argument>
             <kind>4</kind>
             <string>1</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="3" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>// acquire new target from parent capital ship if current target is destroyed
-if (!instance_exists(targetid) &amp;&amp; instance_exists(parentid)) {
-    targetid = parentid.targetid;
-}
-
-// parent capital ship guides this missile
-if (instance_exists(parentid)) {
-    homing_obj(targetid);
-}
-</string>
           </argument>
         </arguments>
       </action>

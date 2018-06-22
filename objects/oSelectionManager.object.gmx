@@ -345,6 +345,24 @@ if (mouse_check_button_pressed(mb_left)) {
                 }
             }
         }
+    } else if (current_command == FIRE_TACNUKE) {
+        // Search for closest with tacnuke available and off cooldown
+        var closest_available_id = noone;
+        var closest_available_distance = 9999;
+    
+        for (var i = 0; i &lt; ds_list_size(selection); ++i) {
+            with (selection[| i]) {
+                var dist = point_distance(x, y, mouse_x, mouse_y);
+                if (tacnuke &gt; 0 &amp;&amp; tacnuke_cooldown &lt;= 0 &amp;&amp; dist &lt; closest_available_distance) {
+                    closest_available_id = id;
+                    closest_available_distance = dist;
+                }
+            }
+        }
+        if (instance_exists(closest_available_id)) {
+            fireTacNuke(closest_available_id, mouse_x, mouse_y);
+        }
+        current_command = NO_COMMAND;
     }
 }
 
@@ -492,6 +510,8 @@ switch (current_command) {
     case LAUNCH_FIGHTERS:
     case LAUNCH_TRANSPORTS:
     case FIRE_PRIMARY:
+    case POWER_SECONDARY:
+    case FIRE_TACNUKE:
         cursor_sprite = smouseglow;
         break;
 }
