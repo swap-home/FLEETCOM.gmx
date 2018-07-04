@@ -556,7 +556,7 @@ if (!ds_list_empty(selection) &amp;&amp; global.debug)
     }
 }
 
-    
+draw_set_alpha(GUI_ALPHA);
 // draw targeting line
 if (current_command == FIRE_PRIMARY) {
     if (!ds_list_empty(selection))
@@ -651,10 +651,7 @@ draw_set_alpha(-1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var oldColor = draw_get_color();
-var oldAlpha = draw_get_alpha();
-
-if (click_down) 
+            <string>if (click_down) 
 {
     draw_set_alpha(0.25);
     draw_set_color(c_green);
@@ -664,9 +661,8 @@ if (click_down)
     draw_set_color(c_lime);
     draw_rectangle(click_x, click_y, mouse_x, mouse_y, true);
 }
-
-draw_set_color(oldColor);
-draw_set_alpha(oldAlpha);
+draw_set_color(-1);
+draw_set_alpha(1);
 </string>
           </argument>
         </arguments>

@@ -14,6 +14,13 @@ hull = hull_max;
 shield = shield_max;
 movespeed = maxspeed;
 
+if (race == "unsc")
+{
+    autocannon_ammo = autocannon_ammo_max;
+    asgm_ammo = asgm_ammo_max;
+    bombcharge_ammo = bombcharge_ammo_max;
+}
+
 switch (side) {
     case UNSC:
         child_trail_color = c_yellow;

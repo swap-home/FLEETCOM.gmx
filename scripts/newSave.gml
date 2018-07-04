@@ -19,5 +19,6 @@ map_id[? MODULE_ARES] = 4;
 map_id[? MODULE_HANGAR] = 2;
 map_id[? MODULE_TRANSPORT] = 4;
 map_id[? MODULE_TOWER] = 3;
+map_id[? MODULE_ARCHER] = 6;
 ds_list_add(ship_status, SAVE_SHIP_STATUS_ACTIVE);
 ds_list_add(ship_id, noone);

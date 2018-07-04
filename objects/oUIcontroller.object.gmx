@@ -69,6 +69,7 @@ button_size = 64;
 button_sprites = ds_list_create();
 button_actions = ds_list_create();
 button_keys = ds_list_create();
+button_cooldowns = ds_list_create();
 button_mouseover = -1; // -1 means no mouse is not over any button
 button_required = -1; // During the tutorial, sometimes other options are all disabled
 button_border_width = 4;
@@ -175,6 +176,7 @@ if (instance_exists(oGameMenucontroller)) {
             <string>ds_list_destroy(button_sprites);
 ds_list_destroy(button_actions);
 ds_list_destroy(button_keys);
+ds_list_destroy(button_cooldowns);
 ds_map_destroy(shiptype_strings);
 ds_map_destroy(action_tooltip_strings);
 
@@ -317,6 +319,7 @@ if (global.selection_manager != 0) {
 // Populate UI buttons depending on current selected ships
 ds_list_clear(button_sprites);
 ds_list_clear(button_actions);
+ds_list_clear(button_cooldowns);
 
 if (instance_exists(global.selection_manager)) {
     var selection = global.selection_manager.selection;
@@ -333,6 +336,7 @@ if (instance_exists(global.selection_manager)) {
             if (!instance_exists(oTutorialHelper)) {
                 ds_list_add(button_sprites, sHangar);
                 ds_list_add(button_actions, UPGRADE_HANGAR);
+                ds_list_add(button_cooldowns, 0);
             }
         }
         
@@ -344,27 +348,34 @@ if (instance_exists(global.selection_manager)) {
             if (!instance_exists(oTutorialHelper) || instance_find(oTutorialHelper, 0).tutorial_step &gt;= 10) {
                 ds_list_add(button_sprites, sBuildCorvetteFast);
                 ds_list_add(button_actions, CORVETTE_FAST);
+                ds_list_add(button_cooldowns, 0);
                 
                 ds_list_add(button_sprites, sBuildCorvetteRepair);
                 ds_list_add(button_actions, CORVETTE_REPAIR);
+                ds_list_add(button_cooldowns, 0);
             }
                         
             // Disabled in tutorial
             if (!instance_exists(oTutorialHelper)) {
                 ds_list_add(button_sprites, sBuildFrigateCharon);
                 ds_list_add(button_actions, FRIGATE_CHARON);
+                ds_list_add(button_cooldowns, 0);
                 
                 ds_list_add(button_sprites, sBuildFrigateParis);
                 ds_list_add(button_actions, FRIGATE_PARIS);
+                ds_list_add(button_cooldowns, 0);
                 
                 ds_list_add(button_sprites, sBuildDestroyerDiligence);
                 ds_list_add(button_actions, DESTROYER_DILIGENCE);
+                ds_list_add(button_cooldowns, 0);
                 
                 ds_list_add(button_sprites, sBuildDestroyerHalberd);
                 ds_list_add(button_actions, DESTROYER_HALBERD);
+                ds_list_add(button_cooldowns, 0);
                 
                 ds_list_add(button_sprites, sBuildCruiserMarathon);
                 ds_list_add(button_actions, CRUISER_MARATHON);
+                ds_list_add(button_cooldowns, 0);
             }
         }
         
@@ -377,37 +388,44 @@ if (instance_exists(global.selection_manager)) {
             
             ds_list_add(button_sprites, sUNSCicon);
             ds_list_add(button_actions, MISSION_RIGHT);
+            ds_list_add(button_cooldowns, 0);
         }
          
         // Regular abilities   
         if (groupHasFighters(selection)) {
             ds_list_add(button_sprites, sFighters);
             ds_list_add(button_actions, LAUNCH_FIGHTERS);
+            ds_list_add(button_cooldowns, 0);
         }
         
         if (groupHasTransports(selection)) {
             ds_list_add(button_sprites, sTransports);
             ds_list_add(button_actions, LAUNCH_TRANSPORTS);
+            ds_list_add(button_cooldowns, 0);
         }
         
         if (groupHasPrimaryFire(selection)) {
             ds_list_add(button_sprites, sPrimaryFire);
             ds_list_add(button_actions, FIRE_PRIMARY);
+            ds_list_add(button_cooldowns, 0);
         }
         
         if (groupHasSecondaryBarrage(selection)) {
             ds_list_add(button_sprites, sSecondaryFire);
             ds_list_add(button_actions, POWER_SECONDARY);
+            ds_list_add(button_cooldowns, groupSecondaryBarrageCooldown(selection));
         }
         
         if (groupHasTertiaryBarrage(selection)) {
             ds_list_add(button_sprites, sTertiaryFire);
             ds_list_add(button_actions, POWER_TERTIARY);
+            ds_list_add(button_cooldowns, 0);
         }
         
         if (groupHasTacNuke(selection)) {
             ds_list_add(button_sprites, sNuke);
             ds_list_add(button_actions, FIRE_TACNUKE);
+            ds_list_add(button_cooldowns, 0);
         }
     }
 }
@@ -590,12 +608,16 @@ for (var i = 0; i &lt; button_count; i++) {
         }
     }
     
+    // draw button sprites
     if (!sprite_exists(button_sprites[| i])) {
         show_debug_message("sprite does not exist for " + string(button_sprites[| i]) + " on " + string(i) + "th position of ui buttons");
     } else {
         draw_sprite(button_sprites[| i], 0, draw_x * display_scale, draw_y * display_scale);
     }
 
+    // draw button cooldown
+    draw_cooldown(draw_x * display_scale, draw_y * display_scale, (draw_x + button_size) * display_scale, (draw_y + button_size) * display_scale, button_cooldowns[| i]);
+    
     draw_set_alpha(GUI_ALPHA);
     
     // draw key shortcut

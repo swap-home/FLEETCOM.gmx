@@ -33,7 +33,7 @@ broadsword_deploy_max = 1;
 broadsword_deploy_cd = 0;
 broadsword_deploy_cd_max = 60;
 broadsword_replenish_cd = 0;
-broadsword_replenish_cd_max = 210;
+broadsword_replenish_cd_max = 600;
 
 longsword = 0;
 longsword_max = 0;
@@ -41,7 +41,7 @@ longsword_deploy_max = 1;
 longsword_deploy_cd = 0;
 longsword_deploy_cd_max = 60;
 longsword_replenish_cd = 0;
-longsword_replenish_cd_max = 210;
+longsword_replenish_cd_max = 600;
 
 pelican = 0;
 pelican_max = 0;
@@ -62,6 +62,8 @@ lmac_cooldown = 0;
 lmac_cooldown_max = 5400;
 lmac_range = 3000;
 lmac_per_shot = 1;
+lmac_ammo = 0;
+lmac_ammo_max = -1;
 
 hmac = 0;
 hmac_max = -1;
@@ -69,6 +71,8 @@ hmac_cooldown = 0;
 hmac_cooldown_max = 5400;
 hmac_range = 3500;
 hmac_per_shot = 2;
+hmac_ammo = 0;
+hmac_ammo_max = -1;
 
 // Secondary Weapons
 
@@ -81,6 +85,8 @@ archer_per_shot = 4;
 archerpod_angle_spread = 50;
 archerpod_target_spread = 30;
 archerpod_firing_spread = 30;
+archerpod_ammo = 0;
+archerpod_ammo_max = -1;
 
 ares = 0;
 ares_max = -1;
@@ -91,6 +97,8 @@ ares_per_shot = 1;
 ares_angle_spread = 45;
 ares_target_spread = 10;
 ares_firing_spread = 30;
+ares_ammo = 0;
+ares_ammo_max = -1;
 
 lance = 0;
 lance_max = -1;
@@ -101,6 +109,8 @@ lance_per_shot = 1;
 lance_angle_spread = 75;
 lance_target_spread = 3;
 lance_firing_spread = 30;
+lance_ammo = 0;
+lance_ammo_max = -1;
 
 rapier = 0;
 rapier_max = -1;
@@ -108,6 +118,8 @@ rapier_cooldown = 0;
 rapier_cooldown = 50;
 rapier_range = 400;
 rapier_per_shot = 1;
+rapier_ammo = 0;
+rapier_ammo_max = -1;
 
 howler = 0;
 howler_max = -1;
@@ -115,6 +127,8 @@ howler_cooldown = 0;
 howler_cooldown_max = 240;
 howler_range = 800;
 howler_per_shot = 1;
+howler_ammo = 0;
+howler_ammo_max = -1;
 
 // Tertiary Weapons
 
@@ -124,6 +138,8 @@ helix_cooldown = 0;
 helix_cooldown_max = 45;
 helix_range = 550;
 helix_per_shot = 1;
+helix_ammo = 0;
+helix_ammo_max = -1;
 
 //Fire shot -&gt; burst delay -&gt; fire shot -&gt; burst delay -&gt; ... -&gt; cooldown
 pdt = 0;
@@ -135,6 +151,8 @@ pdt_burst_count_max = 3;
 pdt_cooldown = 0;
 pdt_cooldown_max = 90;
 pdt_range = 500;
+pdt_ammo = 0;
+pdt_ammo_max = -1;
 
 scanner = 0;
 scanner_max = -1;
@@ -218,7 +236,7 @@ with (singleship_type)
 var max_deploy = broadsword_deploy_max;
 if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
 
-if (scramble_fighters &amp;&amp; broadsword_deploy_cd &lt;= 0 &amp;&amp; broadsword &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
+if (scramble_fighters &amp;&amp; broadsword_deploy_cd == 0 &amp;&amp; broadsword &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
 {
     broadsword_deploy_cd = broadsword_deploy_cd_max;
     broadsword -= 1;
@@ -243,11 +261,13 @@ if (broadsword_deploy_cd &gt; 0) {
     broadsword_deploy_cd -= 1;
 }
 
-if (broadsword_replenish_cd &gt; 0) {
+if (broadsword_replenish_cd &gt; 0 &amp;&amp; broadsword &lt; broadsword_max) {
     --broadsword_replenish_cd;
-} else if (broadsword_replenish_cd &lt;= 0 &amp;&amp; broadsword &lt; broadsword_max) {
+} else if (broadsword_replenish_cd == 0 &amp;&amp; broadsword &lt; broadsword_max) {
     broadsword_replenish_cd = broadsword_replenish_cd_max;
     ++broadsword;
+} else if (broadsword == broadsword_max) {
+    broadsword_replenish_cd = broadsword_replenish_cd_max;
 }
 
 </string>
@@ -288,7 +308,7 @@ with (singleship_type)
 var max_deploy = longsword_deploy_max;
 if (status_half_fighter_deploymax != 0) {max_deploy /= 2;}
 
-if (scramble_fighters &amp;&amp; longsword_deploy_cd &lt;= 0 &amp;&amp; longsword &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
+if (scramble_fighters &amp;&amp; longsword_deploy_cd == 0 &amp;&amp; longsword &gt; 0 &amp;&amp; deployed_l &lt; max_deploy)
 {
     longsword_deploy_cd = longsword_deploy_cd_max;
     longsword -= 1;
@@ -313,12 +333,15 @@ if (longsword_deploy_cd &gt; 0) {
     longsword_deploy_cd -= 1;
 }
 
-if (longsword_replenish_cd &gt; 0) {
+if (longsword_replenish_cd &gt; 0 &amp;&amp; longsword &lt; longsword_max) {
     --longsword_replenish_cd;
-} else if (longsword_replenish_cd &lt;= 0 &amp;&amp; longsword &lt; longsword_max) {
+} else if (longsword_replenish_cd == 0 &amp;&amp; longsword &lt; longsword_max) {
     longsword_replenish_cd = longsword_replenish_cd_max;
     ++longsword;
+} else if (longsword == longsword_max) {
+    longsword_replenish_cd = longsword_replenish_cd_max;
 }
+
 
 </string>
           </argument>
@@ -343,7 +366,7 @@ if (longsword_replenish_cd &gt; 0) {
             <string>var selfid = id;
 var singleship_type = oUNSC_pelican;
 
-if (pelican_deploy_cd &lt;= 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
+if (pelican_deploy_cd == 0 &amp;&amp; pelican &gt; 0 &amp;&amp; !ds_list_empty(transport_targetid_queue))
 {
     var transport_targetid = transport_targetid_queue[| 0];
     ds_list_delete(transport_targetid_queue, 0);
@@ -363,12 +386,15 @@ if (pelican_deploy_cd &gt; 0) {
     --pelican_deploy_cd;
 }
 
-if (pelican_replenish_cd &gt; 0) {
+if (pelican_replenish_cd &gt; 0 &amp;&amp; pelican &lt; pelican_max) {
     --pelican_replenish_cd;
-} else if (pelican_replenish_cd &lt;= 0 &amp;&amp; pelican &lt; pelican_max) {
+} else if (pelican_replenish_cd == 0 &amp;&amp; pelican &lt; pelican_max) {
     pelican_replenish_cd = pelican_replenish_cd_max;
     ++pelican;
+} else if (pelican == pelican_max) {
+    pelican_replenish_cd = pelican_replenish_cd_max;
 }
+
 
 </string>
           </argument>
@@ -390,7 +416,7 @@ if (pelican_replenish_cd &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_primary &amp;&amp; lmac_cooldown &lt;= 0 &amp;&amp; lmac &gt; 0)
+            <string>if (fire_primary &amp;&amp; lmac_cooldown == 0 &amp;&amp; lmac &gt; 0)
 {
     turnTowards(primary_target_dir);
     if (withinDegrees(direction, primary_target_dir, 2))
@@ -439,7 +465,7 @@ if (lmac_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_primary &amp;&amp; hmac_cooldown &lt;= 0 &amp;&amp; hmac &gt; 0)
+            <string>if (fire_primary &amp;&amp; hmac_cooldown == 0 &amp;&amp; hmac &gt; 0)
 {
     turnTowards(primary_target_dir);
     if (withinDegrees(direction, primary_target_dir, 2))
@@ -488,7 +514,7 @@ if (hmac_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; archerpod_cooldown &lt;= 0) 
+            <string>if (fire_secondary &amp;&amp; archerpod_cooldown == 0) 
 {
     var targetdir;
     
@@ -553,7 +579,7 @@ if (archerpod_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; ares_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; ares_cooldown == 0)
 {
     var targetdir;
     
@@ -576,12 +602,21 @@ if (archerpod_cooldown &gt; 0) {
         repeat (missiles_fired)
         {
             var fire_origin_x = x+irandom_range(-ares_firing_spread, ares_firing_spread);
-            var fire_origin_y = y+irandom_range(-archerpod_firing_spread, archerpod_firing_spread);
-            var fire_direction = targetdir + irandom_range(-archerpod_angle_spread,archerpod_angle_spread);
+            var fire_origin_y = y+irandom_range(-ares_firing_spread, ares_firing_spread);
+            var fire_direction = targetdir + irandom_range(-ares_angle_spread,ares_angle_spread);
             var ID = createChild(fire_origin_x, fire_origin_y, oUNSC_AresMissile, fire_direction);
-            ID.targetid = targetid;
-            ID.targetx = targetid.x+irandom_range(-ares_target_spread,ares_target_spread);
-            ID.targety = targetid.y+irandom_range(-ares_target_spread,ares_target_spread);
+             if (secondary_barrage_duration &gt; 0) {
+                ID.targetx = secondary_barrage_x;
+                ID.targety = secondary_barrage_y;
+            } else {
+                ID.targetid = targetid;
+                ID.targetx = targetid.x;
+                ID.targety = targetid.y;
+            }
+            
+            // Add spread
+            ID.targetx += irandom_range(-ares_target_spread,ares_target_spread);
+            ID.targety += irandom_range(-ares_target_spread,ares_target_spread);
         }
     }
 }
@@ -609,7 +644,7 @@ if (ares_cooldown &gt; 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (fire_secondary &amp;&amp; lance_cooldown &lt;= 0)
+            <string>if (fire_secondary &amp;&amp; lance_cooldown == 0)
 {
     var targetdir;
     
@@ -675,7 +710,7 @@ if (lance_cooldown &gt; 0) {
             <kind>1</kind>
             <string>// Helix AAA
 
-if (fire_pointdef &amp;&amp; helix_cooldown &lt;= 0)
+if (fire_pointdef &amp;&amp; helix_cooldown == 0)
 {
     var selfid_l;
     selfid_l = id;
@@ -744,7 +779,7 @@ if (helix_cooldown &gt; 0) {
           <argument>
             <kind>1</kind>
             <string>// M910 Point-defense gun
-if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count &gt; 0)
+if (fire_pointdef &amp;&amp; pdt_burst_delay == 0 &amp;&amp; pdt_burst_count &gt; 0)
 {
     var selfid_l;
     selfid_l = id;
@@ -790,7 +825,7 @@ if (fire_pointdef &amp;&amp; pdt_burst_delay &lt;= 0 &amp;&amp; pdt_burst_count 
 }
 
 if (pdt_burst_count == 0) {
-    if (pdt_cooldown &lt;= 0) {
+    if (pdt_cooldown == 0) {
         pdt_burst_count = pdt_burst_count_max;
         pdt_cooldown = pdt_cooldown_max;
     } else if (pdt_cooldown &gt; 0) {
@@ -820,7 +855,7 @@ if (pdt_burst_count == 0) {
           <argument>
             <kind>1</kind>
             <string>var selfid = id;
-if (scanner &amp;&amp; scanner_cooldown &lt;= 0)
+if (scanner &amp;&amp; scanner_cooldown == 0)
 {
     //scan
     with (oallobjects) {
@@ -860,7 +895,7 @@ if (scanner_draw_time &lt; scanner_draw_time_max) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (repair &amp;&amp; repair_cooldown &lt;= 0)
+            <string>if (repair &amp;&amp; repair_cooldown == 0)
 {
     //repair
     var nearest_id = noone;

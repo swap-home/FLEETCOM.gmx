@@ -363,6 +363,7 @@ if (tutorial_step == 11) {
 draw_set_font(HaloCE_gui_hud);
 draw_set_color(c_white);
 draw_set_halign(fa_center);
+draw_set_alpha(1);
 
 switch (tutorial_step) {
     case -1:
@@ -418,6 +419,10 @@ switch (tutorial_step) {
         draw_text_ext(1152, 500, "This is a randomized large scale battle, displaying how later missions could possibly play out##A toggles AI for the left side#D toggles debug info#F toggles effects", 32, 600);
         break;      
 }
+
+draw_set_color(-1);
+draw_set_halign(-1);
+draw_set_alpha(-1);
 </string>
           </argument>
         </arguments>

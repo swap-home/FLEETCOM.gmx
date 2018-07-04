@@ -33,17 +33,23 @@ autocannon = 0;
 autocannon_cooldown = 0;
 autocannon_cooldown_max = 15;
 autocannon_range = 450;
+autocannon_ammo = 0;
+autocannon_ammo_max = 0;
 
 asgm = 0;
 asgm_cooldown = 0;
 asgm_cooldown_max = 150;
-asgm_range = 600;
-asgm_per_shot = 2;
+asgm_range = 500;
+asgm_per_shot = 1;
+asgm_ammo = 0;
+asgm_ammo_max = 0;
 
 bombcharge = 0;
 bombcharge_cooldown = 0;
 bombcharge_cooldown_max = 60;
 bombcharge_range = 50;
+bombcharge_ammo = 0;
+bombcharge_ammo_max = 0;
 
 
 </string>
@@ -78,42 +84,51 @@ if (instance_exists(targetid))
         
         if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= autocannon_range)
             || collision_line(x,y,x+lengthdir_x(autocannon_range,direction),y+lengthdir_y(autocannon_range,direction),targetid,false,true))
-            &amp;&amp; autocannon_cooldown &lt;= 0)
+            &amp;&amp; autocannon_cooldown &lt;= 0 
+            &amp;&amp; autocannon_ammo &gt; 0)
         {
             autocannon_cooldown = autocannon_cooldown_max;
             
-            var i;
-            for (i = 0; i &lt; autocannon; i+=1)
+            for (var i = 0; i &lt; autocannon; i+=1)
             {
-                createChild(x,y,oUNSC_120mm, targetdir_l);
+                if (autocannon_ammo != 0) {
+                    autocannon_ammo--;
+                    createChild(x,y,oUNSC_120mm, targetdir_l);
+                }
             }
         }
 
         if (((withinDegrees(direction, targetdir_l, 30) &amp;&amp; distance_to_object(targetid) &lt;= asgm_range)
             || collision_line(x,y,x+lengthdir_x(asgm_range,direction),y+lengthdir_y(asgm_range,direction),targetid,false,true))
-            &amp;&amp; asgm_cooldown &lt;= 0)
+            &amp;&amp; asgm_cooldown &lt;= 0
+            &amp;&amp; asgm_ammo &gt; 0)
         {
             asgm_cooldown = asgm_cooldown_max;
             var missiles_fired = asgm/asgm_per_shot;
-            var i;
-            for (i = 0; i &lt; missiles_fired; i+=1)
+            for (var i = 0; i &lt; missiles_fired; i+=1)
             {
-                var missile = createChild(x,y,oUNSC_ASGM10, targetdir_l);
-                missile.targetid = targetid;
+                if (asgm_ammo != 0) {
+                    asgm_ammo--;
+                    var missile = createChild(x,y,oUNSC_ASGM10, targetdir_l);
+                    missile.targetid = targetid;
+                }
             }
         }
         
         if (((withinDegrees(direction, targetdir_l, 15) &amp;&amp; distance_to_object(targetid) &lt;= bombcharge_range)
             || collision_line(x,y,x+lengthdir_x(bombcharge_range,direction),y+lengthdir_y(bombcharge_range,direction),targetid,false,true))
             &amp;&amp; bombcharge_cooldown &lt;= 0
+            &amp;&amp; bombcharge_ammo &gt; 0
             &amp;&amp; object_is_ancestor(targetid.object_index, oallcapitalships))
         {
             bombcharge_cooldown = bombcharge_cooldown_max;
             
-            var i;
-            for (i = 0; i &lt; bombcharge; i+=1)
-            {
-                createChild(x,y,oUNSC_bombcharge, targetdir_l);
+            for (var i = 0; i &lt; bombcharge; i+=1)
+            {   
+                if (bombcharge_ammo != 0) {
+                    bombcharge_ammo--;
+                    createChild(x,y,oUNSC_bombcharge, targetdir_l);
+                }
             }
         }
     }

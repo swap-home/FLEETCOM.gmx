@@ -45,7 +45,7 @@ singleship_reload = 1;
 
 // barrage mode fires at reduced cooldown
 // cannot fire normally until barrage cooldown ends
-secondary_barrage_enabled = false;
+secondary_barrage_enabled = true;
 secondary_barrage_x = 0;
 secondary_barrage_y = 0;
 secondary_barrage_cooldown = 0;
@@ -672,7 +672,6 @@ if (other.targetid == id &amp;&amp; other.state == BOARDING)
 // redraw the object's sprite
 draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,c_white,image_alpha); 
 
-var oldAlpha = draw_get_alpha();
 draw_set_alpha(GUI_ALPHA);
 
 // draw a health bar
@@ -725,7 +724,7 @@ if (instance_exists(global.ui_controller) &amp;&amp; !invisible) {
         draw_sprite_ext(sTargetBox,0,x,y,1,1,rotation_multiplier,c_red,GUI_ALPHA);
     }
 }
-draw_set_alpha(oldAlpha);
+draw_set_alpha(1);
 </string>
           </argument>
         </arguments>

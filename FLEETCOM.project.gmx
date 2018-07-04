@@ -133,6 +133,7 @@
     </sprites>
     <sprite>sprites\sAsteroid</sprite>
     <sprite>sprites\spr_pixel</sprite>
+    <sprite>sprites\s_circlebar</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -141,6 +142,9 @@
   <scripts name="scripts">
     <script>scripts\draw_bar.gml</script>
     <script>scripts\draw_bar_split.gml</script>
+    <script>scripts\draw_bar_circle.gml</script>
+    <script>scripts\draw_cooldown_inverted.gml</script>
+    <script>scripts\draw_cooldown.gml</script>
     <script>scripts\mod360.gml</script>
     <script>scripts\withinDegrees.gml</script>
     <script>scripts\Sight.gml</script>
@@ -186,13 +190,18 @@
       <script>scripts\formationMove.gml</script>
       <script>scripts\closestMatches.gml</script>
       <script>scripts\apply_ai.gml</script>
-      <scripts name="checks">
-        <script>scripts\groupHasFighters.gml</script>
-        <script>scripts\groupHasTransports.gml</script>
-        <script>scripts\groupHasPrimaryFire.gml</script>
-        <script>scripts\groupHasSecondaryBarrage.gml</script>
-        <script>scripts\groupHasTertiaryBarrage.gml</script>
-        <script>scripts\groupHasTacNuke.gml</script>
+      <scripts name="group">
+        <scripts name="checks">
+          <script>scripts\groupHasFighters.gml</script>
+          <script>scripts\groupHasTransports.gml</script>
+          <script>scripts\groupHasPrimaryFire.gml</script>
+          <script>scripts\groupHasSecondaryBarrage.gml</script>
+          <script>scripts\groupHasTertiaryBarrage.gml</script>
+          <script>scripts\groupHasTacNuke.gml</script>
+        </scripts>
+        <scripts name="cooldowns">
+          <script>scripts\groupSecondaryBarrageCooldown.gml</script>
+        </scripts>
       </scripts>
     </scripts>
     <script>scripts\beamCollision.gml</script>
