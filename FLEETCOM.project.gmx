@@ -124,6 +124,7 @@
       <sprite>sprites\sUNSC_50mm</sprite>
       <sprite>sprites\sUNSC_HelixAAA</sprite>
       <sprite>sprites\sUNSC_120mm</sprite>
+      <sprite>sprites\sUNSC_coilgun</sprite>
       <sprite>sprites\sCove_PlasmaCannons</sprite>
       <sprite>sprites\sCoveHeavyPlasma</sprite>
       <sprite>sprites\sCove_HeavyPlasmaRed</sprite>
@@ -369,6 +370,7 @@
         <object>objects\oUNSC_50mm</object>
         <object>objects\oUNSC_AAA</object>
         <object>objects\oUNSC_120mm</object>
+        <object>objects\oUNSC_coilgun</object>
         <object>objects\oUNSC_ArcherMissile</object>
         <object>objects\oUNSC_AresMissile</object>
         <object>objects\oUNSC_ASGM10</object>

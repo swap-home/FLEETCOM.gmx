@@ -43,7 +43,7 @@
           </argument>
           <argument>
             <kind>0</kind>
-            <string>48000</string>
+            <string>24000</string>
           </argument>
         </arguments>
       </action>

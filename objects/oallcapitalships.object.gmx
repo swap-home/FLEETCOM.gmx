@@ -45,7 +45,7 @@ singleship_reload = 1;
 
 // barrage mode fires at reduced cooldown
 // cannot fire normally until barrage cooldown ends
-secondary_barrage_enabled = true;
+secondary_barrage_enabled = false;
 secondary_barrage_x = 0;
 secondary_barrage_y = 0;
 secondary_barrage_cooldown = 0;
